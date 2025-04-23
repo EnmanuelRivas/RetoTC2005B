@@ -1,12 +1,12 @@
 {
-  "name": "retotc2005b",
+  "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"
   },
-  "keywords": [],
   "type": "module",
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
@@ -17,6 +17,6 @@
     "express": "^5.1.0",
     "morgan": "^1.10.0",
     "mssql": "^11.0.1",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.10"
   }
 }
