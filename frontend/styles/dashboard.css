@@ -1,0 +1,177 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4eedc;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .sidebar {
+    width: 240px;
+    background-color: #364c3e;
+    color: white;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-left: 30px;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    gap: 15px;
+    cursor: pointer;
+  }
+
+  .menu-item i {
+    font-size: 22px;
+  }
+
+  .main-content {
+    flex: 1;
+    padding: 40px;
+  }
+
+  h2 {
+    font-size: 26px;
+    font-weight: bold;
+    color: #364c3e;
+    margin-bottom: 40px;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+
+  .card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .card h4 {
+    font-size: 18px;
+    color: #364c3e;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+
+  .card p {
+    color: #364c3e;
+    font-weight: bold;
+    font-size: 22px;
+    text-align: right;
+  }
+
+  .lacosa {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(#609172 25%, #4d705a 0%);
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .lacosa::after {
+    content: '750';
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: #f4eedc;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #364c3e;
+    font-size: 18px;
+  }
+
+  .lacosa-label {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #364c3e;
+  }
+
+  .line-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 100px;
+    margin-top: 10px;   
+    ;
+   }
+
+  .line-chart span {
+    display: block;
+    width: 10px;
+    background-color: #364c3e;
+  }
+
+  .bar {
+    height: 12px;
+    background-color: #364c3e;
+    border-radius: 6px;
+    margin: 10px 0;
+  }
+
+  .bars-vertical {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 120px;
+    margin-top: 10px;
+  }
+
+  .bars-vertical span {
+    width: 1px;
+    background-color: #364c3e;
+    border-radius: 4px;
+  }
+  .bar-chart-wrapper {
+display: flex;
+align-items: flex-end;
+height: 120px;
+margin-top: 20px;
+position: relative;
+}
+
+.y-axis {
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+height: 100%;
+margin-right: 0px;
+font-size: 12px;
+color: #364c3e;
+font-weight: bold;
+}
+
+.y-axis span {
+height: 150px;
+transform: translateY(0px);
+}
+
+.bar-chart {
+display: flex;
+align-items: flex-end;
+gap: 8px;
+height: 100%;
+flex: 1;
+}
+
+.bar {
+width: 20px;
+background-color: #364c3e;
+border-radius: 4px;
+}

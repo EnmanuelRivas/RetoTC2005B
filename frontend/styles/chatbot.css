@@ -1,0 +1,132 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f6ea;
+    display: flex;
+    height: 100vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 130px;
+    background-color: #efe7c7;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 20px;
+    gap: 20px;
+  }
+
+  .sidebar i,
+  .sidebar img {
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .sidebar button {
+    background-color: #b0c9a8;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .main {
+    flex: 1;
+    padding: 20px 40px;
+    position: relative;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    color: #5c8d61;
+    padding-bottom: 20px;
+  }
+
+  .header h1 {
+    font-size: 16px;
+    margin: 0 auto;
+  }
+
+  .main h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-top: 60px;
+    color: #000;
+  }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 40px 0 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    color: #333;
+  }
+
+  .cards {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+  }
+
+  .card {
+    background-color: #f0edf9;
+    border-radius: 12px;
+    padding: 15px;
+    flex: 1;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    min-width: 160px;
+  }
+
+  .card b {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .card p {
+    font-size: 13px;
+    color: #444;
+    margin: 5px 0;
+  }
+
+  .card a {
+    font-size: 13px;
+    color: #5c8d61;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .input-bar {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    background-color: #ede9f4;
+    border-radius: 30px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .input-bar i {
+    font-size: 20px;
+    color: #5c8d61;
+    cursor: pointer;
+  }
+
+  .input-bar .send {
+    background-color: #5c8d61;
+    color: white;
+    padding: 8px;
+    border-radius: 50%;
+    font-size: 16px;
+  }

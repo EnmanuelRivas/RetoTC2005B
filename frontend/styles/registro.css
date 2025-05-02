@@ -2,6 +2,7 @@ body, html {
     height: 100%;
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
   }
 
   .login-container {
@@ -10,7 +11,8 @@ body, html {
   }
 
   .left-panel {
-    background: #F3ECDA;
+    background: url('awaqbackground.png') no-repeat center;
+    background-size: cover;
     flex: 1;
     display: flex;
     justify-content: center;
@@ -18,8 +20,7 @@ body, html {
   }
 
   .left-panel img {
-    width: 350px;
-    height: 350px;
+    width: 150px;
   }
 
   .right-panel {
@@ -51,11 +52,6 @@ body, html {
 
   .btn-primary:hover {
     background-color: #2e5ca6;
-  }
-
-  .logo-awaq {
-    width: 150px;
-    height: 150px;
   }
 
   footer {
