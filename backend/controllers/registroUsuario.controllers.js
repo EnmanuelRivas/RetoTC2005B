@@ -29,3 +29,24 @@ export const postUsuario = (req, res) => {
     });
 }
 
+// Iniciar sesión con nombre de usuario y contraseña
+export const postLogin = (req, res) => {
+    const { correoUsuario, nombreUsuario, contraseñaUsuario } = req.body; // Datos capturados
+
+    const query = "SELECT * FROM usuarios WHERE correoUsuario = ? AND nombreUsuario = ? AND contraseñaUsuario = ?"; 
+
+    pool.query(query, [correoUsuario, nombreUsuario, contraseñaUsuario], (err, results) => {
+        if (err) {
+            console.error("Error al iniciar sesión:", err.message);
+            return res.status(500).json({ message: "Error al iniciar sesión" });
+        }
+        if (results.length > 0) {
+            res.status(200).json({ message: "Inicio de sesión exitoso" }); // Respuesta que indica que el inicio de sesión fue exitoso
+        } else {
+            res.status(401).json({ message: "Nombre de usuario o contraseña incorrectos" }); // Respuesta que indica que el inicio de sesión falló
+        }
+    });
+}
+
+
+

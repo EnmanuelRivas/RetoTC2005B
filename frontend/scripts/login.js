@@ -1,37 +1,36 @@
-// Función para mostrar el formulario de registro
+// Función para poder redirigir a la página de registro
 document.addEventListener("DOMContentLoaded", () => {
-    const loginButton = document.getElementById("login-button");
+    const registerButton = document.getElementById("register-button");
 
-    loginButton.addEventListener("click", (event) => {
-        // Redirect to the login page
-        event.preventDefault();
-        window.location.href = "/pages/login.html";
+    registerButton.addEventListener("click", (event) => {
+        event.preventDefault(); 
+        window.location.href = "/pages/registro.html";
     });
 });
 
-// Función para registrar un nuevo usuario
+// Función para poder iniciar sesión en la plataforma
 document.addEventListener("DOMContentLoaded", () => {
     const nombreUsuario = document.getElementById("nombre-usuario");
-    const correoUsuario = document.getElementById("correo-usuario");
     const contraseñaUsuario = document.getElementById("password-usuario");
-    const registerButton = document.getElementById("register-button");
-
-    registerButton.addEventListener("click", async (event) => {
+    const correoUsuario = document.getElementById("correo-usuario");
+    const loginButton = document.getElementById("login-button");
+    
+    loginButton.addEventListener("click", async (event) => {
         event.preventDefault(); // Prevent the default form submission
 
         const usuario = {
             nombreUsuario: nombreUsuario.value.trim(),
-            correoUsuario: correoUsuario.value.trim(),
-            contraseñaUsuario: contraseñaUsuario.value.trim()
+            contraseñaUsuario: contraseñaUsuario.value.trim(),
+            correoUsuario: correoUsuario.value.trim()
         };
 
-        if (!usuario.nombreUsuario || !usuario.correoUsuario || !usuario.contraseñaUsuario) {
+        if (!usuario.nombreUsuario || !usuario.contraseñaUsuario || !usuario.correoUsuario) {
             alert("Por favor, completa todos los campos.");
             return;
         }
 
         try {
-            const response = await fetch("http://localhost:4000/postUsuario", {
+            const response = await fetch("http://localhost:4000/postLogin", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -42,14 +41,14 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
                 const data = await response.json();
                 alert(data.message); // Show success message
-                window.location.href = "/pages/login.html"; // Redirect to login page
+                window.location.href = "/pages/home.html"; // Redirect to home page
             } else {
                 const errorData = await response.json();
                 alert(errorData.message); // Show error message
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error al registrar el usuario. Por favor, inténtalo de nuevo.");
+            alert("Error al iniciar sesión. Por favor, inténtalo de nuevo.");
         }
-    });
+    });  
 });
