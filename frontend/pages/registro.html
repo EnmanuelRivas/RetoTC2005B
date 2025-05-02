@@ -11,7 +11,7 @@
   <div class="login-container">
     <div class="left-panel">
       <div style="position: absolute; bottom: -140px; width: 100%; text-align: center;">
-        <img src="AWAQ.png" alt="Logo AWAQ" style="width: 600px; height: auto;" />
+        <img src="../assets/AWAQ.png" alt="Logo AWAQ" style="width: 600px; height: auto;" />
       </div>
     </div>
     <div class="right-panel">
@@ -23,7 +23,7 @@
             <span class="input-group-text bg-dark border-0 text-white">
               <i class="bi bi-envelope"></i>
             </span>
-            <input type="text" class="form-control" id="usuario" placeholder="Ingresa tu correo" />
+            <input type="text" class="form-control" id="correo-usuario" placeholder="Ingresa tu correo" />
           </div>
           <div class="mb-3">
             <label for="usuario" class="form-label">Usuario</label>
@@ -31,7 +31,7 @@
               <span class="input-group-text bg-dark border-0 text-white">
                 <i class="bi bi-person"></i>
               </span>
-              <input type="text" class="form-control" id="usuario" placeholder="Ingresa tu usuario" />
+              <input type="text" class="form-control" id="nombre-usuario" placeholder="Ingresa tu usuario" />
             </div>
         </div>
         <div class="mb-3">
@@ -40,7 +40,7 @@
             <span class="input-group-text bg-dark border-0 text-white">
               <i class="bi bi-lock"></i>
             </span>
-            <input type="password" class="form-control" id="password" placeholder="Ingresa tu contraseña" />
+            <input type="password" class="form-control" id="password-usuario" placeholder="Ingresa tu contraseña" />
           </div>
         </div>
         <div class="mb-3">
@@ -49,17 +49,18 @@
             <span class="input-group-text bg-dark border-0 text-white">
               <i class="bi bi-lock"></i>
             </span>
-            <input type="password" class="form-control" id="password" placeholder="Confirmar contraseña" />
+            <input type="password" class="form-control" id="confirm-password" placeholder="Confirmar contraseña" />
           </div>
         </div>
-        <button type="submit" class="btn btn-primary w-100" formaction="menuprincipal.html">Registrarse</button>
+        <button type="button" class="btn btn-primary w-100" id="register-button">Registrarse</button>
         <div class="text-center mt-3">
-            <a href="login.html" class="text-white text-decoration-none">¿Ya tienes cuenta? Inicia sesión</a>
+            <a id="login-button" class="text-white text-decoration-none">¿Ya tienes cuenta? Inicia sesión</a>
       </form>
       <footer class="mt-4">©Copyright Lumina</footer>
     </div>
   </div>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <script src="../scripts/registro.js"></script>
 </body>
 </html>

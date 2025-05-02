@@ -2,12 +2,14 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import path from "path";
+import registroRoutes from "./routes/registroRoutes.js";
 
 const app = express();
 const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(cors());
+app.use(registroRoutes); // Usamos las rutas de registro
 
 console.log(process.env.HOST);
 
