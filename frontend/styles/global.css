@@ -10,7 +10,7 @@ body, html {
   }
 
   .left-panel {
-    background: linear-gradient(135deg, #619C75, #F3ECDA);
+    background: #F3ECDA;
     flex: 1;
     display: flex;
     justify-content: center;

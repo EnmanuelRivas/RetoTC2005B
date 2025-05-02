@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard AWAQ</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f4eedc;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 240px;
+      background-color: #364c3e;
+      color: white;
+      padding-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      padding-left: 30px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      gap: 15px;
+      cursor: pointer;
+    }
+
+    .menu-item i {
+      font-size: 22px;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 40px;
+    }
+
+   
+
+ 
+.user-table {
+  background-color: #f4eedc;
+  border-radius: 12px;
+  padding: 30px;
+  padding-top: 100px;
+  max-width: 900px;
+  margin: auto;
+  font-family: 'Arial', sans-serif;
+}
+
+.user-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th {
+  text-align: left;
+  font-weight: bold;
+  padding: 12px;
+  color: #364c3e;
+}
+
+.user-table td {
+  padding: 10px 12px;
+  color: #333;
+  font-size: 15px;
+}
+
+.user-table tr:nth-child(even) {
+  background-color: #f4eedc;
+}
+
+.badge {
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  display: inline-block;
+}
+
+.badge.active {
+  background-color: #364c3e;
+}
+
+.badge.inactive {
+  background-color: #a1a1a1;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="menu-item" onclick="location.href='dashboard.html'"><i class="bi bi-boxes"></i>General</div>
+    <div class="menu-item"><i class="bi bi-emoji-smile"></i> <strong>Gestión de usuarios</strong></div>
+    <div class="menu-item" onclick="location.href='gestionAP.html'"><i class="bi bi-layers"></i> Gestión de anteproyectos</div>
+    <div class="menu-item" onclick="location.href='menuprincipal.html'"><i class="bi bi-house-door"></i> Regresar al inicio</div>
+    <div class="menu-item" onclick="location.href='login.html'"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</div>
+  </div>
+
+  <div class="main-content">
+    <div class="user-table">
+      <table>
+        <thead>
+          <tr>
+            <th><i class="bi bi-person-fill"></i> Nombre</th>
+            <th><i class="bi bi-envelope-fill"></i> Correo</th>
+            <th>Fecha de creación</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><i class="bi bi-person-fill"></i> Andrea Ortiz</td>
+            <td>andrea.ortiz@tec.mx</td>
+            <td>23-03-2024</td>
+            <td><span class="badge active">Activo</span></td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-person-fill"></i> Juan Vazquez</td>
+            <td>maria.garcia@tec.mx</td>
+            <td>26-10-2022</td>
+            <td><span class="badge active">Activo</span></td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-person-fill"></i> Enmanuel Rivas</td>
+            <td>enmanuel.rivas@tec.mx</td>
+            <td>16-10-2022</td>
+            <td><span class="badge inactive">Inactivo</span></td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-person-fill"></i> Emily Castillo</td>
+            <td>emily.castillo@tec.mx</td>
+            <td>17-02-2022</td>
+            <td><span class="badge active">Activo</span></td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-person-fill"></i> Bernardo Torres</td>
+            <td>bernardo.torres@tec.mx</td>
+            <td>20-12-2024</td>
+            <td><span class="badge active">Activo</span></td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-person-fill"></i> Luis Bolaina</td>
+            <td>luis.bolaina@tec.mx</td>
+            <td>17-05-2022</td>
+            <td><span class="badge active">Activo</span></td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-person-fill"></i> Angela Rodriguez</td>
+            <td>angela.rodriguez@tec.mx</td>
+            <td>15-14-2023</td>
+            <td><span class="badge active">Activo</span></td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-person-fill"></i> Luis Mendez</td>
+            <td>luis.mendez@tec.mx</td>
+            <td>28-11-2024</td>
+            <td><span class="badge active">Activo</span></td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-person-fill"></i> Felipe Fox</td>
+            <td>felipe.fox@tec.mx</td>
+            <td>25-11-2022</td>
+            <td><span class="badge inactive">Inactivo</span></td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-person-fill"></i> Roberto Guajardo</td>
+            <td>roberto.guajardo@tec.mx</td>
+            <td>09-11-2023</td>
+            <td><span class="badge inactive">Inactivo</span></td>
+          </tr>
+          <tr>
+            <td><i class="bi bi-person-fill"></i> Mauricio Quintanilla</td>
+            <td>mauricio.quintanilla@tec.mx</td>
+            <td>27-03-2024</td>
+            <td><span class="badge active">Activo</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>    
+    <img src="AWAQBIO.png" alt="AWA Logo" style="position: absolute; top: -480px; right: -820px; scale: 10%;">
+      </div>
+
+</body>
+</html>
