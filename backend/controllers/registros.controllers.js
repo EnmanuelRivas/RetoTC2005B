@@ -30,7 +30,6 @@ export const getRegistro = (req, res) => {
     });
   };
   
-  
   // GET DE VARIABLE CLIMATICA
   export const getVariableClimatica = (req, res) => {
     const query = 'SELECT * FROM variables_climaticas';  // Consulta para obtener todos los registros

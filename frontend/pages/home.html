@@ -25,7 +25,9 @@
     </form>
 <br>
 <div class="flashcards" style="display: flex; justify-content: space-evenly; gap: 20px; margin-top: 60px; width: 100%;">
-  <div class="flashcard" style="background-color: #fff; border-radius: 20px; flex: 1; max-width: 300px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden;">
+  <div class="flashcard" style="background-color: #fff; border-radius: 20px; flex: 1; max-width: 300px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;" 
+       onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 10px rgba(0, 0, 0, 0.2)';" 
+       onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
     <div style="background-color: #719273; color: black; font-weight: bold; font-size: 22px; padding: 12px 0; width: 100%;">
       Crea
     </div>
@@ -35,7 +37,9 @@
     </div>
   </div>
 
-  <div class="flashcard" style="background-color: #fff; border-radius: 20px; flex: 1; max-width: 300px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden;">
+  <div class="flashcard" style="background-color: #fff; border-radius: 20px; flex: 1; max-width: 300px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;" 
+       onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 10px rgba(0, 0, 0, 0.2)';" 
+       onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
     <div style="background-color: #b7b7b7; color: black; font-weight: bold; font-size: 22px; padding: 12px 0; width: 100%;">
       Aprende
     </div>
@@ -45,7 +49,9 @@
     </div>
   </div>
 
-  <div class="flashcard" style="background-color: #fff; border-radius: 20px; flex: 1; max-width: 300px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden;">
+  <div class="flashcard" style="background-color: #fff; border-radius: 20px; flex: 1; max-width: 300px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;" 
+       onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 10px rgba(0, 0, 0, 0.2)';" 
+       onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
     <div style="background-color: #e7e2d5; color: black; font-weight: bold; font-size: 22px; padding: 12px 0; width: 100%;">
       Visualiza
     </div>
@@ -54,6 +60,7 @@
       <p style="color: #364c3e; font-size: 16px;">Accede a los proyectos<br>que ya has creado anteriormente.</p>
     </div>
   </div>
+</div>
 </div>
 
   </div>
@@ -78,5 +85,73 @@
       <span>Contacto Soporte</span>
     </div>
     </div>
+  
+<div id="form-overlay" class="position-fixed top-0 start-0 w-100 h-100 d-none" style="background: rgba(0,0,0,0.5); z-index: 1050;">
+  <div class="container h-100 d-flex align-items-center justify-content-center">
+    <div class="bg-white p-4 rounded shadow-lg w-100" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+      <h4 class="mb-4 text-center"><i class="bi bi-phone"></i> Registro de datos </h4>
+
+      <div class="mb-3">
+        <label for="weather" class="form-label">Condición del clima:</label>
+        <select id="weather" class="form-select">
+          <option value="">--Seleccionar--</option>
+          <option value="sunny">Soleado (Sunny)</option>
+          <option value="rainy">Parcialmente Nublado (Partly Cloud)</option>
+          <option value="cloudy">Lluvioso (Rainy)</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="season" class="form-label">Temporada:</label>
+        <select id="season" class="form-select">
+          <option value="">--Seleccionar--</option>
+          <option value="spring">Verano/Seco (Summer/Dry)</option>
+          <option value="summer">Invierno/Lluviosa (Winter/Rainy)</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="record-type" class="form-label">Tipo de registro:</label>
+        <select id="record-type" class="form-select" onchange="loadRecordTypeForm(this.value)">
+          <option value="">--Selecciona Tipo de registro--</option>
+          <option value="transecto">Fauna en Transecto</option>
+          <option value="punto-conteo">Fauna en Punto de Conteo</option>
+          <option value="busqueda-libre">Fauna Búsqueda Libre</option>
+          <option value="validacion-cobertura">Validación de Cobertura</option>
+          <option value="vegetacion">Parcela de Vegetación</option>
+          <option value="camaras-trampa">Cámaras Trampa</option>
+          <option value="variables-climaticas">Variables Climáticas</option>
+        </select>
+      </div>
+
+      <div id="dynamic-form"></div>
+
+      <div class="mb-3">
+        <label for="evidence" class="form-label">Imágenes (Evidencias)</label>
+        <input type="file" class="form-control" id="evidence" accept="image/png, image/jpeg, image/gif" multiple>
+        <small class="text-muted">Máximo 2MB por imagen, hasta 5 imágenes</small>
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <button class="btn btn-secondary" onclick="closeForm()">Cancel</button>
+        <button class="btn btn-outline-primary" onclick="generateJsonPreview()">Generar JSON</button>
+        <button class="btn btn-primary" onclick="sendForms()">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="json-preview-container" class="position-fixed top-0 end-0 h-100 bg-dark text-white p-3" style="width: 40%; z-index: 1060; overflow-y: auto; display: none;">
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <strong>JSON Preview</strong>
+    <button class="btn btn-sm btn-outline-light" onclick="closeJsonPreview()">X</button>
+  </div>
+  <pre id="json-output" style="white-space: pre-wrap;">JSON preview will appear here after generating</pre>
+</div>
+<div id="alert-container" class="position-fixed top-0 start-50 translate-middle-x mt-4" style="z-index: 2000; max-width: 500px;"></div>
+
+  <script src="../scripts/forms.js"></script>
+  <script src="../scripts/home.js"></script>
+
 </body>
 </html>
