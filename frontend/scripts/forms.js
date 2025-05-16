@@ -66,44 +66,61 @@ function loadRecordTypeForm(type) {
   }
 
   function sendForms() {
-    const weather = document.getElementById('weather')?.value;
-    const season = document.getElementById('season')?.value;
-    const recordType = document.getElementById('record-type')?.value;
-  
-    const dynamicForm = document.getElementById('dynamic-form');
-    const inputs = dynamicForm.querySelectorAll('input, select, textarea');
-    const data = { estadoTiempo: weather, estacion: season, tipoRegistro: recordType };
-  
-    inputs.forEach(input => {
-      const key = input.name || input.id || input.getAttribute("data-label") || `unnamed_${Math.random().toString(36).slice(2, 7)}`;
-      if (input.type === 'radio' && input.checked) {
+  const weather = document.getElementById('weather')?.value;
+  const season = document.getElementById('season')?.value;
+  const recordType = document.getElementById('record-type')?.value;
+
+  const dynamicForm = document.getElementById('dynamic-form');
+  const inputs = dynamicForm.querySelectorAll('input, select, textarea');
+  const data = { estadoTiempo: weather, estacion: season, tipoRegistro: recordType };
+
+  let hasData = false;
+
+  inputs.forEach(input => {
+    if (input.type === 'file') return; // Ignorar archivos
+
+    const key = input.name || input.id || input.getAttribute("data-label") || `unnamed_${Math.random().toString(36).slice(2, 7)}`;
+
+    if (input.type === 'radio') {
+      if (input.checked) {
         data[key] = input.value;
-      } else if (input.type !== 'radio') {
+        hasData = true;
+      }
+    } else {
+      if (input.value?.trim() !== "") {
         data[key] = input.value;
+        hasData = true;
       }
-    });
-  
-    fetch('/registro/subirVariableClimatica', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    .then(respuesta => {
-      if (respuesta.message?.includes('exitosamente')) {
-        showAlert('Registro enviado exitosamente.', 'success');
-        closeForm(); // Puedes cerrar el formulario si todo salió bien
-      } else {
-        showAlert('Hubo un problema al enviar el formulario.', 'danger');
-      }
-    })
-    .catch(error => {
-      console.error("Error al enviar:", error);
-      showAlert('Error al conectar con el servidor.', 'danger');
-    });
+    }
+  });
+
+  if (!hasData && !weather && !season && !recordType) {
+    showAlert('Por favor llena al menos un campo antes de enviar el formulario.', 'warning');
+    return;
   }
+
+  fetch('/registro/subirVariableClimatica', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(respuesta => {
+    if (respuesta.message?.includes('exitosamente')) {
+      showAlert('Registro enviado exitosamente.', 'success');
+      closeForm();
+    } else {
+      showAlert('Hubo un problema al enviar el formulario.', 'danger');
+    }
+  })
+  .catch(error => {
+    console.error("Error al enviar:", error);
+    showAlert('Error al conectar con el servidor.', 'danger');
+  });
+}
+
 
   function showAlert(message, type = 'info') {
     const container = document.getElementById('alert-container');

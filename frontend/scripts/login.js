@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     registerButton.addEventListener("click", (event) => {
         event.preventDefault(); 
-        window.location.href = "/pages/registro.html";
+        window.location.href = "/pages/home.html";
     });
 });
 
@@ -51,4 +51,36 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Error al iniciar sesión. Por favor, inténtalo de nuevo.");
         }
     });  
+});
+
+const toggleButton = document.getElementById("theme-toggle");
+const body = document.body;
+
+toggleButton.addEventListener("click", () => {
+    body.classList.toggle("light-mode");
+    body.classList.toggle("dark-mode");
+    toggleButton.textContent = body.classList.contains("light-mode") ? "🌙" : "☀️";
+});
+
+
+document.querySelectorAll('.next-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    const currentStep = button.closest('.step');
+    const nextStepId = button.getAttribute('data-next');
+    const nextStep = document.getElementById(`step-${nextStepId}`);
+
+    currentStep.classList.remove('active');
+    nextStep.classList.add('active');
+  });
+});
+
+document.querySelectorAll('.prev-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    const currentStep = button.closest('.step');
+    const prevStepId = button.getAttribute('data-prev');
+    const prevStep = document.getElementById(`step-${prevStepId}`);
+
+    currentStep.classList.remove('active');
+    prevStep.classList.add('active');
+  });
 });
