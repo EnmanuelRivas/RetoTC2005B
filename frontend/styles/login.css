@@ -1,62 +1,166 @@
-body, html {
-    height: 100%;
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    overflow: hidden;
-  }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-  .login-container {
-    height: 100vh;
-    display: flex;
-  }
+.dark-mode {
+  background-color: #2a2a2a;
+  color: white;
+}
 
-  .left-panel {
-    background: url('../assets/awaqbackground.png') no-repeat center;
-    background-size: cover;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.light-mode {
+  background-color: #f4f4f4;
+  color: #222;
+}
 
-  .left-panel img {
-    width: 150px;
-  }
+.login-container {
+  display: flex;
+  min-height: 100vh;
+}
 
-  .right-panel {
-    background-color: #000;
-    color: #fff;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 40px;
-  }
+.left-panel, .right-panel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  transition: background-color 0.3s ease;
+}
 
-  .form-control {
-    background-color: #1a1a1a;
-    border: none;
-    color: #fff;
-  }
+.dark-mode .left-panel {
+  background-color: #1e1e1e;
+}
+.light-mode .left-panel {
+  background-color: #e4e4e4;
+}
 
-  .form-control:focus {
-    background-color: #1a1a1a;
-    color: #fff;
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-  }
+.dark-mode .right-panel {
+  background-color: #2e2e2e;
+}
+.light-mode .right-panel {
+  background-color: #ffffff;
+}
 
-  .btn-primary {
-    background-color: #3a7bd5;
-    border: none;
-  }
+.form-box {
+  background-color: #3a3a3a;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  transition: background-color 0.3s ease;
+}
 
-  .btn-primary:hover {
-    background-color: #2e5ca6;
-  }
+.light-mode .form-box {
+  background-color: #f0f0f0;
+}
 
-  footer {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    text-align: center;
-    color: #888;
-  }
+.form-box h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  background-color: #555;
+  color: white;
+  border: none;
+}
+
+.form-control::placeholder {
+  color: #ccc;
+}
+
+.light-mode .form-control {
+  background-color: #e0e0e0;
+  color: #000;
+}
+.light-mode .form-control::placeholder {
+  color: #888;
+}
+
+.btn-green {
+  background-color: #3b883c;
+  border: none;
+  color: white;
+}
+
+.btn-green:hover {
+  background-color: #2f6c30;
+}
+
+.text-small {
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.text-link {
+  color: white;
+  text-decoration: none;
+}
+
+.light-mode .text-link {
+  color: #007bff;
+}
+
+.theme-toggle-container {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 999;
+}
+
+.form-label-compact {
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.multi-step-form {
+  position: relative;
+}
+
+.step {
+  opacity: 0;
+  transform: translateX(40px);
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.step.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  position: relative;
+}
+
+.form-label-compact {
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+/* Botón "Atrás" en modo oscuro */
+.btn-back {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+}
+
+/* Botón "Atrás" en modo claro */
+body.light-mode .btn-back {
+  background-color: black;
+  color: white;
+  border: 1px solid black;
+}
+
+.theme-toggle-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: inherit;
+}
+
+
+
+
+
