@@ -1,3 +1,5 @@
+// index.js que
+
 import express from "express";
 import "dotenv/config";
 import cors from "cors"; // Comunicación entre servicios entre el frontend y el backend

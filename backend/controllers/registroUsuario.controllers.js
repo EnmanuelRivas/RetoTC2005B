@@ -48,5 +48,8 @@ export const postLogin = (req, res) => {
     });
 }
 
-
-
+// Agregar parte donde tenga un formulario donde registre su en qué area trabaja
+// Los anteproyectos van a ser PDFs, implementar un PDF viewer por así decirlo.
+// Tener la interfaz de MAWI completa
+// Integración con modelos de inteligencia artificial
+// Enfocarse en integrar el CHATBOT DE MAWI y hacer que funcione con el BACKEND
