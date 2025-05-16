@@ -56,7 +56,6 @@ export const getRegistro = (req, res) => {
         return res.status(500).json({ message: 'Error al insertar en registros' });
       }
 
-
       const idRegistro = result.insertId;
 
       const queryClimatica = `INSERT INTO variables_climaticas (idRegistro, zona, pluviosidadMm, temperaturaMaxima, humedadMaxima, temperaturaMinima, nivelQuebradaMt)
@@ -72,3 +71,39 @@ export const getRegistro = (req, res) => {
     });
   });
 };
+
+const subirImagen = (req, res) => {
+  const idRegistro = req.body.idRegistro;
+  const usuario = req.body.usuario || "desconocido";
+  const archivos = req.files;
+
+  if (!archivos || archivos.length === 0) {
+    return res.status(400).send("No se subieron imágenes.");
+  }
+
+  const sql = `
+    INSERT INTO carga_imagenes (idRegistro, nombre_archivo, usuario_carga)
+    VALUES (?, ?, ?)
+  `;
+
+  const resultados = [];
+
+  archivos.forEach((archivo) => {
+    const filename = archivo.filename;
+
+    connection.query(sql, [idRegistro, filename, usuario], (err, result) => {
+      if (err) {
+        console.error("Error al insertar imagen en la base de datos:", err);
+        return res.status(500).send("Error al guardar imágenes.");
+      }
+
+      resultados.push({ mensaje: "Imagen subida", archivo: filename });
+
+      // Enviar respuesta solo cuando se hayan procesado todas
+      if (resultados.length === archivos.length) {
+        res.status(200).json({ mensaje: "Imágenes subidas correctamente", resultados });
+      }
+    });
+  });
+};
+
