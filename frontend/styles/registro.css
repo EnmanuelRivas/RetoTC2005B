@@ -39,6 +39,11 @@ body, html {
     color: #fff;
   }
 
+
+  #LOCATIONREGISTRO:active {
+    opacity: 0.8;
+  }
+}
   .form-control:focus {
     background-color: #1a1a1a;
     color: #fff;
