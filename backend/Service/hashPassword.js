@@ -19,14 +19,20 @@ async function encryptPassword(pass){
  * @param {*} password the password that he/she has provided
  * @returns the user.
  */
-async function isValidUser(username,password){
-    let query = 'SELECT id, name,username, password, age, hash_password from usuarios where username = ?';
-    let params = [username];
-    qResult = await dataSource.getDataWithParams(query,params);
+async function isValidUser(correo, contraseña) {
+    let query = 'SELECT * FROM usuarios WHERE correo = ?';
+    let params = [correo];
+    let qResult = await dataSource.getDataWithParams(query, params);
     let user = qResult.rows[0];
-    if(user){
-        let isEqual = await bcrypt.compare(password, user.hash_password);
-        if(isEqual)
+    if (user) {
+        // Usa el nombre real de la columna:
+        
+        if (!user.contraseñaHash) {
+            console.error("El campo de contraseña hasheada no existe en el usuario:", user);
+            return null;
+        }
+        let isEqual = await bcrypt.compare(contraseña, user.contraseñaHash);
+        if (isEqual)
             return user;
     }
     return null;

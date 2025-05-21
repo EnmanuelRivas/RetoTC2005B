@@ -60,8 +60,8 @@ async function insertUser(user){
     try{
         // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
         let query = 'INSERT INTO usuarios (nombre, apellidos, correo, contraseña, contraseñaHash, numeroTelefono, pais, provincia, ciudad, organizacion, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        user.hash_password = await hashService.encryptPassword(user.password);
-        let params = [user.nombre, user.apellidos, user.correo, user.contraseña, user.hash_password, user.numeroTelefono, user.pais, user.provincia, user.ciudad, user.organizacion, user.descripcion]
+        user.contraseñaHash = await hashService.encryptPassword(user.contraseña);
+        let params = [user.nombre, user.apellidos, user.correo, user.contraseña, user.contraseñaHash, user.numeroTelefono, user.pais, user.provincia, user.ciudad, user.organizacion, user.descripcion]
         qResult = await dataSource.insertData(query,params);
     }catch(err){
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);

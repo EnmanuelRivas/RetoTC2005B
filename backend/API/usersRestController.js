@@ -19,8 +19,8 @@ const SECRET = process.env.SECRET;
  * HTTP Method that handles authentication
  */
 async function execLogin(req, res) {
-    const { username, password } = req.body;
-    const user = await hashService.isValidUser(username,password)
+    const { correo, contraseña } = req.body;
+    const user = await hashService.isValidUser(correo,contraseña)
   
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
@@ -28,7 +28,7 @@ async function execLogin(req, res) {
   
     //CREATES the token
     const token = jwt.sign(
-      { id: user.id, username: user.username, isAdmin: user.isAdmin },
+      { id: user.id, username: user.correo, isAdmin: user.isAdmin },
       SECRET,
       { expiresIn: '1h' }
     );
