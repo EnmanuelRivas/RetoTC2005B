@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -123,45 +124,68 @@
       padding: 10px 15px;
       color: white;
     }
-      .main-content {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            min-height: 600px;
-            position: relative;
-        }
-        .chat-input {
-            margin-top: auto;
-            margin-bottom: 0;
-            position: sticky;
-            bottom: 0;
-            background: #2f2f2f;
-            padding-bottom: 10px;
-            padding-top: 10px;
-        }
-        .sidebar nav {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-        }
-        .sidebar nav a {
-            padding: 12px 18px;
-            border-radius: 8px;
-            transition:  0.2s, color 0.2s;
-            font-size: 16px;
-            letter-spacing: 0.5px;
-        }
-        .sidebar .support-button:hover {
-            background-color: #198754;
-            color: #fff;
-            cursor: pointer;
-            transition:  0.2s, color 0.2s;
-        }
-        .sidebar nav a.active, .sidebar nav a:hover {
-            background: #198754;
-            color: #fff;
-            text-decoration: none;
-        }
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 600px;
+      position: relative;
+    }
+    .chat-input {
+      margin-top: auto;
+      margin-bottom: 0;
+      position: sticky;
+      bottom: 0;
+      background: #2f2f2f;
+      padding-bottom: 10px;
+      padding-top: 10px;
+    }
+    .sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .sidebar nav a {
+      padding: 12px 18px;
+      border-radius: 8px;
+      transition:  0.2s, color 0.2s;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+    }
+    .sidebar .support-button:hover {
+      background-color: #198754;
+      color: #fff;
+      cursor: pointer;
+      transition:  0.2s, color 0.2s;
+    }
+    .sidebar nav a.active, .sidebar nav a:hover {
+      background: #198754;
+      color: #fff;
+      text-decoration: none;
+    }
+    #chat-history {
+      flex-grow: 1;
+      overflow-y: auto;
+      margin-top: 20px;
+      padding-right: 10px;
+    }
+    .user-message, .ai-message {
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+    .user-message {
+      background-color: #656363;
+      align-self: flex-end;
+      text-align: right;
+    }
+    .ai-message {
+      background-color:  #656363;
+      align-self: flex-start;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
@@ -198,21 +222,23 @@
     </div>
 
     <div class="main-content">
-    <style>
-      
-    </style>
-    </style>
       <h2>Asistente de Mi Biomo</h2>
       <p>Biomo ID: 1234</p>
       <div class="mt-4">
         <button class="btn-green"><i class="bi bi-upload"></i> Subir Datos</button>
         <button class="btn-green"><i class="bi bi-file-earmark-pdf"></i> Generar PDF</button>
       </div>
+
+      <!-- Aquí se muestra el historial del chat -->
+      <div id="chat-history" class="d-flex flex-column mt-4" style="overflow-y: auto; max-height: 400px;"></div>
+
+      <!-- Entrada de usuario y botón de envío -->
       <div class="chat-input">
-        <input type="text" placeholder="Escribe..." />
-        <button><i class="bi bi-arrow-up"></i></button>
+        <input type="text" id="user-input" placeholder="Escribe..." />
+        <button id="send-button"><i class="bi bi-arrow-up"></i></button>
       </div>
     </div>
   </div>
+<script src="../scripts/chatbot.js"></script>
 </body>
 </html>
