@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Número de Anteproyectos - Mawi</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #1f1f1f;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .sidebar {
+      width: 260px;
+      background-color: #101010;
+      height: 100vh;
+      padding: 1rem;
+      position: fixed;
+    }
+    .sidebar h4 {
+      margin-bottom: 2rem;
+    }
+    .sidebar a {
+      display: block;
+      padding: 10px;
+      color: white;
+      text-decoration: none;
+      margin-bottom: 0.5rem;
+    }
+    .sidebar a:hover {
+      background-color: #2c2c2c;
+      border-radius: 6px;
+    }
+    .main-content {
+      margin-left: 260px;
+      padding: 2rem;
+      background-color: #2d2d2d;
+      min-height: 100vh;
+    }
+    .card {
+      background-color: #3a3a3a;
+      border: none;
+      color: white;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+    .btn-success {
+      background-color: #28a745;
+      border: none;
+    }
+    .table-custom {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .table-custom th, .table-custom td {
+      border: 2px solid #28a745;
+      padding: 10px;
+      text-align: center;
+      background-color: #3a3a3a;
+      color: white;
+    }
+    .chat-box {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      background-color: #1f1f1f;
+      padding: 0.5rem;
+      border-radius: 10px;
+    }
+    .chat-box input {
+      flex-grow: 1;
+      background: transparent;
+      border: none;
+      color: white;
+      outline: none;
+    }
+    .chat-box i {
+      color: #28a745;
+      font-size: 1.5rem;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h4><i class="bi bi-eye"></i> Mawi</h4>
+    <a href="metricas.html">Informes, Métricas y Análisis</a>
+    <a href="crearEcoRanger.html">Crear EcoRanger</a>
+    <a href="viewEcoRanger.html">View de Ecoranger</a>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <button class="btn btn-dark w-100 mt-3"><i class="bi bi-telephone"></i> Contacta con el soporte</button>
+  </div>
+
+  <div class="main-content">
+    <div class="card mb-4">
+      <div class="d-flex justify-content-between align-items-center">
+        <h4>Número de Anteproyectos</h4>
+        <button class="btn btn-success" onclick="exportarCSV()">Exportar</button>
+      </div>
+      <div class="mt-3">
+        <p>[Gráfico de pastel con leyenda: estado, avance, número]</p>
+      </div>
+    </div>
+
+    <table class="table-custom" id="tablaAnteproyectos">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Título del Anteproyecto</th>
+          <th>Nodo Biomo</th>
+          <th>Responsable Comunitario</th>
+          <th>Fecha de Creación</th>
+          <th>Estado</th>
+          <th>Avance</th>
+          <th>Link del Documento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>AP-012</td>
+          <td>Restauración de quebrada La Linda</td>
+          <td>Biomo-001</td>
+          <td>Rosa H. Pérez</td>
+          <td>12/05/2025</td>
+          <td>En revisión</td>
+          <td>61%</td>
+          <td><a href="#" style="color:#28a745; text-decoration: none;">[Ver PDF]</a></td>
+        </tr>
+        <tr>
+          <td>AP-103</td>
+          <td>Plan de manejo de polinizadores</td>
+          <td>Biomo-002</td>
+          <td>Mario Mariño</td>
+          <td>17/08/2025</td>
+          <td>Aprobado</td>
+          <td>100%</td>
+          <td><a href="#" style="color:#28a745; text-decoration: none;">[Ver PDF]</a></td>
+        </tr>
+        <tr>
+          <td>AP-001</td>
+          <td>Reforestación agroecológica</td>
+          <td>Biomo-003</td>
+          <td>Jaime Lobato</td>
+          <td>11/07/2025</td>
+          <td>En revisión</td>
+          <td>55%</td>
+          <td><a href="#" style="color:#28a745; text-decoration: none;">[Ver PDF]</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="chat-box mt-4">
+      <input type="text" placeholder="Escribe..." />
+      <i class="bi bi-arrow-up-circle-fill"></i>
+      <i class="bi bi-mic-fill"></i>
+    </div>
+  </div>
+
+  <script>
+    function exportarCSV() {
+      const rows = document.querySelectorAll("#tablaAnteproyectos tr");
+      let csv = [];
+      rows.forEach(row => {
+        const cols = Array.from(row.querySelectorAll("td, th")).map(cell => `"${cell.innerText}"`);
+        csv.push(cols.join(","));
+      });
+      const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+      const link = document.createElement("a");
+      link.setAttribute("href", csvContent);
+      link.setAttribute("download", "anteproyectos.csv");
+      link.click();
+    }
+  </script>
+</body>
+</html>
