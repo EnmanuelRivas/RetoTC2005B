@@ -1,24 +1,56 @@
-
+/**
+ * Middleware que verifica si el usuario es administrador
+ */
 function requireAdmin(req, res, next) {
-  // El usuario debe estar autenticado y ser admin
-  if (!req.user || !req.user.isAdmin) {
-    return res.status(403).json({
-      status: "error",
-      message: "Acceso denegado: solo administradores"
-    });
-  }
-  next();
+    if (req.user && req.user.isAdmin) {
+        next();
+    } else {
+        res.status(403).json({ message: 'Acceso denegado. Se requieren permisos de administrador.' });
+    }
 }
 
+/**
+ * Middleware que verifica si el usuario está autenticado
+ */
 function requireUser(req, res, next) {
-  // El usuario debe estar autenticado (admin o usuario normal)
-  if (!req.user) {
-    return res.status(401).json({
-      status: "error",
-      message: "Debes estar autenticado"
-    });
-  }
-  next();
+    if (req.user) {
+        next();
+    } else {
+        res.status(401).json({ message: 'Acceso denegado. Inicie sesión para continuar.' });
+    }
 }
 
-module.exports = { requireAdmin, requireUser };
+/**
+ * Middleware para verificar autenticación en páginas
+ * Redirige a login en caso de no estar autenticado
+ */
+function requireAuthForPage(req, res, next) {
+    const authHeader = req.headers['authorization'] || req.cookies?.token; 
+    const token = authHeader && authHeader.split(' ')[1];
+    
+    if (!token) {
+        return res.redirect('/awaq/login');
+    }
+    
+    try {
+        const jwt = require('jsonwebtoken');
+        const SECRET = process.env.SECRET;
+        
+        jwt.verify(token, SECRET, (err, user) => {
+            if (err) {
+                return res.redirect('/awaq/login');
+            }
+            
+            req.user = user;
+            next();
+        });
+    } catch (error) {
+        return res.redirect('/awaq/login');
+    }
+}
+
+module.exports = {
+    requireAdmin,
+    requireUser,
+    requireAuthForPage
+};

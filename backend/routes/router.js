@@ -15,39 +15,49 @@ const router = express.Router();
 router.get(constants.indexURL, templates.index);
 router.get(constants.contextURL, templates.loginPage);
 
+/* Rutas de la página */
+router.get(`${constants.contextURL}/registro`, templates.registroPage);
+router.get(`${constants.contextURL}/dashboard`, templates.dashboardPage);
+router.get(`${constants.contextURL}/home`, templates.homePage);
+router.get(`${constants.contextURL}/perfil`, templates.perfilPage);
+router.get(`${constants.contextURL}/AsistenteBiomo`, templates.asistenteBiomoPage);
+router.get(`${constants.contextURL}/AsistenteConvocatorias`, templates.asistenteConvocatoriasPage);
+router.get(`${constants.contextURL}/AsistenteExplorador`, templates.asistenteExploradorPage);
+router.get(`${constants.contextURL}/AsistenteProyectos`, templates.asistenteProyectosPage);
+
 /* ------------------------ USUARIOS API ------------------------ */
-router.post(constants.contextURL + constants.apiURL + "/login", usersRest.execLogin);
-router.post(constants.contextURL + constants.apiURL + "/register", usersRest.publicRegisterUser);
+router.post(`${constants.contextURL}${constants.apiURL}/login`, usersRest.execLogin);
+router.post(`${constants.contextURL}${constants.apiURL}/register`, usersRest.publicRegisterUser);
 
 router.get(
-  constants.contextURL + constants.apiURL + "/getUsers",
+  `${constants.contextURL}${constants.apiURL}/getUsers`,
   usersRest.authenticateToken,
   requireAdmin,
   usersRest.getUsers
 );
 
 router.post(
-  constants.contextURL + constants.apiURL + "/findUser",
+  `${constants.contextURL}${constants.apiURL}/findUser`,
   usersRest.authenticateToken,
   requireUser,
   usersRest.findUser
 );
 
 router.post(
-  constants.contextURL + constants.apiURL + "/insertUser",
+  `${constants.contextURL}${constants.apiURL}/insertUser`,
   usersRest.authenticateToken,
   requireAdmin,
   usersRest.insertUser
 );
 
 router.put(
-  constants.contextURL + constants.apiURL + "/updateUser",
+  `${constants.contextURL}${constants.apiURL}/updateUser`,
   usersRest.authenticateToken,
   requireUser,
   usersRest.updateUser
 );
 router.delete(
-  constants.contextURL + constants.apiURL + "/deleteUser",
+  `${constants.contextURL}${constants.apiURL}/deleteUser`,
   usersRest.authenticateToken,
   requireAdmin,
   usersRest.deleteUser

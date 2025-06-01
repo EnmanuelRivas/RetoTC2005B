@@ -21,14 +21,35 @@ function configureSecurity(app) {
 function configStaticFilesAndViews(app) {
     const frontendPath = join(__dirname, "../frontend");
     app.use(express.static(frontendPath));
+    
+    // Rutas adicionales del backend (API)
+    app.use(router);
 
     // Ruta base que sirve login.html
     app.get("/", (req, res) => {
         res.sendFile(join(frontendPath, "pages/login.html"));
     });
 
-    // Rutas adicionales del backend (API)
-    app.use(router);
+    // Manejo de rutas de awaq
+    app.get("/awaq", (req, res) => {
+        // Simplemente redirigimos a login por ahora
+        res.sendFile(join(frontendPath, "pages/login.html"));
+    });
+
+    // Manejador de rutas dinámicas para las páginas
+    app.get("/awaq/:pageName", (req, res, next) => {
+        const pageName = req.params.pageName;
+        const pageFile = join(frontendPath, "pages", pageName + ".html");
+        const fs = require('fs');
+        
+        // Verificar si la página existe
+        if (fs.existsSync(pageFile)) {
+            res.sendFile(pageFile);
+        } else {
+            // Si la página no existe, redirigir a login
+            res.redirect(contextURL);
+        }
+    });
 }
 
 /**
