@@ -15,19 +15,44 @@ const router = express.Router();
 router.get(constants.indexURL, templates.index);
 router.get(constants.contextURL, templates.loginPage);
 
-/* Rutas de la página */
+/* Rutas públicas (accesibles sin autenticación) */
 router.get(`${constants.contextURL}/registro`, templates.registroPage);
-router.get(`${constants.contextURL}/dashboard`, templates.dashboardPage);
+router.get(`${constants.contextURL}/recuperar`, templates.recuperarPage);
+router.get(`${constants.contextURL}/changepwd`, templates.cambiarPasswordPage);
+router.get(`${constants.contextURL}/confirmacion`, templates.confirmacionPage);
+router.get(`${constants.contextURL}/preReg`, templates.preRegPage);
+
+/* Rutas para usuarios autenticados */
 router.get(`${constants.contextURL}/home`, templates.homePage);
 router.get(`${constants.contextURL}/perfil`, templates.perfilPage);
 router.get(`${constants.contextURL}/AsistenteBiomo`, templates.asistenteBiomoPage);
 router.get(`${constants.contextURL}/AsistenteConvocatorias`, templates.asistenteConvocatoriasPage);
 router.get(`${constants.contextURL}/AsistenteExplorador`, templates.asistenteExploradorPage);
 router.get(`${constants.contextURL}/AsistenteProyectos`, templates.asistenteProyectosPage);
+router.get(`${constants.contextURL}/convocatorias`, templates.convocatoriasPage);
+router.get(`${constants.contextURL}/chatbot`, templates.chatbotPage);
+
+/* Rutas para administradores */
+router.get(`${constants.contextURL}/dashboard`, requireAdmin, templates.dashboardPage);
+router.get(`${constants.contextURL}/gestion_usuario`, requireAdmin, templates.gestionUsuarioPage);
+router.get(`${constants.contextURL}/gestion_ap`, requireAdmin, templates.gestionAPPage);
+router.get(`${constants.contextURL}/metricas`, requireAdmin, templates.metricasPage);
+router.get(`${constants.contextURL}/numAP`, requireAdmin, templates.numAPPage);
+router.get(`${constants.contextURL}/numBiomos`, requireAdmin, templates.numBiomosPage);
+router.get(`${constants.contextURL}/crearEcoRanger`, requireAdmin, templates.crearEcoRangerPage);
+router.get(`${constants.contextURL}/editarEcoRanger`, requireAdmin, templates.editarEcoRangerPage);
+router.get(`${constants.contextURL}/viewEcoRanger`, requireAdmin, templates.viewEcoRangerPage);
 
 /* ------------------------ USUARIOS API ------------------------ */
 router.post(`${constants.contextURL}${constants.apiURL}/login`, usersRest.execLogin);
-router.post(`${constants.contextURL}${constants.apiURL}/register`, usersRest.publicRegisterUser);
+router.post(
+  `${constants.contextURL}${constants.apiURL}/register`, 
+  upload.single('profileImg'), // Middleware para subir una única imagen
+  usersRest.publicRegisterUser
+);
+router.post(`${constants.contextURL}${constants.apiURL}/recuperar`, usersRest.recuperarPassword);
+router.post(`${constants.contextURL}${constants.apiURL}/verificar-token`, usersRest.verificarTokenRecuperacion);
+router.post(`${constants.contextURL}${constants.apiURL}/restablecer-password`, usersRest.restablecerPassword);
 
 router.get(
   `${constants.contextURL}${constants.apiURL}/getUsers`,
@@ -54,6 +79,7 @@ router.put(
   `${constants.contextURL}${constants.apiURL}/updateUser`,
   usersRest.authenticateToken,
   requireUser,
+  upload.single('profileImg'), // Middleware para subir una única imagen
   usersRest.updateUser
 );
 router.delete(

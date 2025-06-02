@@ -1,7 +1,8 @@
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
-    background-color: #f4eedc;
+    background-color: #2a2a2a;
+    color: white;
     display: flex;
     height: 100vh;
     overflow: hidden;
@@ -9,7 +10,7 @@ body {
 
   .sidebar {
     width: 240px;
-    background-color: #364c3e;
+    background-color: #1f1f1f;
     color: white;
     padding-top: 40px;
     display: flex;
@@ -38,7 +39,7 @@ body {
   h2 {
     font-size: 26px;
     font-weight: bold;
-    color: #364c3e;
+    color: white;
     margin-bottom: 40px;
   }
 
@@ -49,21 +50,21 @@ body {
   }
 
   .card {
-    background-color: #fff;
+    background-color: #3d3d3d;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
 
   .card h4 {
     font-size: 18px;
-    color: #364c3e;
+    color: white;
     margin-bottom: 15px;
     font-weight: bold;
   }
 
   .card p {
-    color: #364c3e;
+    color: white;
     font-weight: bold;
     font-size: 22px;
     text-align: right;
@@ -73,7 +74,7 @@ body {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: conic-gradient(#609172 25%, #4d705a 0%);
+    background: conic-gradient(#198754 25%, #444444 0%);
     margin: 0 auto;
     position: relative;
   }
@@ -83,7 +84,7 @@ body {
     position: absolute;
     width: 60px;
     height: 60px;
-    background-color: #f4eedc;
+    background-color: #2a2a2a;
     border-radius: 50%;
     top: 50%;
     left: 50%;
@@ -92,7 +93,7 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    color: #364c3e;
+    color: white;
     font-size: 18px;
   }
 
@@ -100,7 +101,7 @@ body {
     text-align: center;
     margin-top: 10px;
     font-weight: bold;
-    color: #364c3e;
+    color: white;
   }
 
   .line-chart {
@@ -115,12 +116,12 @@ body {
   .line-chart span {
     display: block;
     width: 10px;
-    background-color: #364c3e;
+    background-color: #198754;
   }
 
   .bar {
     height: 12px;
-    background-color: #364c3e;
+    background-color: #198754;
     border-radius: 6px;
     margin: 10px 0;
   }
@@ -153,7 +154,7 @@ justify-content: space-between;
 height: 100%;
 margin-right: 0px;
 font-size: 12px;
-color: #364c3e;
+color: white;
 font-weight: bold;
 }
 

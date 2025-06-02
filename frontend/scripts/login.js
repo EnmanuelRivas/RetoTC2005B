@@ -4,33 +4,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
     registerButton.addEventListener("click", (event) => {
         event.preventDefault(); 
-        window.location.href = "/pages/home.html";
+        window.location.href = "/awaq/home";
     });
 });
 
 // Función para poder iniciar sesión en la plataforma
 document.addEventListener("DOMContentLoaded", () => {
-    const nombreUsuario = document.getElementById("nombre-usuario");
-    const contraseñaUsuario = document.getElementById("password-usuario");
     const correoUsuario = document.getElementById("correo-usuario");
+    const contraseñaUsuario = document.getElementById("contraseña-usuario");
     const loginButton = document.getElementById("login-button");
+    
+    // Verificar si ya hay un token y redirigir si existe
+    if (localStorage.getItem("authToken")) {
+        window.location.href = "/awaq/home";
+        return;
+    }
     
     loginButton.addEventListener("click", async (event) => {
         event.preventDefault(); // Prevent the default form submission
 
         const usuario = {
-            nombreUsuario: nombreUsuario.value.trim(),
-            contraseñaUsuario: contraseñaUsuario.value.trim(),
-            correoUsuario: correoUsuario.value.trim()
+            correo: correoUsuario.value.trim(),
+            contraseña: contraseñaUsuario.value.trim()
         };
 
-        if (!usuario.nombreUsuario || !usuario.contraseñaUsuario || !usuario.correoUsuario) {
+        if (!usuario.correo || !usuario.contraseña) {
             alert("Por favor, completa todos los campos.");
             return;
         }
 
         try {
-            const response = await fetch("http://localhost:4000/postLogin", {
+            const response = await fetch("/awaq/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -40,47 +44,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 const data = await response.json();
-                alert(data.message); // Show success message
-                window.location.href = "/pages/home.html"; // Redirect to home page
+                
+                // Guardar el token en localStorage
+                localStorage.setItem("authToken", data.token);
+                
+                // Redirigir a la página de inicio
+                window.location.href = "/awaq/home";
             } else {
                 const errorData = await response.json();
-                alert(errorData.message); // Show error message
+                alert(errorData.message || "Credenciales inválidas");
             }
         } catch (error) {
             console.error("Error:", error);
             alert("Error al iniciar sesión. Por favor, inténtalo de nuevo.");
         }
     });  
-});
-
-const toggleButton = document.getElementById("theme-toggle");
-const body = document.body;
-
-toggleButton.addEventListener("click", () => {
-    body.classList.toggle("light-mode");
-    body.classList.toggle("dark-mode");
-    toggleButton.textContent = body.classList.contains("light-mode") ? "🌙" : "☀️";
-});
-
-
-document.querySelectorAll('.next-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const currentStep = button.closest('.step');
-    const nextStepId = button.getAttribute('data-next');
-    const nextStep = document.getElementById(`step-${nextStepId}`);
-
-    currentStep.classList.remove('active');
-    nextStep.classList.add('active');
-  });
-});
-
-document.querySelectorAll('.prev-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const currentStep = button.closest('.step');
-    const prevStepId = button.getAttribute('data-prev');
-    const prevStep = document.getElementById(`step-${prevStepId}`);
-
-    currentStep.classList.remove('active');
-    prevStep.classList.add('active');
-  });
 });

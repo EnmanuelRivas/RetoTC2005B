@@ -7,6 +7,9 @@ const bcrypt = require('bcrypt');
  * @returns encrypted password
  */
 async function encryptPassword(pass){
+    if (!pass) {
+        throw new Error('La contraseña no puede estar vacía');
+    }
     let password = await bcrypt.hash(pass,8);
     return password;
 }

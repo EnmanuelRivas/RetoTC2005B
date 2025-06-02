@@ -32,10 +32,10 @@
       align-items: center;
       justify-content: center;
     }
+    body.dark-mode {
+      background-color: #2a2a2a;
+    }
   </style>
-  <div class="theme-toggle-container">
-    <button id="theme-toggle" class="btn theme-toggle-button">☀️</button>
-  </div>
 
   <div class="login-container w-100" style="max-width:600px; margin:auto;">
     <!-- Panel único: Bienvenida e inicio de sesión -->
@@ -45,22 +45,22 @@
         <form>
           <div class="mb-3">
             <label class="form-label form-label-compact">Correo</label>
-            <input type="text" class="form-control" placeholder="Escribe tu correo" required>
+            <input type="text" class="form-control" id="correo-usuario" placeholder="Escribe tu correo" required>
           </div>
           <div class="mb-3">
             <label class="form-label form-label-compact">Contraseña</label>
-            <input type="password" class="form-control" placeholder="Escribe tu contraseña" required>
+            <input type="password" class="form-control" id="contraseña-usuario" placeholder="Escribe tu contraseña" required>
           </div>
-          <button onclick="location.href='home.html'" type="button" class="btn btn-green w-100">Iniciar sesión</button>
-            <p class="text-small mt-3"><a href="recuperar.html" class="text-link">¿Olvidaste tu contraseña?</a></p>
+          <button type="button" id="login-button" class="btn btn-green w-100">Iniciar sesión</button>
+            <p class="text-small mt-3"><a href="/awaq/recuperar" class="text-link">¿Olvidaste tu contraseña?</a></p>
             <p class="text-small mt-2">
-            <a href="registro.html" class="text-link">¿No tienes cuenta? Crear cuenta</a>
+            <a href="/awaq/registro" class="text-link">¿No tienes cuenta? Crear cuenta</a>
             </p>
         </form>
       </div>
     </div>
   </div>
   <script src="../scripts/login.js"></script>
- 
+  <script src="../scripts/auth.js"></script>
 </body>
 </html>

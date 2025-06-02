@@ -10,7 +10,7 @@
 
   <style>
     body {
-      background-color: #2b2b2b;
+      background-color: #2a2a2a;
       height: 100vh;
       display: flex;
       justify-content: center;
@@ -54,6 +54,11 @@
       color: #bbbbbb;
       margin-top: 15px;
     }
+
+    .alert {
+      margin-top: 15px;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -63,15 +68,63 @@
     
     <div class="mb-3 text-start">
       <label for="email" class="form-label">Correo electrónico</label>
-      <input type="email" class="form-control" id="email" placeholder="Escribe...">
+      <input type="email" class="form-control" id="email" placeholder="Escribe tu correo electrónico">
     </div>
 
-    <a href="changepwd.html" class="btn btn-green mt-3">Enviar correo</a>
+    <button id="enviarBtn" class="btn btn-green mt-3">Enviar correo</button>
+
+    <div id="alertSuccess" class="alert alert-success" role="alert">
+      Se ha enviado un enlace de recuperación a tu correo electrónico.
+    </div>
+
+    <div id="alertError" class="alert alert-danger" role="alert">
+      Ha ocurrido un error. Por favor, intenta nuevamente.
+    </div>
 
     <div class="help-text">
+      <a href="/awaq" class="text-white">Volver al inicio de sesión</a><br>
       ¿Necesitas ayuda? Contacta con nosotros
     </div>
   </div>
+
+  <script>
+    document.getElementById('enviarBtn').addEventListener('click', async function() {
+      const email = document.getElementById('email').value;
+      
+      if (!email) {
+        document.getElementById('alertError').textContent = 'Por favor, ingresa tu correo electrónico.';
+        document.getElementById('alertError').style.display = 'block';
+        document.getElementById('alertSuccess').style.display = 'none';
+        return;
+      }
+
+      try {
+        const response = await fetch('/awaq/api/recuperar', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ correo: email }),
+        });
+
+        const data = await response.json();
+        
+        if (response.ok) {
+          document.getElementById('alertSuccess').style.display = 'block';
+          document.getElementById('alertError').style.display = 'none';
+          document.getElementById('email').value = '';
+        } else {
+          document.getElementById('alertError').textContent = data.message || 'Ha ocurrido un error. Por favor, intenta nuevamente.';
+          document.getElementById('alertError').style.display = 'block';
+          document.getElementById('alertSuccess').style.display = 'none';
+        }
+      } catch (error) {
+        document.getElementById('alertError').textContent = 'Error de conexión. Por favor, intenta nuevamente.';
+        document.getElementById('alertError').style.display = 'block';
+        document.getElementById('alertSuccess').style.display = 'none';
+      }
+    });
+  </script>
 
 </body>
 </html>

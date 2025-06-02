@@ -53,15 +53,34 @@ async function findUserById(id) {
 /**
  * Method that inserts a user into the database.
  * @param {*} user the json object that contains the user data.
+ * @param {string} profileImagePath - Ruta a la imagen de perfil (opcional)
  * @returns query result object with the information of the query execution.
  */
-async function insertUser(user){
+async function insertUser(user, profileImagePath = null){
     let qResult;
     try{
+        // Validate required fields
+        if (!user.contraseña) {
+            throw new Error('La contraseña es requerida');
+        }
+        
         // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
-        let query = 'INSERT INTO usuarios (nombre, apellidos, correo, contraseña, contraseñaHash, numeroTelefono, pais, provincia, ciudad, organizacion, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        let query = 'INSERT INTO usuarios (nombre, apellidos, correo, contraseña, contraseñaHash, numeroTelefono, pais, provincia, ciudad, organizacion, descripcion, imagen_perfil) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         user.contraseñaHash = await hashService.encryptPassword(user.contraseña);
-        let params = [user.nombre, user.apellidos, user.correo, user.contraseña, user.contraseñaHash, user.numeroTelefono, user.pais, user.provincia, user.ciudad, user.organizacion, user.descripcion]
+        let params = [
+            user.nombre, 
+            user.apellidos, 
+            user.correo, 
+            user.contraseña, 
+            user.contraseñaHash, 
+            user.numeroTelefono, 
+            user.pais, 
+            user.provincia, 
+            user.ciudad, 
+            user.organizacion, 
+            user.descripcion,
+            profileImagePath
+        ];
         qResult = await dataSource.insertData(query,params);
     }catch(err){
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);
@@ -72,17 +91,68 @@ async function insertUser(user){
 
 /**
  * Method that updates a user into the database.
- * @param {*} user 
- * @returns 
+ * @param {*} user - Datos del usuario a actualizar
+ * @param {string} profileImagePath - Ruta a la nueva imagen de perfil (opcional)
+ * @returns {Object} Resultado de la actualización
  */
-async function updateUser(user){
+async function updateUser(user, profileImagePath = null){
     let qResult;
     try{
-        // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
-        let query = 'UPDATE usuarios SET nombre = ?, apellidos = ?, correo = ?, contraseña = ?, contraseñaHash = ?, numeroTelefono = ? WHERE id = ?';
-        user.hash_password = await hashService.encryptPassword(user.password);
-        let params = [user.name, user.username,user.password, user.age, user.hash_password, user.id]
-        qResult = await dataSource.updateData(query,params);
+        let query, params;
+        
+        if (profileImagePath) {
+            // Si hay una nueva imagen, incluirla en la actualización
+            query = `UPDATE usuarios 
+                     SET nombre = ?, 
+                         apellidos = ?, 
+                         numeroTelefono = ?, 
+                         pais = ?, 
+                         provincia = ?, 
+                         ciudad = ?, 
+                         organizacion = ?, 
+                         descripcion = ?,
+                         imagen_perfil = ? 
+                     WHERE id = ?`;
+            
+            params = [
+                user.nombre, 
+                user.apellidos, 
+                user.numeroTelefono, 
+                user.pais, 
+                user.provincia, 
+                user.ciudad, 
+                user.organizacion, 
+                user.descripcion,
+                profileImagePath,
+                user.id
+            ];
+        } else {
+            // Sin nueva imagen, mantener la actual
+            query = `UPDATE usuarios 
+                     SET nombre = ?, 
+                         apellidos = ?, 
+                         numeroTelefono = ?, 
+                         pais = ?, 
+                         provincia = ?, 
+                         ciudad = ?, 
+                         organizacion = ?, 
+                         descripcion = ?
+                     WHERE id = ?`;
+            
+            params = [
+                user.nombre, 
+                user.apellidos, 
+                user.numeroTelefono, 
+                user.pais, 
+                user.provincia, 
+                user.ciudad, 
+                user.organizacion, 
+                user.descripcion,
+                user.id
+            ];
+        }
+        
+        qResult = await dataSource.updateData(query, params);
     }catch(err){
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);
     }
@@ -107,11 +177,101 @@ async function deleteUser(user_id){
     return qResult;
 }
 
+/**
+ * Busca un usuario por su correo electrónico
+ * @param {string} email - Correo electrónico del usuario
+ * @returns {Promise} - Resultado de la consulta
+ */
+async function findUserByEmail(email) {
+    let qResult;
+    try {
+        let query = 'SELECT * FROM usuarios WHERE correo = ?';
+        let params = [email];
+        qResult = await dataSource.getDataWithParams(query, params);
+    } catch (err) {
+        qResult = new dataSource.QueryResult(false, [], 0, 0, err.message);
+    }
+    return qResult;
+}
+
+/**
+ * Guarda un token de recuperación de contraseña para un usuario
+ * @param {number} userId - ID del usuario
+ * @param {string} token - Token de recuperación
+ * @param {Date} expiry - Fecha de expiración del token
+ * @returns {Promise} - Resultado de la consulta
+ */
+async function savePasswordResetToken(userId, token, expiry) {
+    let qResult;
+    try {
+        // Primero eliminamos cualquier token existente para este usuario
+        let deleteQuery = 'DELETE FROM password_reset_tokens WHERE user_id = ?';
+        await dataSource.updateData(deleteQuery, [userId]);
+        
+        // Luego insertamos el nuevo token
+        let query = 'INSERT INTO password_reset_tokens (user_id, token, expiry) VALUES (?, ?, ?)';
+        let params = [userId, token, expiry];
+        qResult = await dataSource.insertData(query, params);
+    } catch (err) {
+        qResult = new dataSource.QueryResult(false, [], 0, 0, err.message);
+    }
+    return qResult;
+}
+
+/**
+ * Verifica si un token de recuperación es válido
+ * @param {string} token - Token a verificar
+ * @returns {Promise} - Resultado de la consulta con el usuario asociado si es válido
+ */
+async function verifyPasswordResetToken(token) {
+    let qResult;
+    try {
+        let query = `
+            SELECT u.* FROM password_reset_tokens t
+            JOIN usuarios u ON t.user_id = u.id
+            WHERE t.token = ? AND t.expiry > NOW()
+        `;
+        let params = [token];
+        qResult = await dataSource.getDataWithParams(query, params);
+    } catch (err) {
+        qResult = new dataSource.QueryResult(false, [], 0, 0, err.message);
+    }
+    return qResult;
+}
+
+/**
+ * Actualiza la contraseña de un usuario
+ * @param {number} userId - ID del usuario
+ * @param {string} newPassword - Nueva contraseña (sin hash)
+ * @param {string} newPasswordHash - Hash de la nueva contraseña
+ * @returns {Promise} - Resultado de la consulta
+ */
+async function updatePassword(userId, newPassword, newPasswordHash) {
+    let qResult;
+    try {
+        let query = 'UPDATE usuarios SET contraseña = ?, contraseñaHash = ? WHERE id = ?';
+        let params = [newPassword, newPasswordHash, userId];
+        qResult = await dataSource.updateData(query, params);
+        
+        // Eliminamos el token de recuperación usado
+        if (qResult.changes > 0) {
+            let deleteQuery = 'DELETE FROM password_reset_tokens WHERE user_id = ?';
+            await dataSource.updateData(deleteQuery, [userId]);
+        }
+    } catch (err) {
+        qResult = new dataSource.QueryResult(false, [], 0, 0, err.message);
+    }
+    return qResult;
+}
 
 module.exports = {
     getUsers,
     findUserById,
     insertUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    findUserByEmail,
+    savePasswordResetToken,
+    verifyPasswordResetToken,
+    updatePassword
 }

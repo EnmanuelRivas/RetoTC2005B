@@ -1,6 +1,6 @@
 /* Estilos comunes para todas las páginas con barra lateral */
 body {
-  background-color: #2f2f2f;
+  background-color: #2a2a2a;
   color: white;
   font-family: 'Segoe UI', sans-serif;
   height: 100vh;
@@ -183,7 +183,7 @@ body {
 .main-content {
   flex-grow: 1;
   padding: 30px;
-  background-color: #2f2f2f;
+  background-color: #2a2a2a;
   transition: margin-left 0.3s ease, width 0.3s ease;
   width: calc(100% - 270px);
   height: calc(100vh - 60px);
@@ -217,7 +217,7 @@ body {
   margin-top: auto;
   display: flex;
   gap: 10px;
-  background-color: #2f2f2f;
+  background-color: #2a2a2a;
   padding: 10px 0;
   position: sticky;
   bottom: 0;
