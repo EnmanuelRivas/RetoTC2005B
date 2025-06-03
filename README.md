@@ -1,50 +1,39 @@
-# Backend - RetoTC2005B
+# RetoTC2005B
 
-Este documento proporciona información detallada sobre la estructura, configuración y uso del backend del proyecto RetoTC2005B.
+Este proyecto es una aplicación web que incluye un backend en Node.js/Express y un frontend con HTML, CSS y JavaScript.
 
-## Tecnologías Utilizadas
+## Requisitos Previos
 
-- **Node.js**: Entorno de ejecución para JavaScript
-- **Express**: Framework web para crear APIs RESTful
-- **MySQL**: Sistema de gestión de base de datos
-- **JWT**: JSON Web Tokens para autenticación
-- **Bcrypt**: Librería para el hash de contraseñas
-- **Multer**: Middleware para manejo de subida de archivos
-- **Nodemailer**: Para envío de correos electrónicos
-- **Sharp**: Procesamiento de imágenes
+- Node.js (versión 14.x o superior)
+- MySQL (versión 5.7 o superior)
+- npm (incluido con Node.js)
 
-## Estructura del Proyecto
+## Instalación y Configuración
 
-```
-backend/
-├── API/                   # Controladores REST
-│   ├── formsRestController.js
-│   ├── imageRestController.js
-│   └── usersRestController.js
-├── Data/                  # Capa de acceso a datos
-├── middleware/            # Middlewares
-│   ├── auth.middleware.js
-│   └── upload.middleware.js
-├── routes/                # Definición de rutas
-│   └── router.js
-├── Service/               # Lógica de negocio
-├── Templates/             # Controladores de vistas
-│   └── templates.js
-├── uploads/               # Directorio para archivos subidos
-├── constants.js           # Constantes de la aplicación
-├── main.js                # Punto de entrada
-├── package.json           # Dependencias y scripts
-└── webserver.js           # Configuración del servidor
+### 1. Clonar el Repositorio
+
+```bash
+git clone [URL_DEL_REPOSITORIO]
+cd RetoTC2005B
 ```
 
-## Configuración del Entorno
+### 2. Instalar Dependencias
 
-1. Instalar dependencias:
+Instalar dependencias del proyecto principal:
 ```bash
 npm install
 ```
 
-2. Crear archivo `.env` en el directorio `/backend` con las siguientes variables:
+Instalar dependencias del backend:
+```bash
+cd backend
+npm install
+```
+
+### 3. Configurar Variables de Entorno
+
+#### Crear archivo `.env` en el directorio `/backend`:
+
 ```
 # Database configuration
 HOST=localhost
@@ -56,70 +45,74 @@ DATABASE=yourdatabase
 SECRET=your_jwt_secret_key
 ```
 
-## API Endpoints
+Reemplaza los valores con tu configuración actual:
+- `HOST`: Dirección del servidor de base de datos (generalmente localhost)
+- `DB_USER`: Usuario de MySQL con permisos en la base de datos
+- `PASSWORD`: Contraseña del usuario de MySQL
+- `DATABASE`: Nombre de la base de datos (debes crearla previamente)
+- `SECRET`: Clave secreta para generar tokens JWT (usa una cadena aleatoria segura)
 
-### Autenticación
+> **Nota**: El archivo `.env` está excluido de git en `.gitignore` para mantener segura la información sensible. Nunca subas tu archivo `.env` al control de versiones.
 
-- **POST** `/awaq/api/login`: Iniciar sesión
-- **POST** `/awaq/api/register`: Registrar nuevo usuario
-- **POST** `/awaq/api/recuperar`: Solicitar recuperación de contraseña
-- **POST** `/awaq/api/verificar-token`: Verificar token de recuperación
-- **POST** `/awaq/api/restablecer-password`: Cambiar contraseña
+### 4. Configurar Base de Datos
 
-### Usuarios
+1. Crea una base de datos MySQL con el nombre especificado en tu archivo `.env`
+2. El esquema de la base de datos se creará automáticamente al iniciar la aplicación por primera vez
 
-- **GET** `/awaq/api/getUsers`: Obtener todos los usuarios (admin)
-- **POST** `/awaq/api/findUser`: Buscar usuario específico
-- **POST** `/awaq/api/insertUser`: Crear nuevo usuario (admin)
-- **PUT** `/awaq/api/updateUser`: Actualizar información de usuario
-- **DELETE** `/awaq/api/deleteUser`: Eliminar usuario (admin)
+## Ejecución del Proyecto
 
-### Formularios y Registros
+### Iniciar el Servidor Backend
 
-- **GET/POST** `/registro`: Obtener/crear registros generales
-- **GET/POST** `/registro/getVariableClimatica`: Manejo de variables climáticas
-- **GET/POST** `/registro/ParcelaVegetacion`: Manejo de parcelas de vegetación
-- **GET/POST** `/registro/CamarasTrampa`: Manejo de cámaras trampa
-- **GET/POST** `/registro/ValidacionCobertura`: Validación de cobertura
-- **GET/POST** `/registro/FaunaTransecto`: Registros de fauna por transecto
-- **GET/POST** `/registro/FaunaPuntoConteo`: Registros de fauna por punto de conteo
-- **GET/POST** `/registro/FaunaBusquedaLibre`: Registros de fauna por búsqueda libre
-
-### Imágenes
-
-- **POST** `/registro/subirImagen`: Subir imágenes (máximo 5)
-
-## Middlewares
-
-### Autenticación
-
-El sistema implementa varios niveles de autenticación:
-
-- `requireUser`: Verifica que el usuario esté autenticado
-- `requireAdmin`: Verifica que el usuario sea administrador
-- `requireAuthForPage`: Redirige a login si no hay autenticación
-
-### Manejo de Archivos
-
-- `upload.middleware.js`: Configura Multer para la subida de archivos e imágenes
-
-## Ejecución del Servidor
-
-Para iniciar el servidor en modo desarrollo:
 ```bash
-npm run dev
+cd backend
+npm run dev  # Para desarrollo (con nodemon para reinicio automático)
 ```
 
-Para iniciar el servidor en modo producción:
+o
+
 ```bash
-npm start
+cd backend
+npm start    # Para producción
 ```
 
-El servidor se ejecutará en `http://localhost:4000` por defecto.
+### Acceder a la Aplicación
 
-## Seguridad
+Una vez que el servidor esté en funcionamiento:
 
-- Contraseñas hasheadas con bcrypt
-- Autenticación mediante JWT
-- Validación de datos en endpoints
-- Manejo de archivos seguros con Multer 
+1. Abre tu navegador web
+2. Accede a la URL: `http://localhost:4000/awaq`
+3. Serás dirigido a la página de inicio de sesión
+
+## Rutas Principales
+
+- **Login**: `http://localhost:4000/awaq`
+- **Registro**: `http://localhost:4000/awaq/registro`
+- **Home** (requiere autenticación): `http://localhost:4000/awaq/home`
+- **Dashboard Admin** (requiere permisos de administrador): `http://localhost:4000/awaq/dashboard`
+
+## Credenciales de Prueba
+
+Para probar la aplicación, puedes crear un usuario desde la página de registro o usar el siguiente usuario administrador si está configurado en tu base de datos:
+
+- **Usuario**: admin@example.com
+- **Contraseña**: admin123
+
+## Solución de Problemas
+
+- **Error de conexión a la base de datos**: Verifica que MySQL esté ejecutándose y que las credenciales en el archivo `.env` sean correctas.
+- **Error de puertos**: Si el puerto 4000 está en uso, puedes cambiar el puerto en el archivo `backend/constants.js`.
+- **Problemas con las dependencias**: Asegúrate de tener la versión correcta de Node.js y ejecuta `npm install` nuevamente.
+
+## Estructura del Proyecto
+
+```
+RetoTC2005B/
+├── backend/           # Servidor y API
+├── frontend/          # Archivos de la interfaz de usuario
+├── uploads/           # Archivos subidos por los usuarios
+├── .gitignore
+├── package.json
+└── README.md
+```
+
+Para más detalles sobre el backend, consulta el archivo `backend/README.md`. 
