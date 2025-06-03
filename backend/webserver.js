@@ -20,6 +20,9 @@ function configureSecurity(app) {
  */
 function configStaticFilesAndViews(app) {
     const frontendPath = join(__dirname, "../frontend");
+
+    app.use('/uploads', express.static(join(__dirname, '../uploads')));
+    
     app.use(express.static(frontendPath));
     
     // Rutas adicionales del backend (API)

@@ -45,11 +45,14 @@ router.get(`${constants.contextURL}/viewEcoRanger`, requireAdmin, templates.view
 
 /* ------------------------ USUARIOS API ------------------------ */
 router.post(`${constants.contextURL}${constants.apiURL}/login`, usersRest.execLogin);
+
 router.post(
   `${constants.contextURL}${constants.apiURL}/register`, 
   upload.single('profileImg'), // Middleware para subir una única imagen
   usersRest.publicRegisterUser
 );
+
+
 router.post(`${constants.contextURL}${constants.apiURL}/recuperar`, usersRest.recuperarPassword);
 router.post(`${constants.contextURL}${constants.apiURL}/verificar-token`, usersRest.verificarTokenRecuperacion);
 router.post(`${constants.contextURL}${constants.apiURL}/restablecer-password`, usersRest.restablecerPassword);
