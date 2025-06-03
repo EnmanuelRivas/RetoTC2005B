@@ -13,6 +13,7 @@
  */
 const dataSource = require('../Data/MySQLMngr');
 const hashService = require('./hashPassword');
+const imageUploadService = require('./imageUploadService');
 
 /**
  * Method that returns the list of users. NOTE that the method returns also the passwords of the users.
@@ -59,14 +60,28 @@ async function findUserById(id) {
 async function insertUser(user, profileImagePath = null){
     let qResult;
     try{
+        console.log("insertUser: Iniciando inserción de usuario");
+        
         // Validate required fields
         if (!user.contraseña) {
+            console.log("insertUser: Error - La contraseña es requerida");
             throw new Error('La contraseña es requerida');
         }
         
+        console.log("insertUser: Contraseña recibida correctamente");
+        
         // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
-        let query = 'INSERT INTO usuarios (nombre, apellidos, correo, contraseña, contraseñaHash, numeroTelefono, pais, provincia, ciudad, organizacion, descripcion, imagen_perfil) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        user.contraseñaHash = await hashService.encryptPassword(user.contraseña);
+        let query = 'INSERT INTO usuarios (nombre, apellidos, correo, contraseña, contraseñaHash, numeroTelefono, pais, provincia, ciudad, organizacion, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        
+        console.log("insertUser: Intentando hashear contraseña");
+        try {
+            user.contraseñaHash = await hashService.encryptPassword(user.contraseña);
+            console.log("insertUser: Contraseña hasheada correctamente");
+        } catch (hashError) {
+            console.error("insertUser: Error al hashear contraseña:", hashError);
+            throw hashError;
+        }
+        
         let params = [
             user.nombre, 
             user.apellidos, 
@@ -78,11 +93,26 @@ async function insertUser(user, profileImagePath = null){
             user.provincia, 
             user.ciudad, 
             user.organizacion, 
-            user.descripcion,
-            profileImagePath
+            user.descripcion
         ];
+        
+        console.log("insertUser: Ejecutando query de inserción");
         qResult = await dataSource.insertData(query,params);
+        console.log("insertUser: Resultado de la inserción:", {
+            status: qResult.status,
+            gen_id: qResult.gen_id,
+            changes: qResult.changes,
+            err: qResult.err
+        });
+
+        // Si la inserción fue exitosa y hay una imagen de perfil, actualizarla
+        if (qResult.status && profileImagePath && qResult.gen_id) {
+            console.log("insertUser: Actualizando imagen de perfil");
+            await imageUploadService.insertProfileImage(profileImagePath, qResult.gen_id);
+        }
+
     }catch(err){
+        console.error("insertUser: Error capturado:", err);
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);
     }
     return qResult;
@@ -98,37 +128,10 @@ async function insertUser(user, profileImagePath = null){
 async function updateUser(user, profileImagePath = null){
     let qResult;
     try{
-        let query, params;
+        console.log("updateUser: Actualizando usuario con ID:", user.id);
         
-        if (profileImagePath) {
-            // Si hay una nueva imagen, incluirla en la actualización
-            query = `UPDATE usuarios 
-                     SET nombre = ?, 
-                         apellidos = ?, 
-                         numeroTelefono = ?, 
-                         pais = ?, 
-                         provincia = ?, 
-                         ciudad = ?, 
-                         organizacion = ?, 
-                         descripcion = ?,
-                         imagen_perfil = ? 
-                     WHERE id = ?`;
-            
-            params = [
-                user.nombre, 
-                user.apellidos, 
-                user.numeroTelefono, 
-                user.pais, 
-                user.provincia, 
-                user.ciudad, 
-                user.organizacion, 
-                user.descripcion,
-                profileImagePath,
-                user.id
-            ];
-        } else {
-            // Sin nueva imagen, mantener la actual
-            query = `UPDATE usuarios 
+        // Primero actualizamos los datos básicos del usuario
+        let query = `UPDATE usuarios 
                      SET nombre = ?, 
                          apellidos = ?, 
                          numeroTelefono = ?, 
@@ -138,22 +141,35 @@ async function updateUser(user, profileImagePath = null){
                          organizacion = ?, 
                          descripcion = ?
                      WHERE id = ?`;
-            
-            params = [
-                user.nombre, 
-                user.apellidos, 
-                user.numeroTelefono, 
-                user.pais, 
-                user.provincia, 
-                user.ciudad, 
-                user.organizacion, 
-                user.descripcion,
-                user.id
-            ];
+        
+        let params = [
+            user.nombre, 
+            user.apellidos, 
+            user.numeroTelefono, 
+            user.pais, 
+            user.provincia, 
+            user.ciudad, 
+            user.organizacion, 
+            user.descripcion,
+            user.id
+        ];
+        
+        console.log("updateUser: Ejecutando query de actualización");
+        qResult = await dataSource.updateData(query, params);
+        
+        // Si la actualización fue exitosa y hay una nueva imagen, actualizarla
+        if (qResult.status && profileImagePath) {
+            console.log("updateUser: Actualizando imagen de perfil");
+            await imageUploadService.insertProfileImage(profileImagePath, user.id);
         }
         
-        qResult = await dataSource.updateData(query, params);
+        console.log("updateUser: Resultado de la actualización:", {
+            status: qResult.status,
+            changes: qResult.changes,
+            err: qResult.err
+        });
     }catch(err){
+        console.error("updateUser: Error capturado:", err);
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);
     }
     return qResult;

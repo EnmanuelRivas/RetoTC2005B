@@ -61,12 +61,39 @@ async function authenticateToken(req, res, next) {
 
 async function publicRegisterUser(req, res) {
   try {
+    console.log("Iniciando registro de usuario");
     let userData = req.body;
+    console.log("Datos recibidos:", {
+      nombre: userData.nombre,
+      apellidos: userData.apellidos,
+      correo: userData.correo,
+      contraseña: userData.contrasena ? "******" : undefined,
+      numeroTelefono: userData.numeroTelefono,
+      pais: userData.pais,
+      provincia: userData.provincia,
+      ciudad: userData.ciudad,
+      organizacion: userData.organizacion,
+      descripcion: userData.descripcion ? "..." : undefined
+    });
+    
+    // Mostrar información detallada del archivo si existe
+    if (req.file) {
+      console.log("Archivo recibido:", {
+        filename: req.file.filename,
+        originalname: req.file.originalname,
+        mimetype: req.file.mimetype,
+        size: req.file.size,
+        path: req.file.path
+      });
+    } else {
+      console.log("No se recibió ningún archivo");
+    }
     
     // Validar campos requeridos
-    const requiredFields = ['nombre', 'apellidos', 'correo', 'contraseña'];
+    const requiredFields = ['nombre', 'apellidos', 'correo', 'contrasena'];
     for (const field of requiredFields) {
       if (!userData[field]) {
+        console.log(`Campo requerido faltante: ${field}`);
         return res.status(400).json({
           status: "error",
           message: `El campo ${field} es requerido.`
@@ -74,19 +101,33 @@ async function publicRegisterUser(req, res) {
       }
     }
     
+    // Si el campo viene como contrasena (sin ñ), copiarlo a contraseña (con ñ)
+    if (userData.contrasena && !userData.contraseña) {
+      userData.contraseña = userData.contrasena;
+    }
+    
     let profileImagePath = null;
     
     // Procesar la imagen de perfil si está presente
     if (req.file) {
-      profileImagePath = await profileImageService.saveProfileImage(req.file);
+      try {
+        profileImagePath = await profileImageService.saveProfileImage(req.file);
+        console.log("Imagen de perfil guardada en:", profileImagePath);
+      } catch (imageError) {
+        console.error("Error al guardar la imagen de perfil:", imageError);
+        // Continuamos con el registro aunque falle la imagen
+      }
     }
     
     // Insertar usuario con la imagen
+    console.log("Intentando insertar usuario en la base de datos");
+    console.log("Ruta de imagen a guardar:", profileImagePath);
     const result = await userService.insertUser(userData, profileImagePath);
     console.log("Resultado del insert:", result);
 
     // Si hay un error en el resultado, devolverlo
     if (result.err) {
+      console.log("Error al insertar usuario:", result.err);
       return res.status(400).json({
         status: "error",
         message: result.err
@@ -94,10 +135,12 @@ async function publicRegisterUser(req, res) {
     }
 
     // Busca por id AUTOINCREMENTADO (gen_id)
+    console.log("Buscando usuario recién insertado con ID:", result.gen_id);
     const newUser = await userService.findUserById(result.gen_id);
     console.log("Usuario insertado:", newUser.rows);
 
     if (!newUser.rows || !newUser.rows[0]) {
+      console.log("No se encontró el usuario recién insertado");
       return res.status(500).json({
         status: "error",
         message: "No se encontró el usuario recién insertado."
@@ -105,6 +148,7 @@ async function publicRegisterUser(req, res) {
     }
 
     // Crea el token JWT
+    console.log("Generando token JWT");
     const token = jwt.sign(
       {
         id: newUser.rows[0].id,
@@ -115,6 +159,7 @@ async function publicRegisterUser(req, res) {
       { expiresIn: '1h' }
     );
 
+    console.log("Registro exitoso, enviando respuesta");
     res.status(201).json({
       status: "success",
       total: result.changes,
@@ -122,6 +167,7 @@ async function publicRegisterUser(req, res) {
       token
     });
   } catch (error) {
+    console.error("Error en publicRegisterUser:", error);
     res.status(500).json({
       status: "error",
       message: error.message
@@ -129,6 +175,11 @@ async function publicRegisterUser(req, res) {
   }
 }
 
+/**
+ * Método para registrar un usuario a través de JSON
+ * @param {Object} req - Solicitud HTTP con datos JSON
+ * @param {Object} res - Respuesta HTTP
+ */
 
 /**
  * Method that returns the list of users
@@ -166,7 +217,7 @@ async function getUsers(req,res){
 async function findUser(req,res){
     try{       
         let username = req.body.username;
-        const result = await userService.findUser(username);
+        const result = await userService.findUserByEmail(username);
         res.status(200);
         res.json({
             "status"  : "success",
@@ -442,5 +493,15 @@ async function restablecerPassword(req, res) {
 }
 
 module.exports = {
-    execLogin,authenticateToken,getUsers,findUser,insertUser,updateUser,deleteUser,publicRegisterUser,recuperarPassword,verificarTokenRecuperacion,restablecerPassword
+    execLogin,
+    authenticateToken,
+    getUsers,
+    findUser,
+    publicRegisterUser,
+    insertUser,
+    updateUser,
+    deleteUser,
+    recuperarPassword,
+    verificarTokenRecuperacion,
+    restablecerPassword
 }

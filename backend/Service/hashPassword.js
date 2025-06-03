@@ -7,11 +7,22 @@ const bcrypt = require('bcrypt');
  * @returns encrypted password
  */
 async function encryptPassword(pass){
+    console.log("encryptPassword: Inicio de función con contraseña:", pass ? "Recibida" : "No recibida");
+    
     if (!pass) {
+        console.log("encryptPassword: Error - Contraseña vacía");
         throw new Error('La contraseña no puede estar vacía');
     }
-    let password = await bcrypt.hash(pass,8);
-    return password;
+    
+    try {
+        console.log("encryptPassword: Intentando hashear con bcrypt");
+        let password = await bcrypt.hash(pass, 8);
+        console.log("encryptPassword: Hash generado correctamente");
+        return password;
+    } catch (error) {
+        console.error("encryptPassword: Error en bcrypt.hash:", error);
+        throw error;
+    }
 }
 
 /**
