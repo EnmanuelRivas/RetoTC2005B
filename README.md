@@ -32,8 +32,29 @@ npm install
 
 ### 3. Configurar Variables de Entorno
 
-Consulta el archivo `backend/README.md` para obtener instrucciones detalladas sobre la configuración de variables de entorno y la base de datos.
+#### Crear archivo `.env` en el directorio `/backend`:
+- Node.js (versión 14.x o superior)
+- MySQL (versión 5.7 o superior)
+- npm (incluido con Node.js)
 
+## Instalación y Configuración
+
+### 1. Clonar el Repositorio
+```bash
+git clone [URL_DEL_REPOSITORIO]
+cd RetoTC2005B
+```
+### 2. Instalar Dependencias
+
+Instalar dependencias del proyecto principal:
+```bash
+npm install
+```
+Instalar dependencias del backend:
+```bash
+cd backend
+npm install
+```
 ## Ejecución del Proyecto
 
 ### Iniciar el Servidor Backend
@@ -82,17 +103,11 @@ Para probar la aplicación, puedes crear un usuario desde la página de registro
 
 ```
 RetoTC2005B/
-├── backend/           # Servidor y API (ver backend/README.md para más detalles)
+├── backend/           # Servidor y API
 ├── frontend/          # Archivos de la interfaz de usuario
-│   ├── assets/        # Imágenes, iconos y recursos estáticos
-│   ├── pages/         # Páginas de la aplicación
-│   ├── scripts/       # JavaScript del cliente
-│   ├── styles/        # Hojas de estilo CSS
-│   ├── templates/     # Plantillas HTML
-│   └── partials/      # Componentes HTML reutilizables
+├── uploads/           # Archivos subidos por los usuarios
 ├── .gitignore
 ├── package.json
 └── README.md
 ```
-
 Para más detalles sobre el backend, consulta el archivo `backend/README.md`. 
