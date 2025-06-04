@@ -32,32 +32,7 @@ npm install
 
 ### 3. Configurar Variables de Entorno
 
-#### Crear archivo `.env` en el directorio `/backend`:
-
-```
-# Database configuration
-HOST=localhost
-DB_USER=youruser
-PASSWORD=yourpassword
-DATABASE=yourdatabase
-
-# JWT Secret
-SECRET=your_jwt_secret_key
-```
-
-Reemplaza los valores con tu configuración actual:
-- `HOST`: Dirección del servidor de base de datos (generalmente localhost)
-- `DB_USER`: Usuario de MySQL con permisos en la base de datos
-- `PASSWORD`: Contraseña del usuario de MySQL
-- `DATABASE`: Nombre de la base de datos (debes crearla previamente)
-- `SECRET`: Clave secreta para generar tokens JWT (usa una cadena aleatoria segura)
-
-> **Nota**: El archivo `.env` está excluido de git en `.gitignore` para mantener segura la información sensible. Nunca subas tu archivo `.env` al control de versiones.
-
-### 4. Configurar Base de Datos
-
-1. Crea una base de datos MySQL con el nombre especificado en tu archivo `.env`
-2. El esquema de la base de datos se creará automáticamente al iniciar la aplicación por primera vez
+Consulta el archivo `backend/README.md` para obtener instrucciones detalladas sobre la configuración de variables de entorno y la base de datos.
 
 ## Ejecución del Proyecto
 
@@ -107,9 +82,14 @@ Para probar la aplicación, puedes crear un usuario desde la página de registro
 
 ```
 RetoTC2005B/
-├── backend/           # Servidor y API
+├── backend/           # Servidor y API (ver backend/README.md para más detalles)
 ├── frontend/          # Archivos de la interfaz de usuario
-├── uploads/           # Archivos subidos por los usuarios
+│   ├── assets/        # Imágenes, iconos y recursos estáticos
+│   ├── pages/         # Páginas de la aplicación
+│   ├── scripts/       # JavaScript del cliente
+│   ├── styles/        # Hojas de estilo CSS
+│   ├── templates/     # Plantillas HTML
+│   └── partials/      # Componentes HTML reutilizables
 ├── .gitignore
 ├── package.json
 └── README.md
