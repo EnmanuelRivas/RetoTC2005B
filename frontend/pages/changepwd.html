@@ -68,12 +68,12 @@
 
     <div class="mb-3 text-start">
       <label for="nueva" class="form-label">Nueva contraseña</label>
-      <input type="password" class="form-control" id="nueva" placeholder="Escribe tu nueva contraseña">
+      <input type="password" class="form-control" id="nueva-contrasena" placeholder="Escribe tu nueva contraseña">
     </div>
 
     <div class="mb-3 text-start">
       <label for="confirmar" class="form-label">Confirmar nueva contraseña</label>
-      <input type="password" class="form-control" id="confirmar" placeholder="Confirma tu nueva contraseña">
+      <input type="password" class="form-control" id="confirmar-contrasena" placeholder="Confirma tu nueva contraseña">
     </div>
 
     <button id="guardarBtn" class="btn btn-green mt-3">Guardar</button>
@@ -92,113 +92,6 @@
     </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Obtener el token de la URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
-      
-      if (!token) {
-        document.getElementById('alertError').textContent = 'Token inválido o expirado. Por favor, solicita un nuevo enlace de recuperación.';
-        document.getElementById('alertError').style.display = 'block';
-        document.getElementById('nueva').disabled = true;
-        document.getElementById('confirmar').disabled = true;
-        document.getElementById('guardarBtn').disabled = true;
-        return;
-      }
-      
-      // Verificar si el token es válido
-      verificarToken(token);
-      
-      // Manejar el envío del formulario
-      document.getElementById('guardarBtn').addEventListener('click', function() {
-        cambiarPassword(token);
-      });
-    });
-    
-    // Función para verificar si el token es válido
-    async function verificarToken(token) {
-      try {
-        const response = await fetch('/awaq/api/verificar-token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ token }),
-        });
-        
-        const data = await response.json();
-        
-        if (!response.ok) {
-          document.getElementById('alertError').textContent = 'Token inválido o expirado. Por favor, solicita un nuevo enlace de recuperación.';
-          document.getElementById('alertError').style.display = 'block';
-          document.getElementById('nueva').disabled = true;
-          document.getElementById('confirmar').disabled = true;
-          document.getElementById('guardarBtn').disabled = true;
-        }
-      } catch (error) {
-        document.getElementById('alertError').textContent = 'Error de conexión. Por favor, intenta nuevamente.';
-        document.getElementById('alertError').style.display = 'block';
-      }
-    }
-    
-    // Función para cambiar la contraseña
-    async function cambiarPassword(token) {
-      const nueva = document.getElementById('nueva').value;
-      const confirmar = document.getElementById('confirmar').value;
-      
-      // Validar que las contraseñas no estén vacías
-      if (!nueva || !confirmar) {
-        document.getElementById('alertError').textContent = 'Por favor, completa todos los campos.';
-        document.getElementById('alertError').style.display = 'block';
-        document.getElementById('alertSuccess').style.display = 'none';
-        return;
-      }
-      
-      // Validar que las contraseñas coincidan
-      if (nueva !== confirmar) {
-        document.getElementById('alertError').textContent = 'Las contraseñas no coinciden.';
-        document.getElementById('alertError').style.display = 'block';
-        document.getElementById('alertSuccess').style.display = 'none';
-        return;
-      }
-      
-      try {
-        const response = await fetch('/awaq/api/restablecer-password', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            token,
-            nuevaContraseña: nueva
-          }),
-        });
-        
-        const data = await response.json();
-        
-        if (response.ok) {
-          document.getElementById('alertSuccess').style.display = 'block';
-          document.getElementById('alertError').style.display = 'none';
-          document.getElementById('nueva').value = '';
-          document.getElementById('confirmar').value = '';
-          
-          // Redirigir al login después de 3 segundos
-          setTimeout(function() {
-            window.location.href = '/awaq';
-          }, 3000);
-        } else {
-          document.getElementById('alertError').textContent = data.message || 'Ha ocurrido un error. Por favor, intenta nuevamente.';
-          document.getElementById('alertError').style.display = 'block';
-          document.getElementById('alertSuccess').style.display = 'none';
-        }
-      } catch (error) {
-        document.getElementById('alertError').textContent = 'Error de conexión. Por favor, intenta nuevamente.';
-        document.getElementById('alertError').style.display = 'block';
-        document.getElementById('alertSuccess').style.display = 'none';
-      }
-    }
-  </script>
-
+  <script src="../scripts/newPassword.js"></script> 
 </body>
 </html>

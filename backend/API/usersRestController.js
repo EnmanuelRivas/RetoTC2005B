@@ -377,7 +377,7 @@ async function recuperarPassword(req, res) {
         await userService.savePasswordResetToken(user.id, token, expiry);
         
         // Enviar correo con el enlace de recuperación
-        const emailResult = await emailService.enviarCorreoRecuperacion(correo, token);
+        const emailResult = await emailService.enviarEmailRecuperacion(correo, user.nombre, token);
         
         if (!emailResult.success) {
             return res.status(500).json({
@@ -466,11 +466,8 @@ async function restablecerPassword(req, res) {
         
         const user = result.rows[0];
         
-        // Generar hash de la nueva contraseña
-        const nuevaContraseñaHash = await hashService.encryptPassword(nuevaContraseña);
-        
-        // Actualizar la contraseña en la base de datos
-        const updateResult = await userService.updatePassword(user.id, nuevaContraseña, nuevaContraseñaHash);
+        // Actualizar la contraseña en la base de datos (ahora el servicio se encarga de generar el hash)
+        const updateResult = await userService.updatePassword(user.id, nuevaContraseña);
         
         if (updateResult.changes === 0) {
             return res.status(500).json({
