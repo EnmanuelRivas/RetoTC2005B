@@ -33,32 +33,28 @@ npm install
 ### 3. Configurar Variables de Entorno
 
 #### Crear archivo `.env` en el directorio `/backend`:
+- Node.js (versión 14.x o superior)
+- MySQL (versión 5.7 o superior)
+- npm (incluido con Node.js)
 
+## Instalación y Configuración
+
+### 1. Clonar el Repositorio
+```bash
+git clone [URL_DEL_REPOSITORIO]
+cd RetoTC2005B
 ```
-# Database configuration
-HOST=localhost
-DB_USER=youruser
-PASSWORD=yourpassword
-DATABASE=yourdatabase
+### 2. Instalar Dependencias
 
-# JWT Secret
-SECRET=your_jwt_secret_key
+Instalar dependencias del proyecto principal:
+```bash
+npm install
 ```
-
-Reemplaza los valores con tu configuración actual:
-- `HOST`: Dirección del servidor de base de datos (generalmente localhost)
-- `DB_USER`: Usuario de MySQL con permisos en la base de datos
-- `PASSWORD`: Contraseña del usuario de MySQL
-- `DATABASE`: Nombre de la base de datos (debes crearla previamente)
-- `SECRET`: Clave secreta para generar tokens JWT (usa una cadena aleatoria segura)
-
-> **Nota**: El archivo `.env` está excluido de git en `.gitignore` para mantener segura la información sensible. Nunca subas tu archivo `.env` al control de versiones.
-
-### 4. Configurar Base de Datos
-
-1. Crea una base de datos MySQL con el nombre especificado en tu archivo `.env`
-2. El esquema de la base de datos se creará automáticamente al iniciar la aplicación por primera vez
-
+Instalar dependencias del backend:
+```bash
+cd backend
+npm install
+```
 ## Ejecución del Proyecto
 
 ### Iniciar el Servidor Backend
@@ -114,5 +110,4 @@ RetoTC2005B/
 ├── package.json
 └── README.md
 ```
-
 Para más detalles sobre el backend, consulta el archivo `backend/README.md`. 

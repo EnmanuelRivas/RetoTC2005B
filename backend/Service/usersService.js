@@ -16,15 +16,15 @@ const hashService = require('./hashPassword');
 const imageUploadService = require('./imageUploadService');
 
 /**
- * Method that returns the list of users. NOTE that the method returns also the passwords of the users.
- * This is a security issue that should be fixed in the future.
+ * Method that returns the list of users. Excludes password fields for security.
  *
  * @returns Users list in json format
  */
 async function getUsers(){
     let qResult;
     try{
-        let query = 'SELECT nombre, apellidos, correo, telefono, password FROM usuarios';
+        // Modificamos la consulta para no incluir contraseñas
+        let query = 'SELECT id, nombre, apellidos, correo, numeroTelefono, pais, provincia, ciudad, organizacion, descripcion, isAdmin FROM usuarios';
         qResult = await dataSource.getData(query);   
     }catch(err){
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);
@@ -70,8 +70,8 @@ async function insertUser(user, profileImagePath = null){
         
         console.log("insertUser: Contraseña recibida correctamente");
         
-        // note the parameter wildcard ? in the query. This is a placeholder for the parameter that will be passed in the params array.
-        let query = 'INSERT INTO usuarios (nombre, apellidos, correo, contraseña, contraseñaHash, numeroTelefono, pais, provincia, ciudad, organizacion, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        // Modificamos la consulta para eliminar el campo contraseña
+        let query = 'INSERT INTO usuarios (nombre, apellidos, correo, contraseñaHash, numeroTelefono, pais, provincia, ciudad, organizacion, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         
         console.log("insertUser: Intentando hashear contraseña");
         try {
@@ -86,7 +86,6 @@ async function insertUser(user, profileImagePath = null){
             user.nombre, 
             user.apellidos, 
             user.correo, 
-            user.contraseña, 
             user.contraseñaHash, 
             user.numeroTelefono, 
             user.pais, 
@@ -259,22 +258,38 @@ async function verifyPasswordResetToken(token) {
  * Actualiza la contraseña de un usuario
  * @param {number} userId - ID del usuario
  * @param {string} newPassword - Nueva contraseña (sin hash)
- * @param {string} newPasswordHash - Hash de la nueva contraseña
  * @returns {Promise} - Resultado de la consulta
  */
-async function updatePassword(userId, newPassword, newPasswordHash) {
+async function updatePassword(userId, newPassword) {
     let qResult;
     try {
-        let query = 'UPDATE usuarios SET contraseña = ?, contraseñaHash = ? WHERE id = ?';
-        let params = [newPassword, newPasswordHash, userId];
+        // Obtener el hash de contraseña actual antes de actualizarlo
+        let currentHashQuery = 'SELECT contraseñaHash FROM usuarios WHERE id = ?';
+        let currentHashResult = await dataSource.getDataWithParams(currentHashQuery, [userId]);
+        const currentHash = currentHashResult.rows[0]?.contraseñaHash || 'No se encontró hash actual';
+        
+        // Generar el hash de la nueva contraseña
+        const newPasswordHash = await hashService.encryptPassword(newPassword);
+        
+        console.log('=== CAMBIO DE CONTRASEÑA DETECTADO ===');
+        console.log(`Usuario ID: ${userId}`);
+        console.log(`Hash anterior: ${currentHash}`);
+        console.log(`Nuevo hash: ${newPasswordHash}`);
+        console.log('=====================================');
+        
+        // Actualizar solo el hash de la contraseña
+        let query = 'UPDATE usuarios SET contraseñaHash = ? WHERE id = ?';
+        let params = [newPasswordHash, userId];
         qResult = await dataSource.updateData(query, params);
         
         // Eliminamos el token de recuperación usado
         if (qResult.changes > 0) {
             let deleteQuery = 'DELETE FROM password_reset_tokens WHERE user_id = ?';
             await dataSource.updateData(deleteQuery, [userId]);
+            console.log(`Contraseña actualizada exitosamente para usuario ID: ${userId}`);
         }
     } catch (err) {
+        console.error('Error al actualizar contraseña:', err.message);
         qResult = new dataSource.QueryResult(false, [], 0, 0, err.message);
     }
     return qResult;
