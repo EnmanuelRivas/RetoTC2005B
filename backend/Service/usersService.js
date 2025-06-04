@@ -263,8 +263,19 @@ async function verifyPasswordResetToken(token) {
 async function updatePassword(userId, newPassword) {
     let qResult;
     try {
+        // Obtener el hash de contraseña actual antes de actualizarlo
+        let currentHashQuery = 'SELECT contraseñaHash FROM usuarios WHERE id = ?';
+        let currentHashResult = await dataSource.getDataWithParams(currentHashQuery, [userId]);
+        const currentHash = currentHashResult.rows[0]?.contraseñaHash || 'No se encontró hash actual';
+        
         // Generar el hash de la nueva contraseña
         const newPasswordHash = await hashService.encryptPassword(newPassword);
+        
+        console.log('=== CAMBIO DE CONTRASEÑA DETECTADO ===');
+        console.log(`Usuario ID: ${userId}`);
+        console.log(`Hash anterior: ${currentHash}`);
+        console.log(`Nuevo hash: ${newPasswordHash}`);
+        console.log('=====================================');
         
         // Actualizar solo el hash de la contraseña
         let query = 'UPDATE usuarios SET contraseñaHash = ? WHERE id = ?';
@@ -275,8 +286,10 @@ async function updatePassword(userId, newPassword) {
         if (qResult.changes > 0) {
             let deleteQuery = 'DELETE FROM password_reset_tokens WHERE user_id = ?';
             await dataSource.updateData(deleteQuery, [userId]);
+            console.log(`Contraseña actualizada exitosamente para usuario ID: ${userId}`);
         }
     } catch (err) {
+        console.error('Error al actualizar contraseña:', err.message);
         qResult = new dataSource.QueryResult(false, [], 0, 0, err.message);
     }
     return qResult;

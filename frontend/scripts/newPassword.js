@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!token) {
       document.getElementById('alertError').textContent = 'Token inválido o expirado. Por favor, solicita un nuevo enlace de recuperación.';
       document.getElementById('alertError').style.display = 'block';
-      document.getElementById('nueva').disabled = true;
-      document.getElementById('confirmar').disabled = true;
+      document.getElementById('nueva-contrasena').disabled = true;
+      document.getElementById('confirmar-contrasena').disabled = true;
       document.getElementById('guardarBtn').disabled = true;
       return;
     }
@@ -85,8 +85,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (response.ok) {
         document.getElementById('alertSuccess').style.display = 'block';
         document.getElementById('alertError').style.display = 'none';
-        document.getElementById('nueva').value = '';
-        document.getElementById('confirmar').value = '';
+        document.getElementById('nueva-contrasena').value = '';
+        document.getElementById('confirmar-contrasena').value = '';
         
         // Redirigir al login después de 3 segundos
         setTimeout(function() {
