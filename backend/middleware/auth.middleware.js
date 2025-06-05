@@ -1,5 +1,6 @@
 /**
  * Middleware que verifica si el usuario es administrador
+ * 
  */
 function requireAdmin(req, res, next) {
     if (req.user && req.user.isAdmin) {
