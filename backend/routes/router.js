@@ -96,7 +96,7 @@ router.delete(
 
 /* ------------------------ ANTEPROYECTOS API ------------------------ */
 
-router.use(`${constants.contextURL}${constants.apiURL}/anteproyectos`, anteproyectosRest);
+router.use(`${constants.contextURL}${constants.apiURL}`, anteproyectosRest);
 
 /* ------------------------ REGISTROS GENERALES Y FORMULARIOS BIOMONITOR ------------------------ */
 

@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const convocatoriaService = require('../Service/convocatoriasService.js');
-// const { requireUser } = require('../middleware/auth.middleware.js'); // agregamos esto
+const { authenticateToken, requireUser } = require('../middleware/auth.middleware.js'); // agregamos esto
 
-// añadimos , requireUser,
-router.get('/getConvocatorias', async (req, res) => {
+// añadimos authenticateToken, requireUser,
+router.get('/getConvocatorias', authenticateToken, requireUser, async (req, res) => {
   try {
     const convocatorias = await convocatoriaService.obtenerConvocatorias();
     res.status(200).json(convocatorias);
@@ -14,14 +14,10 @@ router.get('/getConvocatorias', async (req, res) => {
   }
 });
 
-router.use((req, res, next) => {
-  console.log('Middleware debug, req.user:', req.user);
-  next();
-});
-// añadimos , requireUser,
-router.post('/crearConvocatoria', async (req, res) => {
+// añadimos authenticateToken, requireUser,
+router.post('/postConvocatoria', authenticateToken, requireUser, async (req, res) => {
   try {
-    const usuario_id = req.body.usuario_id; // o `req.user.id` si usas autenticación
+    const usuario_id = req.user.id; 
     const data = { ...req.body, usuario_id };
 
     const insertId = await convocatoriaService.crearConvocatoria(data);
