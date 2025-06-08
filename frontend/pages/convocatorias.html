@@ -16,25 +16,36 @@
       display: flex;
       flex-direction: column;
     }
-    .top-bar {
+   .top-bar {
       background-color: #1f1f1f;
       padding: 10px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      height: 60px;
     }
     .top-bar h1 {
       font-size: 24px;
       display: flex;
       align-items: center;
       color: white;
+      margin: 0;
+    }
+    .top-bar h1::before {
+      margin-right: 10px;
+    }
+    .top-bar .user-info {
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
     .main-body {
       display: flex;
       flex: 1;
       overflow: hidden;
     }
-    .sidebar {
+     .sidebar {
       width: 270px;
       background-color: #1f1f1f;
       padding: 20px;
@@ -42,27 +53,63 @@
       flex-direction: column;
       justify-content: space-between;
     }
+    .sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
     .sidebar nav a {
       padding: 12px 18px;
       border-radius: 8px;
       color: white;
       text-decoration: none;
       font-weight: 500;
-      margin-bottom: 6px;
-      display: block;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      transition: background-color 0.2s, color 0.2s;
     }
     .sidebar nav a.active,
     .sidebar nav a:hover {
       background-color: #198754;
       color: #fff;
+      text-decoration: none;
     }
     .sidebar .support-button {
       background-color: #444;
       padding: 12px;
       text-align: center;
       border-radius: 10px;
+      font-weight: bold;
       color: white;
       font-size: 14px;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .sidebar .support-button:hover {
+      background-color: #198754;
+      color: #fff;
+      cursor: pointer;
+    }
+    .sidebar .support-button i {
+      color: #00b300;
+      margin-right: 8px;
+    }
+    .sidebar-logout {
+      background-color: #444;
+      padding: 12px;
+      text-align: center;
+      border-radius: 10px;
+      font-weight: bold;
+      color: #ff6b6b;
+      font-size: 14px;
+      margin-top: 10px;
+      transition: background-color 0.2s, color 0.2s;
+      cursor: pointer;
+    }
+    .sidebar-logout:hover {
+      background-color: #333;
+    }
+    .sidebar-logout i {
+      margin-right: 8px;
     }
     .main-content {
       flex: 1;
@@ -104,11 +151,11 @@
     <div class="sidebar">
       <div>
           <nav>
-            <a href="/awaq/home">Inicio</a>
-            <a href="/awaq/AsistenteBiomo">Asistente de Mi Biomo</a>
-            <a href="/awaq/AsistenteExplorador">Asistente Explorador de Anteproyectos</a>
-            <a href="/awaq/AsistenteConvocatorias">Asistente de Convocatorias</a>
-            <a class="active" href="convocatorias.html">Asistente de nuevas convocatorias</a>
+          <a href="/awaq/home">Inicio</a>
+          <a href="/awaq/AsistenteBiomo">Asistente de Mi Biomo</a>
+          <a href="/awaq/AsistenteExplorador">Explorador de Anteproyectos</a>
+          <a href="convocatorias.html" class="active">Convocatorias</a>
+          <a href="/awaq/perfil">Mi Perfil</a>
         </nav>
       </div>
       <div class="support-button">

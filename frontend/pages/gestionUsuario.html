@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usuarios Pendientes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      background-color: #2f2f2f;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-bar {
+      background-color: #1f1f1f;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .main-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    .sidebar {
+      width: 270px;
+      background-color: #1f1f1f;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 2px 0 6px rgba(0,0,0,0.3);
+    }
+    .sidebar nav a {
+      padding: 12px 18px;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 8px;
+      display: block;
+      transition: background-color 0.3s;
+    }
+    .sidebar nav a.active,
+    .sidebar nav a:hover {
+      background-color: #198754;
+      color: #fff;
+    }
+    .sidebar .support-button {
+      background-color: #198754;
+      padding: 12px;
+      text-align: center;
+      border-radius: 10px;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }
+    .section-title {
+      background-color: #444;
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      font-size: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border: 2px solid #198754;
+      background-color: #3d3d3d;
+    }
+    select, button {
+      background-color: #1f1f1f;
+      color: white;
+      border: 1px solid #198754;
+      border-radius: 6px;
+      padding: 6px 12px;
+    }
+    .btn-approve {
+      background-color: #198754;
+    }
+    .btn-reject {
+      background-color: #dc3545;
+    }
+    .badge-pendiente {
+      background-color: #ffc107;
+      color: black;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    .top-controls {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+    .top-controls button {
+      background-color: #198754;
+      border: none;
+      padding: 8px 16px;
+      margin-left: 10px;
+      border-radius: 8px;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
+    <div class="user-info">
+      <a href="#" style="color: white; text-decoration: none;">
+        Administrador <i class="bi bi-person-fill ms-2"></i>
+      </a>
+    </div>
+  </div>
+  <div class="main-body">
+    <div class="sidebar">
+      <div>
+        <nav>
+          <a class="active" href="#">Gestion de usuarios </a>
+          <a href="metricas.html">Vista de Administrador</a>
+        </nav>
+      </div>
+      <div class="support-button">
+        <i class="bi bi-telephone"></i> Contacta con el soporte
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="section-title">Gestión de Usuarios Pendientes</div>
+
+      <div class="top-controls">
+        <button onclick="cargarUsuariosPendientes()">Actualizar Lista</button>
+        <button onclick="aprobarTodos()">Aprobar Todos</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="usuarios-body">
+          <!-- Usuarios se cargan dinámicamente aquí -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    async function cargarUsuariosPendientes() {
+      const response = await fetch('http://localhost:4000/usuarios/pendientes');
+      const data = await response.json();
+      const tbody = document.getElementById("usuarios-body");
+      tbody.innerHTML = "";
+
+      data.records.forEach(user => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${user.nombre}</td>
+          <td>${user.correo}</td>
+          <td>
+            <select>
+              <option${user.rol === 'Biomonitor' ? ' selected' : ''}>Biomonitor</option>
+              <option${user.rol === 'Administrador' ? ' selected' : ''}>Administrador</option>
+            </select>
+          </td>
+          <td><span class="badge-pendiente">${user.estado.toUpperCase()}</span></td>
+          <td>
+            <button class="btn-approve" onclick="aprobarUsuario(${user.id})">Aprobar</button>
+            <button class="btn-reject" onclick="rechazarUsuario(${user.id})">Rechazar</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function aprobarUsuario(id) {
+      const res = await fetch(`http://localhost:4000/usuarios/${id}/aprobar`, { method: 'POST' });
+      if (res.ok) {
+        Swal.fire('✅ Aprobado', 'El usuario ha sido aprobado.', 'success');
+        cargarUsuariosPendientes();
+      }
+    }
+
+    async function rechazarUsuario(id) {
+      const res = await fetch(`http://localhost:4000/usuarios/${id}/rechazar`, { method: 'POST' });
+      if (res.ok) {
+        Swal.fire('❌ Rechazado', 'El usuario ha sido rechazado.', 'info');
+        cargarUsuariosPendientes();
+      }
+    }
+
+    async function aprobarTodos() {
+      const response = await fetch('http://localhost:4000/usuarios/pendientes');
+      const data = await response.json();
+      for (const user of data.records) {
+        await fetch(`http://localhost:4000/usuarios/${user.id}/aprobar`, { method: 'POST' });
+      }
+      Swal.fire('✅ Aprobados', 'Todos los usuarios han sido aprobados.', 'success');
+      cargarUsuariosPendientes();
+    }
+
+    document.addEventListener("DOMContentLoaded", cargarUsuariosPendientes);
+  </script>
+</body>
+</html>

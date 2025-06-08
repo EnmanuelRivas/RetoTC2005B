@@ -94,8 +94,8 @@ router.delete(
   usersRest.deleteUser
 );
 
-/* ------------------------ ANTEPROYECTOS API ------------------------ */
 
+/* ------------------------ ANTEPROYECTOS API ------------------------ */
 router.use(`${constants.contextURL}${constants.apiURL}`, anteproyectosRest);
 
 /* ------------------------ REGISTROS GENERALES Y FORMULARIOS BIOMONITOR ------------------------ */

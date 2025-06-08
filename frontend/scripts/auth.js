@@ -112,3 +112,34 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+// Para leer y decodificar el jwt
+export function getIsAdminFromToken() {
+  const token = localStorage.getItem('authToken');
+  if (!token) return false;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.isAdmin;
+  } catch (error) {
+    console.error('Token inválido:', error);
+    return false;
+  }
+}
+
+export function getUserInfoFromToken() {
+  const token = localStorage.getItem('authToken');
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return {
+      name: payload.name || 'Desconocido',
+      email: payload.email || 'sin@email.com',
+      isAdmin: payload.isAdmin || false
+    };
+  } catch (err) {
+    console.error('Error al leer el token:', err);
+    return null;
+  }
+}
