@@ -28,7 +28,7 @@ async function sendMessage() {
 
 function displayMessage(message, sender) {
   const messageDiv = document.createElement("div");
-  messageDiv.classList.add(`${sender}-message`);
+  messageDiv.classList.add(`${sender}-message`); // ``
   messageDiv.textContent = message;
   chatHistory.appendChild(messageDiv);
   chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to bottom
@@ -37,13 +37,14 @@ function displayMessage(message, sender) {
 async function getChatCompletion(message) {
   //  *** IMPORTANT:  This is client-side JavaScript.  Do NOT put your API key directly here! ***
   //  I'll show you how to proxy this securely in the next step.
-  const API_ENDPOINT = "http:/10.14.255.61/v1/chat/completions"; //  Your API endpoint
+  const API_ENDPOINT = "http://10.14.255.61/v1/chat/completions"; //  Your API endpoint
   const API_KEY = "sk-mDmOn2bG9Z3GDNW-x8wdeQ"; //  Replace with your actual API key
 
   const requestBody = {
     model: "gpt-3.5-turbo", //  Or the model you want to use
     messages: [{ role: "user", content: message }],
   };
+
 
   const response = await fetch(API_ENDPOINT, {
     method: "POST",

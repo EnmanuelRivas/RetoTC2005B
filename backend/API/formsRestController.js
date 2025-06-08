@@ -13,7 +13,7 @@ async function getRegistros(req, res) {
       records: rows,
     });
   } catch (error) {
-    console.error("❌ Error al obtener registros:", error);
+    console.error("Error al obtener registros:", error);
     res.status(500).json({
       status: "error",
       message: error.message,
@@ -31,7 +31,7 @@ async function postRegistros(req, res) {
       idRegistro,
     });
   } catch (error) {
-    console.error("❌ Error al insertar registro:", error);
+    console.error("Error al insertar registro:", error);
     res.status(500).json({
       status: "error",
       message: error.message,
@@ -50,7 +50,7 @@ async function getVariablesClimatica(req, res) {
       records: rows,
     });
   } catch (error) {
-    console.error("❌ Error al obtener variables climáticas:", error);
+    console.error("Error al obtener variables climáticas:", error);
     res.status(500).json({
       status: "error",
       message: error.message,
@@ -90,7 +90,7 @@ async function postVariablesClimatica(req, res) {
       idVariable,
     });
   } catch (error) {
-    console.error("❌ Error al insertar variable climática:", error);
+    console.error("Error al insertar variable climática:", error);
     res.status(500).json({
       status: "error",
       message: error.message,
@@ -109,7 +109,7 @@ async function getParcelaVegetacion(req, res) {
       records: rows,
     });
   } catch (error) {
-    console.error("❌ Error al obtener parcela vegetación:", error);
+    console.error("Error al obtener parcela vegetación:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 }
@@ -130,7 +130,7 @@ async function postParcelaVegetacion(req, res) {
       idRegistro,
     });
   } catch (error) {
-    console.error("❌ Error al insertar parcela vegetación:", error);
+    console.error("Error al insertar parcela vegetación:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 }
@@ -146,7 +146,7 @@ async function getCamarasTrampa(req, res) {
       records: rows,
     });
   } catch (error) {
-    console.error("❌ Error al obtener camaras trampa:", error);
+    console.error("Error al obtener camaras trampa:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 }
@@ -167,7 +167,7 @@ async function postCamarasTrampa(req, res) {
       idRegistro,
     });
   } catch (error) {
-    console.error("❌ Error al insertar camaras trampa:", error);
+    console.error("Error al insertar camaras trampa:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 }
@@ -185,7 +185,7 @@ async function getValidacionCobertura(req, res) {
       records: rows,
     });
   } catch (error) {
-    console.error("❌ Error al obtener validación cobertura:", error);
+    console.error("Error al obtener validación cobertura:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 }
@@ -205,7 +205,7 @@ async function postValidacionCobertura(req, res) {
       idRegistro,
     });
   } catch (error) {
-    console.error("❌ Error al insertar validación cobertura:", error);
+    console.error("Error al insertar validación cobertura:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 }
@@ -220,7 +220,7 @@ async function getFaunaTransecto(req, res) {
       records: rows,
     });
   } catch (error) {
-    console.error("❌ Error al obtener fauna transecto:", error);
+    console.error("Error al obtener fauna transecto:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 }
@@ -241,7 +241,7 @@ async function postFaunaTransecto(req, res) {
       idRegistro,
     });
   } catch (error) {
-    console.error("❌ Error al insertar fauna transecto:", error);
+    console.error("Error al insertar fauna transecto:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 }
@@ -256,7 +256,7 @@ async function getFaunaPuntoConteo(req, res) {
       records: rows,
     });
   } catch (error) {
-    console.error("❌ Error al obtener fauna punto de conteo:", error);
+    console.error("Error al obtener fauna punto de conteo:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 }
@@ -277,7 +277,7 @@ async function postFaunaPuntoConteo(req, res) {
       idRegistro,
     });
   } catch (error) {
-    console.error("❌ Error al insertar fauna punto de conteo:", error);
+    console.error("Error al insertar fauna punto de conteo:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 }
@@ -292,7 +292,7 @@ async function getBusquedaLibre(req, res) {
       records: rows,
     });
   } catch (error) {
-    console.error("❌ Error al obtener búsqueda libre:", error);
+    console.error("Error al obtener búsqueda libre:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 }
@@ -313,7 +313,7 @@ async function postBusquedaLibre(req, res) {
       idRegistro,
     });
   } catch (error) {
-    console.error("❌ Error al insertar búsqueda libre:", error);
+    console.error("Error al insertar búsqueda libre:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 }

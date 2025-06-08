@@ -58,7 +58,7 @@
       display: flex;
       flex: 1;
     }
-    .sidebar {
+   .sidebar {
       width: 270px;
       background-color: #1f1f1f;
       padding: 20px;
@@ -66,15 +66,26 @@
       flex-direction: column;
       justify-content: space-between;
     }
+    .sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
     .sidebar nav a {
-      display: block;
+      padding: 12px 18px;
+      border-radius: 8px;
       color: white;
       text-decoration: none;
-      margin: 10px 0;
       font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      transition: background-color 0.2s, color 0.2s;
     }
+    .sidebar nav a.active,
     .sidebar nav a:hover {
-      text-decoration: underline;
+      background-color: #198754;
+      color: #fff;
+      text-decoration: none;
     }
     .sidebar .support-button {
       background-color: #444;
@@ -84,6 +95,12 @@
       font-weight: bold;
       color: white;
       font-size: 14px;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .sidebar .support-button:hover {
+      background-color: #198754;
+      color: #fff;
+      cursor: pointer;
     }
     .sidebar .support-button i {
       color: #00b300;
@@ -235,9 +252,10 @@
         <nav>
           <a href="/awaq/home">Inicio</a>
           <a href="/awaq/AsistenteBiomo" class="active">Asistente de Mi Biomo</a>
-          <a href="/awaq/AsistenteExplorador">Asistente Explorador de Anteproyectos</a>
-          <a href="/awaq/AsistenteConvocatorias">Asistente de Convocatorias</a>
+          <a href="/awaq/AsistenteExplorador">Explorador de Anteproyectos</a>
+          <a href="/awaq/convocatorias">Convocatorias</a>
           <a href="/awaq/perfil">Mi Perfil</a>
+          <a href="/awaq/metricas">Métricas</a>
         </nav>
       </div>
       <div>

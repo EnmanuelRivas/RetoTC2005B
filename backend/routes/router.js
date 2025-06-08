@@ -6,6 +6,8 @@ const formsRest = require("../API/formsRestController");
 const imageRest = require("../API/imageRestController");
 const templates = require("../Templates/templates");
 const upload = require("../middleware/upload.middleware");
+const anteproyectosRest = require("../API/anteproyectosRestController");
+const convocatoriasRest = require('../API/convocatoriasRestController');
 
 const { requireAdmin, requireUser } = require("../middleware/auth.middleware");
 
@@ -92,6 +94,10 @@ router.delete(
   usersRest.deleteUser
 );
 
+
+/* ------------------------ ANTEPROYECTOS API ------------------------ */
+router.use(`${constants.contextURL}${constants.apiURL}`, anteproyectosRest);
+
 /* ------------------------ REGISTROS GENERALES Y FORMULARIOS BIOMONITOR ------------------------ */
 
 // Generales
@@ -134,6 +140,11 @@ router.post(
   upload.array("imagen", 5),
   imageRest.subirImagen 
 );
+
+/* ------------------------ CONVOCATORIAS ------------------------ */
+// router.use('/awaq/api', convocatoriasRest);
+router.use(`${constants.contextURL}${constants.apiURL}`, convocatoriasRest);
+
 
 // Exporta el router para usarlo en el servidor principal
 module.exports = router;
