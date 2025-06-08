@@ -16,7 +16,7 @@
       display: flex;
       flex-direction: column;
     }
-   .top-bar {
+    .top-bar {
       background-color: #1f1f1f;
       padding: 10px 20px;
       display: flex;
@@ -45,13 +45,19 @@
       flex: 1;
       overflow: hidden;
     }
-     .sidebar {
+    .sidebar {
       width: 270px;
       background-color: #1f1f1f;
       padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+    .sidebar.collapsed {
+      width: 0;
+      padding: 0;
+      overflow: hidden;
     }
     .sidebar nav {
       display: flex;
@@ -136,11 +142,22 @@
     .btn-green:hover {
       background-color: #157347;
     }
+    #toggleSidebar {
+      border: none;
+      background: none;
+      outline: none;
+      box-shadow: none;
+    }
   </style>
 </head>
 <body class="dark-mode">
   <div class="top-bar">
-    <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
+    <div style="display: flex; align-items: center;">
+      <button id="toggleSidebar" class="me-3">
+        <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
+      </button>
+      <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
+    </div>
     <div class="user-info">
       <a href="#" style="color: white; text-decoration: none;">
         EcoRanger <i class="bi bi-person-fill ms-2"></i>
@@ -150,7 +167,7 @@
   <div class="main-body">
     <div class="sidebar">
       <div>
-          <nav>
+        <nav>
           <a href="/awaq/home">Inicio</a>
           <a href="/awaq/AsistenteBiomo">Asistente de Mi Biomo</a>
           <a href="/awaq/AsistenteExplorador">Explorador de Anteproyectos</a>
@@ -158,8 +175,12 @@
           <a href="/awaq/perfil">Mi Perfil</a>
         </nav>
       </div>
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
       <div class="support-button">
-        <i class="bi bi-telephone"></i> Contacta con el soporte
+        <i class="bi bi-telephone"></i>Contacta con el soporte
+      </div>
+      <div class="sidebar-logout">
+        <i class="bi bi-box-arrow-right"></i>Cerrar sesión
       </div>
     </div>
     <div class="main-content">
@@ -192,5 +213,11 @@
       </form>
     </div>
   </div>
+  <script>
+    document.getElementById("toggleSidebar").addEventListener("click", function () {
+      const sidebar = document.querySelector(".sidebar");
+      sidebar.classList.toggle("collapsed");
+    });
+  </script>
 </body>
 </html>
