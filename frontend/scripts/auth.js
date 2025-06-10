@@ -102,6 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Si no estamos en una página pública, verificar autenticación
     if (!publicPages.includes(currentPath)) {
         checkAuth();
+        // Verificar permisos de administrador para páginas admin
+        checkAdminAccess();
     }
     
     // Agregar manejador para el botón de cerrar sesión si existe
@@ -120,7 +122,7 @@ export function getIsAdminFromToken() {
 
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.isAdmin;
+    return payload.role_id === 1; // Verificar que sea exactamente 1 (administrador)
   } catch (error) {
     console.error('Token inválido:', error);
     return false;
@@ -134,12 +136,130 @@ export function getUserInfoFromToken() {
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
     return {
-      name: payload.name || 'Desconocido',
-      email: payload.email || 'sin@email.com',
-      isAdmin: payload.isAdmin || false
+      id: payload.id,
+      name: payload.username || 'Desconocido',
+      email: payload.username || 'sin@email.com',
+      isAdmin: payload.role_id === 1, // Verificar que sea exactamente 1 (administrador)
+      role_id: payload.role_id // Agregar role_id para referencia
     };
   } catch (err) {
     console.error('Error al leer el token:', err);
     return null;
+  }
+}
+
+/**
+ * Función para mostrar u ocultar elementos basados en el rol de administrador
+ * @param {string} elementId - ID del elemento a mostrar/ocultar
+ * @param {boolean} showForAdmin - Si true, muestra el elemento solo para admins; si false, lo oculta para admins
+ */
+export function toggleAdminElement(elementId, showForAdmin = true) {
+  const element = document.getElementById(elementId);
+  const isAdmin = getIsAdminFromToken();
+  
+  if (element) {
+    if (showForAdmin) {
+      // Mostrar solo para administradores
+      element.style.display = isAdmin ? 'block' : 'none';
+    } else {
+      // Mostrar solo para usuarios normales (ocultar para admins)
+      element.style.display = isAdmin ? 'none' : 'block';
+    }
+  }
+}
+
+/**
+ * Función para ocultar múltiples elementos para usuarios no administradores
+ * @param {string[]} elementIds - Array de IDs de elementos a ocultar
+ */
+export function hideForNonAdmins(elementIds) {
+  const isAdmin = getIsAdminFromToken();
+  
+  if (!isAdmin) {
+    elementIds.forEach(id => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.style.display = 'none';
+      }
+    });
+  }
+}
+
+/**
+ * Función para verificar permisos y redirigir si es necesario
+ */
+export function checkAdminAccess() {
+  const isAdmin = getIsAdminFromToken();
+  const currentPath = window.location.pathname;
+  
+  // Páginas que requieren permisos de administrador
+  const adminPages = [
+    '/awaq/dashboard',
+    '/awaq/gestion_usuario',
+    '/awaq/gestion_ap',
+    '/awaq/metricas',
+    '/awaq/numAP',
+    '/awaq/numBiomos',
+    '/awaq/crearEcoRanger',
+    '/awaq/editarEcoRanger',
+    '/awaq/viewEcoRanger'
+  ];
+  
+  if (adminPages.includes(currentPath) && !isAdmin) {
+    alert('Acceso denegado. Se requieren permisos de administrador.');
+    window.location.href = '/awaq/home';
+  }
+}
+
+/**
+ * Función para agregar botones de administrador dinámicamente
+ * @param {string} containerId - ID del contenedor donde agregar los botones
+ */
+export function addAdminButtons(containerId) {
+  const isAdmin = getIsAdminFromToken();
+  const container = document.getElementById(containerId);
+  
+  if (isAdmin && container) {
+    const adminButtonsHTML = `
+      <div class="admin-controls mt-4">
+        <h5>Panel de Administrador</h5>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-primary" onclick="location.href='/awaq/dashboard'">
+            <i class="bi bi-speedometer2"></i> Dashboard
+          </button>
+          <button type="button" class="btn btn-warning" onclick="location.href='/awaq/gestion_usuario'">
+            <i class="bi bi-people"></i> Gestión Usuarios
+          </button>
+          <button type="button" class="btn btn-info" onclick="location.href='/awaq/gestion_ap'">
+            <i class="bi bi-file-earmark-text"></i> Gestión AP
+          </button>
+          <button type="button" class="btn btn-success" onclick="location.href='/awaq/metricas'">
+            <i class="bi bi-bar-chart"></i> Métricas
+          </button>
+        </div>
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', adminButtonsHTML);
+  }
+}
+
+/**
+ * Función para mostrar información del usuario con rol
+ */
+export function displayUserInfo(elementId) {
+  const user = getUserInfoFromToken();
+  const element = document.getElementById(elementId);
+  
+  if (user && element) {
+    const roleText = user.isAdmin ? 'Administrador' : 'Usuario';
+    element.textContent = roleText;
+    
+    // Aplicar estilos basados en el rol
+    if (user.isAdmin) {
+      element.style.color = '#28a745'; // Verde para administrador
+      element.style.fontWeight = 'bold';
+    } else {
+      element.style.color = '#ffffff'; // Blanco para usuario normal
+    }
   }
 }

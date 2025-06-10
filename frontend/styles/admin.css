@@ -1,0 +1,39 @@
+/* Estilos específicos para modo administrador - versión simplificada */
+
+/* Alerta de modo administrador */
+.admin-alert {
+    background-color: #d4edda !important;
+    border: 1px solid #c3e6cb !important;
+    color: #155724 !important;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Para modo oscuro */
+body.dark-mode .admin-alert {
+    background-color: #1e3e2a !important;
+    border-color: #28a745 !important;
+    color: #d4edda !important;
+}
+
+/* Estilo para texto de administrador */
+.admin-text {
+    color: #28a745 !important;
+    font-weight: bold !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-alert {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    
+    .admin-alert .btn {
+        margin-top: 10px;
+        display: block;
+        width: 100%;
+    }
+}

@@ -60,10 +60,10 @@ function requireUser(req, res, next) {
 
 /**
  * Middleware que verifica si el usuario es administrador
- * 
+ * Verifica que el role_id sea exactamente 1 (administrador)
  */
 function requireAdmin(req, res, next) {
-  if (req.user?.isAdmin) {
+  if (req.user?.role_id === 1) {
     next();
   } else {
     res.status(403).json({ message: 'Acceso denegado. Se requieren permisos de administrador.' });
@@ -92,9 +92,36 @@ function requireAuthForPage(req, res, next) {
     }
 }
 
+/**
+ * Middleware para verificar si el usuario es administrador en páginas
+ * Redirige a home si no es administrador
+ */
+function requireAdminForPage(req, res, next) {
+    const authHeader = req.headers['authorization'] || req.cookies?.token; 
+    const token = authHeader?.split(' ')[1];
+
+    if (!token) {
+        return res.redirect('/awaq/login');
+    }
+    
+    try {
+        const decoded = jwt.verify(token, SECRET_KEY);
+        req.user = decoded;
+        
+        if (decoded.role_id === 1) {
+            next();
+        } else {
+            return res.redirect('/awaq/home');
+        }
+    } catch (error) {
+        return res.redirect('/awaq/login');
+    }
+}
+
 module.exports = {
     authenticateToken,
     requireUser,
     requireAdmin,
-    requireAuthForPage
+    requireAuthForPage,
+    requireAdminForPage
 };
