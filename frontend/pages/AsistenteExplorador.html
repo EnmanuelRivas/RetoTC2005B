@@ -6,7 +6,6 @@
   <title>Mawi</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <script src="../scripts/auth.js"></script>
   <style>
     body {
       background-color: #2a2a2a;
@@ -31,9 +30,6 @@
       align-items: center;
       color: white;
       margin: 0;
-    }
-    .top-bar h1::before {
-      margin-right: 10px;
     }
     .top-bar .user-info {
       color: white;
@@ -65,6 +61,12 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+    .sidebar.collapsed {
+      width: 0;
+      padding: 0;
+      overflow: hidden;
     }
     .sidebar nav {
       display: flex;
@@ -178,11 +180,24 @@
     .hidden {
       display: none;
     }
+    #toggleSidebar {
+      border: none;
+      background: none;
+      outline: none;
+      box-shadow: none;
+      margin-right: 15px;
+    }
   </style>
 </head>
+
 <body>
   <div class="top-bar">
-    <h1><i class="bi bi-eye" style="margin-right: 10px;"></i>Mawi</h1>
+    <div style="display: flex; align-items: center;">
+      <button id="toggleSidebar">
+        <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
+      </button>
+      <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
+    </div>
     <div class="user-info">
       <span>Usuario <i class="bi bi-person-fill"></i></span>
       <div class="logout-button">
@@ -190,26 +205,29 @@
       </div>
     </div>
   </div>
+
   <div class="main-body">
     <div class="sidebar">
       <div>
         <nav>
           <a href="/awaq/home">Inicio</a>
+          <a href="/awaq/perfil">Mi Perfil</a>
           <a href="/awaq/AsistenteBiomo">Asistente de Mi Biomo</a>
           <a href="/awaq/AsistenteExplorador" class="active">Explorador de Anteproyectos</a>
           <a href="/awaq/convocatorias">Convocatorias</a>
-          <a href="/awaq/perfil">Mi Perfil</a>
+          <a href="./metricas.html" style="display: none;">Metricas</a>
+          <a href="./viewEcoRanger.html" style="display: none;">EcoRanger</a>
+          <a href="./gestionUsuario.html" style="display: none;">Gestión de Usuarios</a>      
         </nav>
       </div>
       <div>
         <div class="support-button">
           <i class="bi bi-telephone"></i>Contacta con el soporte
         </div>
-        <div class="sidebar-logout">
-          <i class="bi bi-box-arrow-right"></i>Cerrar sesión
-        </div>
+
       </div>
     </div>
+
     <div class="main-content">
       <h2>Asistente Explorador de Anteproyectos</h2>
       <div class="tabs">
@@ -236,12 +254,14 @@
         </div>
       </div>
       <div id="cerrados" class="hidden">
-        <div class="card-anteproyecto"><div>
+        <div class="card-anteproyecto">
+          <div>
             <h5><strong>Título</strong></h5>
             <p>Descripción</p>
             <small>Fecha de creación: 00/00/0000</small><br>
             <small>Fecha límite: 00/00/0000</small>
-          </div></div>
+          </div>
+        </div>
       </div>
       <div id="todos" class="hidden"></div>
       <button class="btn-float">Crear Nuevo Anteproyecto</button>
@@ -249,6 +269,10 @@
   </div>
 
   <script>
+    document.getElementById("toggleSidebar").addEventListener("click", function () {
+      document.querySelector(".sidebar").classList.toggle("collapsed");
+    });
+
     function mostrarTab(tabId, el) {
       document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
       el.classList.add('active');
@@ -277,5 +301,30 @@
       });
     });
   </script>
+  <script type="module">
+  import { getIsAdminFromToken } from '../scripts/auth.js';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const isAdmin = getIsAdminFromToken();
+
+    if (isAdmin) {
+      const metricasLink =document.querySelector('a[href="./metricas.html"]');
+      if (metricasLink) {
+        metricasLink.style.display = 'block';
+      }
+
+      const gestionUsuariosLink = document.querySelector('a[href="./gestionUsuario.html"]');
+      if (gestionUsuariosLink) {
+        gestionUsuariosLink.style.display = 'block';
+      }
+
+      const EcoRangerLink = document.querySelector('a[href="./viewEcoRanger.html"]');
+      if (EcoRangerLink) {
+        EcoRangerLink.style.display = 'block';
+      }
+
+    }
+  });
+</script>
 </body>
 </html>
