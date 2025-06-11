@@ -258,7 +258,7 @@
       try {
         console.log("📦 Datos a enviar:", data);
 
-        const response = await fetch('http://localhost:4000/awaq/api/postConvocatoria', {
+        const response = await fetch(`${API_BASE_URL}/awaq/api/postConvocatoria`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
