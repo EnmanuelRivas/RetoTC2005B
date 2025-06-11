@@ -48,8 +48,22 @@ async function isValidUser(correo, contraseña) {
         let isEqual = await bcrypt.compare(contraseña, user.contraseñaHash);
         if (isEqual)
             return user;
-    }
-    return null;
+    }    return null;
 }
 
-module.exports = {encryptPassword,isValidUser}
+/**
+ * Compares a plain password with a hashed password
+ * @param {string} plainPassword - The plain text password
+ * @param {string} hashedPassword - The hashed password
+ * @returns {boolean} - True if passwords match, false otherwise
+ */
+async function comparePassword(plainPassword, hashedPassword) {
+    try {
+        return await bcrypt.compare(plainPassword, hashedPassword);
+    } catch (error) {
+        console.error("Error comparing passwords:", error);
+        return false;
+    }
+}
+
+module.exports = {encryptPassword, isValidUser, comparePassword}

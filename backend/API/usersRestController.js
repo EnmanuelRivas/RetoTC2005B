@@ -214,7 +214,20 @@ async function getUsers(req,res){
 async function findUser(req,res){
     try{       
         let username = req.body.username;
-        const result = await userService.findUserByEmail(username);
+        let id = req.body.id;
+        let result;
+        
+        if (id) {
+            result = await userService.findUserById(id);
+        } else if (username) {
+            result = await userService.findUserByEmail(username);
+        } else {
+            return res.status(400).json({
+                "status": "error",
+                "message": "Se requiere id o username"
+            });
+        }
+        
         res.status(200);
         res.json({
             "status"  : "success",
@@ -527,6 +540,172 @@ async function getAdminStats(req, res) {
         res.status(500).json({
             status: "error",
             message: "Error interno al obtener estadísticas."
+        });    }
+}
+
+/**
+ * Method that gets the profile of the authenticated user
+ * 
+ * @param {Object} req the request object
+ * @param {Object} res the response object
+ */
+async function getProfile(req, res) {
+    try {
+        const userId = req.user.id; // Obtenido del token JWT por el middleware
+        
+        const userResult = await userService.findUserById(userId);
+        
+        if (!userResult.rows || userResult.rows.length === 0) {
+            return res.status(404).json({
+                status: "error",
+                message: "Usuario no encontrado"
+            });
+        }
+        
+        const user = userResult.rows[0];
+        
+        // Remover la contraseña hash del resultado
+        delete user.contraseñaHash;
+        
+        res.status(200).json({
+            status: "success",
+            data: user
+        });
+    } catch (error) {
+        console.error('Error al obtener perfil:', error);
+        res.status(500).json({
+            status: "error",
+            message: "Error interno al obtener el perfil"
+        });
+    }
+}
+
+/**
+ * Method that updates the profile of the authenticated user
+ * 
+ * @param {Object} req the request object
+ * @param {Object} res the response object
+ */
+async function updateProfile(req, res) {
+    try {
+        const userId = req.user.id; // Obtenido del token JWT por el middleware
+        let userData = req.body;
+        userData.id = userId; // Asegurar que estamos actualizando el usuario correcto
+        
+        let profileImagePath = null;
+        
+        // Verificar si el usuario existe
+        const userResult = await userService.findUserById(userId);
+        if (!userResult.rows || userResult.rows.length === 0) {
+            return res.status(404).json({
+                status: "error",
+                message: "Usuario no encontrado"
+            });
+        }
+        
+        const existingUser = userResult.rows[0];
+        
+        // Procesar la imagen de perfil si está presente
+        if (req.file) {
+            // Si el usuario ya tiene una imagen, actualizarla
+            if (existingUser.imagen_perfil) {
+                profileImagePath = await profileImageService.updateProfileImage(
+                    req.file, 
+                    userId, 
+                    existingUser.imagen_perfil
+                );
+            } else {
+                // Si no tiene imagen, guardar una nueva
+                profileImagePath = await profileImageService.saveProfileImage(req.file, userId);
+            }
+        }
+        
+        // Actualizar usuario con la nueva imagen (si hay)
+        const result = await userService.updateUser(userData, profileImagePath);
+        
+        res.status(200).json({
+            status: "success",
+            message: "Perfil actualizado correctamente"
+        });
+    } catch (error) {
+        console.error('Error al actualizar perfil:', error);
+        res.status(500).json({
+            status: "error",
+            message: "Error interno al actualizar el perfil"
+        });    }
+}
+
+/**
+ * Method that updates the password of the authenticated user
+ * 
+ * @param {Object} req the request object
+ * @param {Object} res the response object
+ */
+async function updatePassword(req, res) {
+    try {
+        const userId = req.user.id;
+        const { currentPassword, newPassword, confirmPassword } = req.body;
+
+        // Validaciones
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            return res.status(400).json({
+                status: "error",
+                message: "Todos los campos son requeridos"
+            });
+        }
+
+        if (newPassword !== confirmPassword) {
+            return res.status(400).json({
+                status: "error",
+                message: "Las nuevas contraseñas no coinciden"
+            });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({
+                status: "error",
+                message: "La nueva contraseña debe tener al menos 6 caracteres"
+            });
+        }
+
+        // Obtener usuario actual
+        const userResult = await userService.findUserById(userId);
+        if (!userResult.rows || userResult.rows.length === 0) {
+            return res.status(404).json({
+                status: "error",
+                message: "Usuario no encontrado"
+            });
+        }
+
+        const user = userResult.rows[0];
+
+        // Verificar contraseña actual
+        const isCurrentPasswordValid = await hashService.comparePassword(currentPassword, user.contraseñaHash);
+        if (!isCurrentPasswordValid) {
+            return res.status(400).json({
+                status: "error",
+                message: "La contraseña actual es incorrecta"
+            });
+        }
+
+        // Hashear nueva contraseña
+        const newPasswordHash = await hashService.encryptPassword(newPassword);
+
+        // Actualizar contraseña en la base de datos
+        const updateResult = await userService.updateUser({
+            id: userId,
+            contraseñaHash: newPasswordHash
+        });
+
+        res.status(200).json({
+            status: "success",
+            message: "Contraseña actualizada correctamente"
+        });
+    } catch (error) {
+        console.error('Error al actualizar contraseña:', error);
+        res.status(500).json({
+            status: "error",
+            message: "Error interno al actualizar la contraseña"
         });
     }
 }
@@ -543,5 +722,8 @@ module.exports = {
     recuperarPassword,
     verificarTokenRecuperacion,
     restablecerPassword,
-    getAdminStats
+    getAdminStats,
+    getProfile,
+    updateProfile,
+    updatePassword
 }
