@@ -9,7 +9,7 @@ const upload = require("../middleware/upload.middleware");
 const anteproyectosRest = require("../API/anteproyectosRestController");
 const convocatoriasRest = require('../API/convocatoriasRestController');
 
-const { requireAdmin, requireUser, requireAdminForPage } = require("../middleware/auth.middleware");
+const { requireAdmin, requireUser, requireAdminForPage, authenticateToken } = require("../middleware/auth.middleware");
 
 const router = express.Router();
 
@@ -61,42 +61,43 @@ router.post(`${constants.contextURL}${constants.apiURL}/restablecer-password`, u
 
 router.get(
   `${constants.contextURL}${constants.apiURL}/getUsers`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireAdmin,
   usersRest.getUsers
 );
 
 router.post(
   `${constants.contextURL}${constants.apiURL}/findUser`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireUser,
   usersRest.findUser
 );
 
 router.post(
   `${constants.contextURL}${constants.apiURL}/insertUser`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireAdmin,
   usersRest.insertUser
 );
 
 router.put(
   `${constants.contextURL}${constants.apiURL}/updateUser`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireUser,
   upload.single('profileImg'), // Middleware para subir una única imagen
   usersRest.updateUser
 );
+
 router.delete(
   `${constants.contextURL}${constants.apiURL}/deleteUser`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireAdmin,
   usersRest.deleteUser
 );
 
 router.get(
   `${constants.contextURL}${constants.apiURL}/admin/stats`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireAdmin,
   usersRest.getAdminStats
 );
@@ -104,14 +105,14 @@ router.get(
 /* ------------------------ ANTEPROYECTOS API ------------------------ */
 router.get(
   `${constants.contextURL}${constants.apiURL}/getAnteproyectos`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireUser,
   anteproyectosRest.getAnteproyectos
 );
 
 router.post(
   `${constants.contextURL}${constants.apiURL}/postAnteproyecto`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireUser,
   anteproyectosRest.postAnteproyecto
 );
@@ -120,7 +121,7 @@ router.post(
 
 // Generales
 router.get("/registro", formsRest.getRegistros);
-router.post("/subirRegistro", usersRest.authenticateToken, requireUser, formsRest.postRegistros);
+router.post("/subirRegistro", authenticateToken, requireUser, formsRest.postRegistros);
 
 // Variables Climáticas
 router.get("/registro/getVariableClimatica", formsRest.getVariablesClimatica);
@@ -153,7 +154,7 @@ router.post("/registro/subirFaunaBusquedaLibre", formsRest.postBusquedaLibre);
 /* ------------------------ SUBIDA DE IMÁGENES ------------------------ */
 router.post(
   "/registro/subirImagen",
-  usersRest.authenticateToken,
+  authenticateToken,
   requireUser,
   upload.array("imagen", 5),
   imageRest.subirImagen 
@@ -162,14 +163,14 @@ router.post(
 /* ------------------------ CONVOCATORIAS API ------------------------ */
 router.get(
   `${constants.contextURL}${constants.apiURL}/getConvocatorias`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireUser,
   convocatoriasRest.getConvocatorias
 );
 
 router.post(
   `${constants.contextURL}${constants.apiURL}/postConvocatoria`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireUser,
   convocatoriasRest.postConvocatoria
 );

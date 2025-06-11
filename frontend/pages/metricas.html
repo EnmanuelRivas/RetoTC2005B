@@ -214,8 +214,39 @@
         </tbody>
       </table>
     </div>
-  </div>
-  <script>
+  </div>  <script>
+    // Verificación de autenticación y permisos de administrador
+    function checkAdminAccess() {
+      const token = localStorage.getItem('authToken');
+      
+      if (!token) {
+        alert('Debes iniciar sesión para acceder a esta página.');
+        window.location.href = '/awaq/login';
+        return;
+      }
+      
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const isAdmin = payload.role_id === 1;
+        
+        if (!isAdmin) {
+          alert('Acceso denegado. Se requieren permisos de administrador.');
+          window.location.href = '/awaq/home';
+          return;
+        }
+        
+        console.log('Acceso de administrador verificado');
+      } catch (error) {
+        console.error('Error al verificar el token:', error);
+        alert('Token inválido. Por favor, inicia sesión nuevamente.');
+        localStorage.removeItem('authToken');
+        window.location.href = '/awaq/login';
+      }
+    }
+    
+    // Ejecutar verificación al cargar la página
+    checkAdminAccess();
+    
     const chartConfig = (ctx, label, data) => new Chart(ctx, {
       type: 'doughnut',
       data: {
@@ -233,12 +264,37 @@
           legend: { display: false },
         }
       }
-    });
-
-    window.onload = () => {
-      chartConfig(document.getElementById('chartBiomos'), 'Biomos', [75, 25]);
-      chartConfig(document.getElementById('chartEco1'), 'EcoRanger', [80, 20]);
-      chartConfig(document.getElementById('chartEco2'), 'Anteproyectos', [60, 40]);
+    });    window.onload = () => {
+      // Verificar autenticación y permisos de administrador
+      const token = localStorage.getItem('authToken');
+      
+      if (!token) {
+        alert('Debes iniciar sesión para acceder a esta página.');
+        window.location.href = '/awaq/login';
+        return;
+      }
+      
+      try {
+        // Decodificar el token para verificar el rol
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const isAdmin = payload.role_id === 1;
+        
+        if (!isAdmin) {
+          alert('Acceso denegado. Se requieren permisos de administrador.');
+          window.location.href = '/awaq/home';
+          return;
+        }
+        
+        // Si es admin, inicializar los gráficos
+        chartConfig(document.getElementById('chartBiomos'), 'Biomos', [75, 25]);
+        chartConfig(document.getElementById('chartEco1'), 'EcoRanger', [80, 20]);
+        chartConfig(document.getElementById('chartEco2'), 'Anteproyectos', [60, 40]);
+      } catch (error) {
+        console.error('Error al verificar token:', error);
+        alert('Token inválido. Por favor, inicia sesión nuevamente.');
+        localStorage.removeItem('authToken');
+        window.location.href = '/awaq/login';
+      }
     }
   </script>
 </body>
