@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (response.ok) {
         if (data.token) {
-          localStorage.setItem('authToken', data.token);
+          //localStorage.setItem('authToken', data.token);
           console.log("Token guardado en localStorage");
         }
       } else {

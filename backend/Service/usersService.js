@@ -2,7 +2,7 @@
  * Users service.
  * Contains all the required logic to manage users on the APP.
  * 
- * It is a good practice to separate the service from the controller, in order to have a better separation of concerns
+ * It is a good practice to separate the service from the roller, in order to have a better separation of concerns
  * and a better code organization.
  * 
  * Examples of why this is a good practice:
@@ -24,9 +24,11 @@ async function getUsers(){
     let qResult;
     try{
         // Modificamos la consulta para no incluir contraseñas
-        let query = 'SELECT id, nombre, apellidos, correo, numeroTelefono, pais, provincia, ciudad, organizacion, descripcion, isAdmin FROM usuarios';
+        let query = 'SELECT id, nombre, apellidos, correo, role_id, numeroTelefono, pais, provincia, ciudad, organizacion, descripcion, role_id FROM usuarios';
         qResult = await dataSource.getData(query);   
+        console.log("Usuarios encontrados:", qResult.rows); // 👈 DEBUG
     }catch(err){
+        console.error("Error al obtener usuarios:", err);  // 👈 DEBUG error
         qResult = new dataSource.QueryResult(false,[],0,0,err.message);
     }
     return qResult;
@@ -323,10 +325,23 @@ async function updatePassword(userId, newPassword) {
     }
     return qResult;
 }
+async function actualizarRol(userId, role_id) {
+  try {
+    const query = `UPDATE usuarios SET role_id = ? WHERE id = ?`;
+    const result = await dataSource.updateData(query, [role_id, userId]);
+    return result;
+  } catch (error) {
+    return { error: error.message };
+  }
+}
+
+
+
 
 module.exports = {
     getUsers,
     findUserById,
+    actualizarRol,
     insertUser,
     updateUser,
     deleteUser,

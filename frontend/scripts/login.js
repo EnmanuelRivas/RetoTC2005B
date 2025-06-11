@@ -1,27 +1,29 @@
-// Función para poder redirigir a la página de registro
 document.addEventListener("DOMContentLoaded", () => {
     const registerButton = document.getElementById("register-button");
 
-    registerButton.addEventListener("click", (event) => {
-        event.preventDefault(); 
-        window.location.href = "/awaq/home";
-    });
-});
+    if (registerButton) {
+        registerButton.addEventListener("click", (event) => {
+            event.preventDefault(); 
+            window.location.href = "/awaq/home";
+        });
+    }
 
-// Función para poder iniciar sesión en la plataforma
-document.addEventListener("DOMContentLoaded", () => {
     const correoUsuario = document.getElementById("correo-usuario");
     const contraseñaUsuario = document.getElementById("contraseña-usuario");
     const loginButton = document.getElementById("login-button");
-    
-    // Verificar si ya hay un token y redirigir si existe
+
+    if (!correoUsuario || !contraseñaUsuario || !loginButton) {
+        console.warn("⛔ Elementos del formulario de login no encontrados");
+        return;
+    }
+
     if (localStorage.getItem("authToken")) {
         window.location.href = "/awaq/home";
         return;
     }
-    
+
     loginButton.addEventListener("click", async (event) => {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault();
 
         const usuario = {
             correo: correoUsuario.value.trim(),
@@ -42,21 +44,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify(usuario)
             });
 
+            const data = await response.json();
+
             if (response.ok) {
-                const data = await response.json();
-                
-                // Guardar el token en localStorage
+                // Verifica si es pendiente
+                const payload = JSON.parse(atob(data.token.split('.')[1]));
+                if (payload.role_id === 3) {
+                    alert("Tu cuenta aún está pendiente de aprobación.");
+                    return; // ❌ No redirige ni guarda el token
+                }
+
+                // ✅ Usuario válido
                 localStorage.setItem("authToken", data.token);
-                
-                // Redirigir a la página de inicio
                 window.location.href = "/awaq/home";
             } else {
-                const errorData = await response.json();
-                alert(errorData.message || "Credenciales inválidas");
+                alert(data.message || "Credenciales inválidas");
             }
         } catch (error) {
             console.error("Error:", error);
             alert("Error al iniciar sesión. Por favor, inténtalo de nuevo.");
         }
-    });  
+    });
 });
