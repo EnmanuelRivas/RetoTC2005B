@@ -99,6 +99,19 @@
       color: #00b300;
       margin-right: 8px;
     }
+     .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      color: #ff6b6b;
+    }
+    .logout-button:hover {
+      background-color: #333;
+    }
     .sidebar-logout {
       background-color: #444;
       padding: 12px;
@@ -245,7 +258,7 @@
       try {
         console.log("📦 Datos a enviar:", data);
 
-        const response = await fetch('http://localhost:4000/awaq/api/postConvocatoria', {
+        const response = await fetch(`http://localhost:4000/awaq/api/postConvocatoria`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -273,10 +286,13 @@
       } catch (error) {
         console.error("🔥 Error inesperado:", error);
         alert("❌ Error al intentar enviar la convocatoria");
-      }
+      }    });
+    
+    document.querySelector('.logout-button').addEventListener('click', function() {
+      localStorage.removeItem('authToken');
+      window.location.href = '/awaq';
     });
   });
 </script>
-
-</body>
+  </body>
 </html>
