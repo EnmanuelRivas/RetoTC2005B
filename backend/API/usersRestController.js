@@ -709,6 +709,7 @@ async function updatePassword(req, res) {
             message: "Error interno al actualizar la contraseña"
         });
     }
+}
 
 async function actualizarRol(req, res) {
   const userId = req.params.id;
