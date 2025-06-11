@@ -166,8 +166,7 @@
     .profile-support-button i {
       margin-right: 10px;
       color: #00b300;
-    }
-    .profile-img-container {
+    }    .profile-img-container {
       width: 150px;
       height: 150px;
       border-radius: 50%;
@@ -178,14 +177,26 @@
       justify-content: center;
       overflow: hidden;
       position: relative;
-      cursor: pointer;
       margin-bottom: 30px;
+      border: 3px solid #555;
+      transition: all 0.3s ease;
+    }
+
+    .profile-img-container.editable {
+      cursor: pointer;
+      border-color: #00b300;
+    }
+
+    .profile-img-container.editable:hover {
+      border-color: #00ff00;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
     }
 
     .profile-img-container img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: 50%;
     }
 
     .profile-img-container .overlay {
@@ -194,16 +205,24 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.7);
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
       transition: opacity 0.3s;
+      border-radius: 50%;
     }
 
-    .profile-img-container:hover .overlay {
+    .profile-img-container.editable:hover .overlay {
       opacity: 1;
+    }
+
+    .profile-img-container .overlay span {
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      padding: 0 10px;
     }
 
     #profileImgInput {
@@ -468,18 +487,19 @@
       <!-- Sección de perfil personal (editable) -->
       <div class="profile-section">
         <h3>Información personal</h3>
-        
-        <form id="form-perfil">
-          <div class="text-center">
-            <label for="profile-img-input" class="profile-img-container">
+          <form id="form-perfil">          <div class="text-center">
+            <div class="profile-img-container" id="profile-img-container">
               <div id="profile-img-preview">
                 <i class="bi bi-person" style="font-size: 48px; color: #ccc;"></i>
               </div>
-              <div class="overlay">
+              <div class="overlay" id="profile-overlay" style="display: none;">
                 <span class="text-white">Cambiar foto</span>
               </div>
-              <input type="file" id="profile-img-input" name="profileImg" accept="image/*">
-            </label>
+              <input type="file" id="profile-img-input" name="profileImg" accept="image/*" style="display: none;">
+            </div>
+            <div id="image-edit-hint" style="display: none; color: #00b300; font-size: 14px; margin-top: 10px;">
+              <i class="bi bi-info-circle"></i> Haz clic en tu imagen para cambiarla
+            </div>
           </div>
           
           <div class="form-group">

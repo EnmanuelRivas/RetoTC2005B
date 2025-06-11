@@ -22,6 +22,30 @@ function configStaticFilesAndViews(app) {
 
     app.use('/uploads', express.static(join(__dirname, '../uploads')));
     
+    // Middleware para manejar archivos .gz de Unity con headers correctos
+    app.use('/game/Build', express.static(join(__dirname, '../frontend/game/Build'), {
+    setHeaders: function (res, path) {
+        console.log('Serving file:', path); // Debug log
+        
+        // Handle all .gz files with appropriate Content-Encoding
+        if (path.endsWith('.gz')) {
+            res.setHeader('Content-Encoding', 'gzip');
+            
+            // Set appropriate Content-Type based on the original file type
+            if (path.includes('.wasm.gz')) {
+                res.setHeader('Content-Type', 'application/wasm');
+            } else if (path.includes('.js.gz')) {
+                res.setHeader('Content-Type', 'application/javascript');
+            } else if (path.includes('.data.gz')) {
+                res.setHeader('Content-Type', 'application/octet-stream');
+            } else {
+                // Fallback for other .gz files
+                res.setHeader('Content-Type', 'application/octet-stream');
+            }
+        }
+    }
+}));
+    
     app.use(express.static(frontendPath));
     
     // Rutas adicionales del backend (API)

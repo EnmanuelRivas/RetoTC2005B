@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Decodifica JWT para obtener rol administrador
-export function getIsAdminFromToken() {
+function getIsAdminFromToken() {
     const token = localStorage.getItem('authToken');
     if (!token) return false;
 
@@ -100,7 +100,7 @@ export function getIsAdminFromToken() {
 }
 
 // Obtiene info básica del usuario desde token
-export function getUserInfoFromToken() {
+function getUserInfoFromToken() {
     const token = localStorage.getItem('authToken');
     if (!token) return null;
 
@@ -120,7 +120,7 @@ export function getUserInfoFromToken() {
 }
 
 // Muestra u oculta elemento según rol admin
-export function toggleAdminElement(elementId, showForAdmin = true) {
+function toggleAdminElement(elementId, showForAdmin = true) {
     const element = document.getElementById(elementId);
     const isAdmin = getIsAdminFromToken();
 
@@ -130,7 +130,7 @@ export function toggleAdminElement(elementId, showForAdmin = true) {
 }
 
 // Oculta varios elementos si no es admin
-export function hideForNonAdmins(elementIds) {
+function hideForNonAdmins(elementIds) {
     const isAdmin = getIsAdminFromToken();
 
     if (!isAdmin) {
@@ -142,7 +142,7 @@ export function hideForNonAdmins(elementIds) {
 }
 
 // Verifica acceso admin y redirige si no tiene permisos
-export function checkAdminAccess() {
+function checkAdminAccess() {
     const isAdmin = getIsAdminFromToken();
     const currentPath = window.location.pathname;
 
@@ -165,7 +165,7 @@ export function checkAdminAccess() {
 }
 
 // Agrega botones admin dinámicamente
-export function addAdminButtons(containerId) {
+function addAdminButtons(containerId) {
     const isAdmin = getIsAdminFromToken();
     const container = document.getElementById(containerId);
 
@@ -194,7 +194,7 @@ export function addAdminButtons(containerId) {
 }
 
 // Muestra info del usuario con estilo según rol
-export function displayUserInfo(elementId) {
+function displayUserInfo(elementId) {
     const user = getUserInfoFromToken();
     const element = document.getElementById(elementId);
 
