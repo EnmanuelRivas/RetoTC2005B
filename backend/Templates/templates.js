@@ -219,6 +219,24 @@ async function viewEcoRangerPage(req, res) {
     res.sendFile(path.join(frontendPath, "pages", "viewEcoRanger.html"));
 }
 
+/**
+ * Muestra la página del videojuego AWAQ (juego.html).
+ * @param {Object} req Client request
+ * @param {Object} res Server response
+ */
+async function juegoPage(req, res) {
+    res.sendFile(path.join(frontendPath, "pages", "juego.html"));
+}
+
+/**
+ * Muestra la página del juego (juego.html).
+ * @param {Object} req Client request
+ * @param {Object} res Server response
+ */
+async function juegoPage(req, res) {
+    res.sendFile(path.join(frontendPath, "pages", "juego.html"));
+}
+
 module.exports = {
     index,
     loginPage,
@@ -243,5 +261,6 @@ module.exports = {
     preRegPage,
     crearEcoRangerPage,
     editarEcoRangerPage,
-    viewEcoRangerPage
+    viewEcoRangerPage,
+    juegoPage
 };
