@@ -623,8 +623,7 @@ async function updateProfile(req, res) {
         
         // Actualizar usuario con la nueva imagen (si hay)
         const result = await userService.updateUser(userData, profileImagePath);
-        
-        res.status(200).json({
+          res.status(200).json({
             status: "success",
             message: "Perfil actualizado correctamente"
         });
@@ -633,7 +632,8 @@ async function updateProfile(req, res) {
         res.status(500).json({
             status: "error",
             message: "Error interno al actualizar el perfil"
-        });    }
+        });
+    }
 }
 
 /**

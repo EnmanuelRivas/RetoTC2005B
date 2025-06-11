@@ -13,10 +13,35 @@ async function initPerfil() {
         await cargarDatosPerfil();
         setupEventListeners();
         mostrarInformacionUsuario();
+        inicializarModoVisualizacion(); // Asegurar que inicie en modo visualización
     } catch (error) {
         console.error('Error al inicializar perfil:', error);
         mostrarNotificacion('Error al cargar los datos del perfil', 'error');
     }
+}
+
+/**
+ * Inicializa el modo visualización (imagen no editable)
+ */
+function inicializarModoVisualizacion() {
+    const profileContainer = document.getElementById('profile-img-container');
+    const profileOverlay = document.getElementById('profile-overlay');
+    const imageHint = document.getElementById('image-edit-hint');
+    
+    if (profileContainer) {
+        profileContainer.classList.remove('editable');
+        profileContainer.style.cursor = 'default';
+    }
+    
+    if (profileOverlay) {
+        profileOverlay.style.display = 'none';
+    }
+    
+    if (imageHint) {
+        imageHint.style.display = 'none';
+    }
+    
+    isEditing = false;
 }
 
 /**
@@ -116,10 +141,26 @@ function mostrarImagenPerfil() {
 
     if (perfilData && perfilData.imagen_perfil) {
         // Construir la URL completa de la imagen
-        const imageUrl = `/awaq/uploads/${perfilData.imagen_perfil}`;
-        profileImgPreview.innerHTML = `<img src="${imageUrl}" alt="Imagen de perfil" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+        let imageUrl;
+        if (perfilData.imagen_perfil.startsWith('/uploads/')) {
+            imageUrl = `/awaq${perfilData.imagen_perfil}`;
+        } else {
+            imageUrl = `/awaq/uploads/${perfilData.imagen_perfil}`;
+        }
+        
+        profileImgPreview.innerHTML = `
+            <img src="${imageUrl}" 
+                 alt="Imagen de perfil" 
+                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"
+                 onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\\'bi bi-person\\' style=\\'font-size: 48px; color: #ccc;\\'></i>';">
+        `;
     } else {
-        profileImgPreview.innerHTML = '<i class="bi bi-person" style="font-size: 48px; color: #ccc;"></i>';
+        profileImgPreview.innerHTML = `
+            <i class="bi bi-person" style="font-size: 48px; color: #ccc;"></i>
+            <div style="position: absolute; bottom: -25px; font-size: 12px; color: #888; text-align: center; width: 100%;">
+                Sin imagen
+            </div>
+        `;
     }
 }
 
@@ -192,12 +233,21 @@ function setupEventListeners() {
             localStorage.removeItem('authToken');
             window.location.href = '/awaq';
         });
-    }
-
-    // Manejo de imagen de perfil
+    }    // Manejo de imagen de perfil
     const profileImgInput = document.getElementById('profile-img-input');
+    const profileContainer = document.getElementById('profile-img-container');
+    
     if (profileImgInput) {
         profileImgInput.addEventListener('change', handleImageUpload);
+    }
+    
+    // Click en el contenedor de imagen (solo en modo edición)
+    if (profileContainer) {
+        profileContainer.addEventListener('click', function() {
+            if (isEditing && profileImgInput) {
+                profileImgInput.click();
+            }
+        });
     }
 }
 
@@ -208,6 +258,8 @@ function toggleEditMode() {
     const campos = ['nombre', 'apellidos', 'numeroTelefono', 'pais', 'provincia', 'ciudad', 'organizacion', 'descripcion'];
     const btnEditar = document.getElementById('btn-editar-perfil');
     const formActions = document.querySelector('.form-actions');
+    const profileContainer = document.getElementById('profile-img-container');
+    const profileOverlay = document.getElementById('profile-overlay');
 
     if (!isEditing) {
         // Entrar en modo edición
@@ -215,9 +267,26 @@ function toggleEditMode() {
             const input = document.getElementById(campo);
             if (input) input.disabled = false;
         });
+          // Habilitar edición de imagen
+        if (profileContainer) {
+            profileContainer.classList.add('editable');
+            profileContainer.style.cursor = 'pointer';
+            if (profileOverlay) {
+                profileOverlay.style.display = 'flex';
+            }
+        }
+        
+        // Mostrar hint para cambiar imagen
+        const imageHint = document.getElementById('image-edit-hint');
+        if (imageHint) {
+            imageHint.style.display = 'block';
+        }
+        
         btnEditar.style.display = 'none';
         formActions.style.display = 'flex';
         isEditing = true;
+        
+        mostrarNotificacion('Modo edición activado. Ahora puedes cambiar tu imagen de perfil.', 'info');
     }
 }
 
@@ -228,18 +297,41 @@ function cancelarEdicion() {
     const campos = ['nombre', 'apellidos', 'numeroTelefono', 'pais', 'provincia', 'ciudad', 'organizacion', 'descripcion'];
     const btnEditar = document.getElementById('btn-editar-perfil');
     const formActions = document.querySelector('.form-actions');
+    const profileContainer = document.getElementById('profile-img-container');
+    const profileOverlay = document.getElementById('profile-overlay');
 
     // Salir del modo edición
     campos.forEach(campo => {
         const input = document.getElementById(campo);
         if (input) input.disabled = true;
     });
+      // Deshabilitar edición de imagen
+    if (profileContainer) {
+        profileContainer.classList.remove('editable');
+        profileContainer.style.cursor = 'default';
+        if (profileOverlay) {
+            profileOverlay.style.display = 'none';
+        }
+    }
+    
+    // Ocultar hint para cambiar imagen
+    const imageHint = document.getElementById('image-edit-hint');
+    if (imageHint) {
+        imageHint.style.display = 'none';
+    }
+    
     btnEditar.style.display = 'inline-block';
     formActions.style.display = 'none';
     isEditing = false;
     
     // Restaurar valores originales
     mostrarDatosPerfil();
+    
+    // Limpiar el input de imagen
+    const profileImgInput = document.getElementById('profile-img-input');
+    if (profileImgInput) {
+        profileImgInput.value = '';
+    }
 }
 
 /**
@@ -461,6 +553,13 @@ function handleImageUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
 
+    // Verificar que estemos en modo edición
+    if (!isEditing) {
+        mostrarNotificacion('Activa el modo edición para cambiar tu imagen de perfil', 'warning');
+        event.target.value = ''; // Limpiar el input
+        return;
+    }
+
     // Validar tipo de archivo
     if (!file.type.startsWith('image/')) {
         mostrarNotificacion('Por favor selecciona un archivo de imagen válido', 'error');
@@ -473,7 +572,7 @@ function handleImageUpload(event) {
         return;
     }
 
-    // Mostrar vista previa
+    // Mostrar vista previa inmediatamente
     const reader = new FileReader();
     reader.onload = function(e) {
         const profileImgPreview = document.getElementById('profile-img-preview');
@@ -483,7 +582,10 @@ function handleImageUpload(event) {
     };
     reader.readAsDataURL(file);
 
-    // Subir imagen inmediatamente
+    // Mostrar notificación de que se está subiendo
+    mostrarNotificacion('Subiendo imagen...', 'info');
+    
+    // Subir imagen al servidor
     uploadProfileImage(file);
 }
 
@@ -492,21 +594,42 @@ function handleImageUpload(event) {
  */
 async function uploadProfileImage(file) {
     try {
+        console.log('🔄 Iniciando subida de imagen de perfil...');
         const formData = new FormData();
-        formData.append('profileImage', file);
+        formData.append('profileImg', file);
 
         const token = localStorage.getItem('authToken');
-        const response = await fetch('/awaq/api/upload-profile-image', {
-            method: 'POST',
+        console.log('🔑 Token encontrado:', !!token);
+        
+        if (!token) {
+            throw new Error('No hay token de autenticación');
+        }
+
+        console.log('📤 Enviando imagen al servidor...');
+        const response = await fetch('/awaq/api/profile', {
+            method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`
             },
             body: formData
         });
 
-        const resultado = await response.json();
+        console.log('📨 Respuesta del servidor:', {
+            status: response.status,
+            statusText: response.statusText,
+            ok: response.ok
+        });
 
-        if (response.ok && resultado.status === 'success') {
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('❌ Error del servidor:', errorText);
+            throw new Error(`Error del servidor: ${response.status} - ${errorText}`);
+        }
+
+        const resultado = await response.json();
+        console.log('✅ Resultado recibido:', resultado);
+
+        if (resultado.status === 'success') {
             mostrarNotificacion('Imagen de perfil actualizada correctamente', 'success');
             // Actualizar los datos del perfil
             await cargarDatosPerfil();

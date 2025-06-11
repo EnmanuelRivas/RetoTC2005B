@@ -205,9 +205,9 @@
         row.innerHTML = `
           <td>${u.nombre}</td>
           <td>${u.apellidos}</td>
-          <td>${u.correo}</td>
-          <td>
-            <select onchange="cambiarRol(${u.id}, this.value)">              <option value="2" ${u.role_id == 2 ? 'selected' : ''}>Usuario</option>
+          <td>${u.correo}</td>          <td>
+            <select onchange="actualizarRol(${u.id}, this.value)">
+              <option value="2" ${u.role_id == 2 ? 'selected' : ''}>Usuario</option>
               <option value="1" ${u.role_id == 1 ? 'selected' : ''}>Administrador</option>
               <option value="3" ${u.role_id == 3 ? 'selected' : ''}>Pendiente</option>
             </select>
@@ -217,7 +217,8 @@
           <td>${u.provincia || '-'}</td>
           <td>${u.ciudad || '-'}</td>
           <td>${u.organizacion || '-'}</td>
-          <td>${u.descripcion || '-'}</td>          <td><span class="badge ${u.estado == 1 ? 'active' : 'inactive'}">${u.estado == 1 ? 'Activo' : 'Inactivo'}</span></td>
+          <td>${u.descripcion || '-'}</td>
+          <td><span class="badge ${u.estado == 1 ? 'active' : 'inactive'}">${u.estado == 1 ? 'Activo' : 'Inactivo'}</span></td>
           <td><button onclick="actualizarRol(${u.id})">Guardar</button></td>
         `;
         tbody.appendChild(row);
@@ -256,4 +257,3 @@
 </script>
 </body>
 </html>
-
