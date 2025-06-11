@@ -249,7 +249,6 @@
 }
 
 .btn-primary:focus-visible,
-.btn-secondary:focus-visible {
-    outline: 2px solid #ffffff;
+.btn-secondary:focus-visible {    outline: 2px solid #ffffff;
     outline-offset: 2px;
 }

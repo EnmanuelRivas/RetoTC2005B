@@ -537,11 +537,11 @@ async function getAdminStats(req, res) {
             data: stats
         });
     } catch (error) {
-        console.error('Error al obtener estadísticas de administrador:', error);
-        res.status(500).json({
+        console.error('Error al obtener estadísticas de administrador:', error);        res.status(500).json({
             status: "error",
             message: "Error interno al obtener estadísticas."
-        });    }
+        });    
+    }
 }
 
 /**
@@ -709,7 +709,7 @@ async function updatePassword(req, res) {
             message: "Error interno al actualizar la contraseña"
         });
     }
-}
+
 async function actualizarRol(req, res) {
   const userId = req.params.id;
   const { role_id } = req.body;
@@ -725,15 +725,16 @@ async function actualizarRol(req, res) {
       return res.status(500).json({ status: "error", message: result.error });
     }
 
+    if (result.changes === 0) {
+      return res.status(404).json({ status: "error", message: 'Usuario no encontrado.' });
+    }
+
     return res.status(200).json({ status: "success", message: "Rol actualizado correctamente." });
   } catch (error) {
     console.error('Error al actualizar rol:', error);
     return res.status(500).json({ status: "error", message: "Error interno al actualizar el rol." });
   }
 }
-
-
-
 module.exports = {
     execLogin,
     authenticateToken,

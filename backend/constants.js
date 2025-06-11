@@ -1,4 +1,4 @@
-const port = 4001;
+const port = 4000;
 const indexURL = '/';
 const apiURL = '/api';
 const contextURL = '/awaq';
