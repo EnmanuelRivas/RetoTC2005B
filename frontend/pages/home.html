@@ -137,62 +137,69 @@
       </div>
     </div>
   </div>  <script type="module">
-    import { getUserInfoFromToken } from '../scripts/auth.js';
+  import { getUserInfoFromToken } from '../scripts/auth.js';
 
-    document.addEventListener('DOMContentLoaded', function () {
-      const logoutButton = document.querySelector('.logout-button');
-      logoutButton.addEventListener('click', function () {
-        localStorage.removeItem('authToken');
-        window.location.href = '/awaq';
-      });
+  document.addEventListener('DOMContentLoaded', function () {
+    const logoutButton = document.querySelector('.logout-button');
+    logoutButton.addEventListener('click', function () {
+      localStorage.removeItem('authToken');
+      window.location.href = '/awaq';
+    });
 
-      // Obtener información del usuario
-      const user = getUserInfoFromToken();
-      if (user) {
-        const nameElement = document.getElementById('user-name');
-        if (nameElement) {
-          if (user.isAdmin) {
-            nameElement.textContent = 'Administrador';
-            nameElement.style.color = '#28a745'; // Verde para administrador
-            nameElement.style.fontWeight = 'bold';
-          } else {
-            nameElement.textContent = 'Usuario';
-            nameElement.style.color = '#ffffff'; // Blanco para usuario normal
-          }
-        }
-
-        // Mostrar mensaje de modo administrador sin panel adicional
+    // Obtener información del usuario
+    const user = getUserInfoFromToken();
+    if (user) {
+      const nameElement = document.getElementById('user-name');
+      if (nameElement) {
         if (user.isAdmin) {
-          const adminAlertHTML = `
-            <div class="admin-alert mb-4" style="
-              background-color: #d4edda; 
-              border: 1px solid #c3e6cb; 
-              color: #155724; 
-              padding: 15px; 
-              border-radius: 8px;
-              text-align: center;
-            ">
-              <strong>Modo Administrador:</strong> Tienes acceso a funciones administrativas.
-              <a href="/awaq/metricas" class="btn btn-sm btn-outline-success ms-2">Ir al Dashboard</a>
-            </div>
-          `;
-          const cardConvocatorias = document.getElementById('card-convocatorias');
-          if (cardConvocatorias) {
-            cardConvocatorias.innerHTML = `
-              <div class="card-option" onclick="location.href='/awaq/AsistenteBiomo'" style="cursor: pointer;">
-                <i class="bi bi-person-badge"></i>
-                <h4>Asistente Mi Biomo</h4>
-                <p>Accede al asistente Mi Biomo</p>
-              </div>
-            `;
-          }
-          const container = document.querySelector('.container');
-          if (container) {
-            container.insertAdjacentHTML('afterbegin', adminAlertHTML);
-          }
+          nameElement.textContent = 'Administrador';
+          nameElement.style.color = '#28a745';
+          nameElement.style.fontWeight = 'bold';
+        } else {
+          nameElement.textContent = 'Usuario';
+          nameElement.style.color = '#ffffff';
         }
       }
-    });
-  </script>
+
+      if (!user.isAdmin) {
+        // Ocultar el botón de métricas si no es admin
+        const metricasCard = document.getElementById('card-convocatorias');
+        if (metricasCard) metricasCard.remove();
+      } else {
+        // Mostrar alerta modo administrador
+        const adminAlertHTML = `
+          <div class="admin-alert mb-4" style="
+            background-color: #d4edda; 
+            border: 1px solid #c3e6cb; 
+            color: #155724; 
+            padding: 15px; 
+            border-radius: 8px;
+            text-align: center;
+          ">
+            <strong>Modo Administrador:</strong> Tienes acceso a funciones administrativas.
+            <a href="/awaq/metricas" class="btn btn-sm btn-outline-success ms-2">Ir al Dashboard</a>
+          </div>
+        `;
+        const container = document.querySelector('.container');
+        if (container) {
+          container.insertAdjacentHTML('afterbegin', adminAlertHTML);
+        }
+
+        // Reemplazar contenido si es admin
+        const cardConvocatorias = document.getElementById('card-convocatorias');
+        if (cardConvocatorias) {
+          cardConvocatorias.innerHTML = `
+            <div class="card-option" onclick="location.href='/awaq/AsistenteBiomo'" style="cursor: pointer;">
+              <i class="bi bi-person-badge"></i>
+              <h4>Asistente Mi Biomo</h4>
+              <p>Accede al asistente Mi Biomo</p>
+            </div>
+          `;
+        }
+      }
+    }
+  });
+</script>
+
 </body>
 </html>
