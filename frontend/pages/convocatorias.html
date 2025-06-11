@@ -188,8 +188,8 @@
           <a href="/awaq/AsistenteExplorador">Explorador de Anteproyectos</a>
           <a href="convocatorias.html" class="active">Convocatorias</a>
           <a href="/awaq/metricas">Métricas</a>
-          <a href="./viewEcoRanger">View de EcoRanger</a>
-          <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>          
+          <a href="./viewEcoRanger.html">View de EcoRanger</a>
+          <a href="./gestionUsuario.html">Gestión de Usuarios</a>          
           <a href="/awaq/perfil">Mi Perfil</a>
         </nav>
       </div>
@@ -203,45 +203,96 @@
     </div>
     <div class="main-content">
       <h2><strong>Asistente de Nuevas Convocatorias</strong></h2>
-      <form class="mt-4">
+      <form class="mt-4" id="form-convocatoria">
+        <input type="hidden" id="usuario_id" value="1">
         <div class="row">
           <div class="col-md-6 form-section">
             <label>Nombre del anteproyecto</label>
-            <input type="text" class="form-control" placeholder="Escribe...">
+            <input id="nombre_anteproyecto" type="text" class="form-control" placeholder="Escribe..." required>
             <label>Fecha de cierre</label>
-            <input type="date" class="form-control">
+            <input id="fecha_cierre" type="date" class="form-control" required>
             <label>Sitio web</label>
-            <input type="url" class="form-control" placeholder="Escribe...">
-            <button type="button" class="btn btn-green mt-4">
-              <i class="bi bi-upload me-2"></i>Subir Datos
-            </button>
+            <input id="sitioWeb" type="url" class="form-control" placeholder="Escribe...">
           </div>
           <div class="col-md-6 form-section">
             <label>Región</label>
-            <input type="text" class="form-control" placeholder="Escribe...">
+            <input id="region" type="text" class="form-control" placeholder="Escribe...">
             <label>Organización</label>
-            <input type="text" class="form-control" placeholder="Escribe...">
+            <input id="organizacion" type="text" class="form-control" placeholder="Escribe...">
             <label>País</label>
-            <input type="text" class="form-control" placeholder="Escribe...">
+            <input id="pais" type="text" class="form-control" placeholder="Escribe...">
             <label>Descripción</label>
-            <input type="text" class="form-control" placeholder="Escribe...">
+            <input id="descripcion" type="text" class="form-control" placeholder="Escribe...">
             <button type="submit" class="btn btn-green float-end mt-4">Guardar</button>
+
           </div>
         </div>
       </form>
     </div>
   </div>
-  <script>
-    document.getElementById("toggleSidebar").addEventListener("click", function () {
-      const sidebar = document.querySelector(".sidebar");
-      sidebar.classList.toggle("collapsed");
+<script type="module">
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById("form-convocatoria");
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      alert("No hay sesión activa. Por favor inicia sesión primero.");
+      form.style.display = 'none';
+      return;
+    }
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      console.log("Submit capturado");
+
+      const data = {
+        nombre_anteproyecto: document.getElementById("nombre_anteproyecto").value,
+        fecha_cierre: document.getElementById("fecha_cierre").value,
+        sitioweb: document.getElementById("sitioWeb").value, // coincide con id
+        region: document.getElementById("region").value,
+        organizacion: document.getElementById("organizacion").value,
+        pais: document.getElementById("pais").value,
+        descripcion: document.getElementById("descripcion").value
+      };
+
+      try {
+        console.log("📦 Datos a enviar:", data);
+
+        const response = await fetch(`${API_BASE_URL}/awaq/api/postConvocatoria`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`  // corregido acá
+          },
+          body: JSON.stringify(data)
+        });
+
+        let resultText = await response.text();
+        let result;
+
+        try {
+          result = JSON.parse(resultText);
+        } catch (jsonErr) {
+          console.warn("⚠ Respuesta no es JSON válido:", resultText);
+          result = { mensaje: resultText };
+        }
+
+        if (response.ok) {
+          alert("✅ Convocatoria enviada: " + (result.mensaje || result.msg || result.message || "OK"));
+          form.reset();
+        } else {
+          alert("❌ Error: " + (result.mensaje || result.msg || result.message || "Error desconocido"));
+        }
+      } catch (error) {
+        console.error("🔥 Error inesperado:", error);
+        alert("❌ Error al intentar enviar la convocatoria");
+      }    });
+    
+    document.querySelector('.logout-button').addEventListener('click', function() {
+      localStorage.removeItem('authToken');
+      window.location.href = '/awaq';
     });
-      document.addEventListener('DOMContentLoaded', function() {
-      document.querySelector('.logout-button').addEventListener('click', function() {
-        localStorage.removeItem('authToken');
-        window.location.href = '/awaq';
-      });
   });
 </script>
-</body>
+  </body>
 </html>

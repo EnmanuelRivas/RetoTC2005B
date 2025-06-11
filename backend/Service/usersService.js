@@ -131,29 +131,58 @@ async function updateUser(user, profileImagePath = null){
     try{
         console.log("updateUser: Actualizando usuario con ID:", user.id);
         
-        // Primero actualizamos los datos básicos del usuario
-        let query = `UPDATE usuarios 
-                     SET nombre = ?, 
-                         apellidos = ?, 
-                         numeroTelefono = ?, 
-                         pais = ?, 
-                         provincia = ?, 
-                         ciudad = ?, 
-                         organizacion = ?, 
-                         descripcion = ?
-                     WHERE id = ?`;
+        // Construir la query dinámicamente basada en los campos proporcionados
+        let updateFields = [];
+        let params = [];
         
-        let params = [
-            user.nombre, 
-            user.apellidos, 
-            user.numeroTelefono, 
-            user.pais, 
-            user.provincia, 
-            user.ciudad, 
-            user.organizacion, 
-            user.descripcion,
-            user.id
-        ];
+        // Verificar qué campos se van a actualizar
+        if (user.nombre !== undefined) {
+            updateFields.push("nombre = ?");
+            params.push(user.nombre);
+        }
+        if (user.apellidos !== undefined) {
+            updateFields.push("apellidos = ?");
+            params.push(user.apellidos);
+        }
+        if (user.numeroTelefono !== undefined) {
+            updateFields.push("numeroTelefono = ?");
+            params.push(user.numeroTelefono);
+        }
+        if (user.pais !== undefined) {
+            updateFields.push("pais = ?");
+            params.push(user.pais);
+        }
+        if (user.provincia !== undefined) {
+            updateFields.push("provincia = ?");
+            params.push(user.provincia);
+        }
+        if (user.ciudad !== undefined) {
+            updateFields.push("ciudad = ?");
+            params.push(user.ciudad);
+        }
+        if (user.organizacion !== undefined) {
+            updateFields.push("organizacion = ?");
+            params.push(user.organizacion);
+        }
+        if (user.descripcion !== undefined) {
+            updateFields.push("descripcion = ?");
+            params.push(user.descripcion);
+        }
+        if (user.contraseñaHash !== undefined) {
+            updateFields.push("contraseñaHash = ?");
+            params.push(user.contraseñaHash);
+        }
+        
+        // Solo proceder si hay campos para actualizar
+        if (updateFields.length === 0) {
+            console.log("updateUser: No hay campos para actualizar");
+            return new dataSource.QueryResult(true, [], 0, 0, null);
+        }
+        
+        // Agregar el ID al final
+        params.push(user.id);
+        
+        let query = `UPDATE usuarios SET ${updateFields.join(", ")} WHERE id = ?`;
         
         console.log("updateUser: Ejecutando query de actualización");
         qResult = await dataSource.updateData(query, params);

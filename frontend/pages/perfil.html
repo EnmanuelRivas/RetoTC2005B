@@ -236,10 +236,46 @@
       background-color: #198754;
       color: white;
     }
-    
-    .alert-danger {
+      .alert-danger {
       background-color: #dc3545;
       color: white;
+    }
+    
+    .profile-section {
+      background-color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .profile-section h3 {
+      color: #198754;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #5a6268;
     }
      body {
       background-color: #2a2a2a;
@@ -393,12 +429,13 @@
       <div>
         <nav>
           <a href="/awaq/home">Inicio</a>
+          <a href="/awaq/perfil" class="active">Mi Perfil</a>
           <a href="/awaq/AsistenteBiomo">Asistente de Mi Biomo</a>
           <a href="/awaq/AsistenteExplorador">Explorador de Anteproyectos</a>
           <a href="/awaq/convocatorias">Convocatorias</a>
           <a href="/awaq/metricas">Métricas</a>
           <a href="./viewEcoRanger.html">View de EcoRanger</a>
-          <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>      
+          <a href="./gestionUsuario.html">Gestión de Usuarios</a>      
           <a href="/awaq/perfil" class="active">Mi Perfil</a>
         </nav>
       </div>
@@ -408,194 +445,133 @@
         </div>
 
       </div>
-    </div>
-    <div class="main-content">
+    </div>    <div class="main-content">
       <h2>Mi Perfil</h2>
       
-      <form id="profileForm" enctype="multipart/form-data">
-        <input type="hidden" id="userId" name="id">
-        
-        <div class="text-center">
-          <label for="profileImgInput" class="profile-img-container">
-            <div id="profileImgPreview">
-              <i class="bi bi-person" style="font-size: 48px; color: #ccc;"></i>
-            </div>
-            <div class="overlay">
-              <span class="text-white">Cambiar foto</span>
-            </div>
-            <input type="file" id="profileImgInput" name="profileImg" accept="image/*">
-          </label>
-        </div>
-        
+      <!-- Sección de información del usuario (solo lectura) -->
+      <div class="profile-section">
+        <h3>Información de la cuenta</h3>
         <div class="form-group">
-          <label>Nombre</label>
-          <input type="text" name="nombre" id="nombre" placeholder="Escribe tu nombre" />
+          <label>Correo electrónico</label>
+          <input type="email" id="email-display" disabled readonly />
         </div>
         <div class="form-group">
-          <label>Apellidos</label>
-          <input type="text" name="apellidos" id="apellidos" placeholder="Escribe tus apellidos" />
+          <label>Rol</label>
+          <input type="text" id="rol-display" disabled readonly />
         </div>
         <div class="form-group">
-          <label>Número telefónico</label>
-          <input type="text" name="numeroTelefono" id="numeroTelefono" placeholder="Escribe tu número telefónico" />
+          <label>Fecha de registro</label>
+          <input type="text" id="fecha-registro-display" disabled readonly />
         </div>
-        <div class="form-group">
-          <label>País</label>
-          <input type="text" name="pais" id="pais" placeholder="Escribe tu país" />
-        </div>
-        <div class="form-group">
-          <label>Provincia/Estado</label>
-          <input type="text" name="provincia" id="provincia" placeholder="Escribe tu provincia o estado" />
-        </div>
-        <div class="form-group">
-          <label>Ciudad</label>
-          <input type="text" name="ciudad" id="ciudad" placeholder="Escribe tu ciudad" />
-        </div>
-        <div class="form-group">
-          <label>Nombre de la organización</label>
-          <input type="text" name="organizacion" id="organizacion" placeholder="Escribe el nombre de tu organización" />
-        </div>
-        <div class="form-group">
-          <label>Descripción de la organización</label>
-          <textarea name="descripcion" id="descripcion" rows="3" placeholder="Descríbeme qué hace tu organización"></textarea>
-        </div>
-        
-        <div class="alert alert-success" id="successAlert">
-          Perfil actualizado correctamente
-        </div>
-        <div class="alert alert-danger" id="errorAlert">
-          Error al actualizar el perfil
-        </div>
-        
-        <button type="submit" class="btn-save">Guardar cambios</button>
-      </form>
-    </div>
-  </div>
+      </div>
 
+      <!-- Sección de perfil personal (editable) -->
+      <div class="profile-section">
+        <h3>Información personal</h3>
+        
+        <form id="form-perfil">
+          <div class="text-center">
+            <label for="profile-img-input" class="profile-img-container">
+              <div id="profile-img-preview">
+                <i class="bi bi-person" style="font-size: 48px; color: #ccc;"></i>
+              </div>
+              <div class="overlay">
+                <span class="text-white">Cambiar foto</span>
+              </div>
+              <input type="file" id="profile-img-input" name="profileImg" accept="image/*">
+            </label>
+          </div>
+          
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" name="nombre" id="nombre" placeholder="Escribe tu nombre" disabled />
+          </div>
+          <div class="form-group">
+            <label>Apellidos</label>
+            <input type="text" name="apellidos" id="apellidos" placeholder="Escribe tus apellidos" disabled />
+          </div>
+          <div class="form-group">
+            <label>Número telefónico</label>
+            <input type="text" name="numeroTelefono" id="numeroTelefono" placeholder="Escribe tu número telefónico" disabled />
+          </div>
+          <div class="form-group">
+            <label>País</label>
+            <input type="text" name="pais" id="pais" placeholder="Escribe tu país" disabled />
+          </div>
+          <div class="form-group">
+            <label>Provincia/Estado</label>
+            <input type="text" name="provincia" id="provincia" placeholder="Escribe tu provincia o estado" disabled />
+          </div>
+          <div class="form-group">
+            <label>Ciudad</label>
+            <input type="text" name="ciudad" id="ciudad" placeholder="Escribe tu ciudad" disabled />
+          </div>
+          <div class="form-group">
+            <label>Nombre de la organización</label>
+            <input type="text" name="organizacion" id="organizacion" placeholder="Escribe el nombre de tu organización" disabled />
+          </div>
+          <div class="form-group">
+            <label>Descripción de la organización</label>
+            <textarea name="descripcion" id="descripcion" rows="3" placeholder="Descríbeme qué hace tu organización" disabled></textarea>
+          </div>
+          
+          <!-- Botón para editar -->
+          <button type="button" id="btn-editar-perfil" class="btn-save">Editar perfil</button>
+          
+          <!-- Acciones del formulario (ocultas por defecto) -->
+          <div class="form-actions" style="display: none;">
+            <button type="submit" class="btn-save">Guardar cambios</button>
+            <button type="button" id="btn-cancelar-perfil" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Sección de cambio de contraseña -->
+      <div class="profile-section">
+        <h3>Seguridad</h3>
+        <button type="button" id="btn-cambiar-password" class="btn-save">Cambiar contraseña</button>
+        
+        <form id="form-password" style="display: none; margin-top: 20px;">
+          <div class="form-group">
+            <label>Contraseña actual</label>
+            <input type="password" id="current-password" required />
+          </div>
+          <div class="form-group">
+            <label>Nueva contraseña</label>
+            <input type="password" id="new-password" required />
+          </div>
+          <div class="form-group">
+            <label>Confirmar nueva contraseña</label>
+            <input type="password" id="confirm-password" required />
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn-save">Cambiar contraseña</button>
+            <button type="button" id="btn-cancelar-password" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Alertas -->
+      <div class="alert alert-success" id="success-alert" style="display: none;">
+        Cambios guardados correctamente
+      </div>
+      <div class="alert alert-danger" id="error-alert" style="display: none;">
+        Error al guardar los cambios
+      </div>
+    </div></div>
+
+  <!-- Scripts externos -->
+  <script src="../scripts/perfil.js"></script>
   <script>
+    // Script para toggle del sidebar
     document.addEventListener('DOMContentLoaded', function() {
-      // Manejar el cierre de sesión desde ambos botones
-      document.querySelector('.logout-button').addEventListener('click', function() {
-        localStorage.removeItem('authToken');
-        window.location.href = '/awaq';
+      document.getElementById("toggleSidebar").addEventListener("click", function () {
+        document.querySelector(".sidebar").classList.toggle("collapsed");
       });
       
-      document.querySelector('.sidebar-logout').addEventListener('click', function() {
-        localStorage.removeItem('authToken');
-        window.location.href = '/awaq';
-      });
-      
-      // Manejo de la vista previa de la imagen
-      const profileImgInput = document.getElementById('profileImgInput');
-      const profileImgPreview = document.getElementById('profileImgPreview');
-      
-      profileImgInput.addEventListener('change', function(e) {
-        if (e.target.files.length > 0) {
-          const file = e.target.files[0];
-          const reader = new FileReader();
-          
-          reader.onload = function(e) {
-            profileImgPreview.innerHTML = `<img src="${e.target.result}" alt="Imagen de perfil">`;
-          }
-          
-          reader.readAsDataURL(file);
-        }
-      });
-      
-      // Cargar datos del usuario
-      async function loadUserData() {
-        try {
-          const token = localStorage.getItem('authToken');
-          if (!token) {
-            window.location.href = '/awaq';
-            return;
-          }
-          
-          // Obtener datos del usuario desde el JWT (sin hacer petición al servidor)
-          const tokenData = JSON.parse(atob(token.split('.')[1]));
-          document.getElementById('userId').value = tokenData.id;
-          
-          // Ahora hacer una petición para obtener los datos completos
-          const response = await fetch('/awaq/api/findUser', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ id: tokenData.id })
-          });
-          
-          if (response.ok) {
-            const data = await response.json();
-            const user = data.records[0];
-            
-            // Llenar el formulario con los datos
-            document.getElementById('nombre').value = user.nombre || '';
-            document.getElementById('apellidos').value = user.apellidos || '';
-            document.getElementById('numeroTelefono').value = user.numeroTelefono || '';
-            document.getElementById('pais').value = user.pais || '';
-            document.getElementById('provincia').value = user.provincia || '';
-            document.getElementById('ciudad').value = user.ciudad || '';
-            document.getElementById('organizacion').value = user.organizacion || '';
-            document.getElementById('descripcion').value = user.descripcion || '';
-            
-            // Mostrar imagen de perfil si existe
-            if (user.imagen_perfil) {
-              profileImgPreview.innerHTML = `<img src="${user.imagen_perfil}" alt="Imagen de perfil">`;
-            }
-          } else {
-            console.error('Error al obtener datos del usuario');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-        }
-      }
-      
-      // Manejar el envío del formulario
-      document.getElementById('profileForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(this);
-        const token = localStorage.getItem('authToken');
-        
-        try {
-          const response = await fetch('/awaq/api/updateUser', {
-            method: 'PUT',
-            headers: {
-              'Authorization': `Bearer ${token}`
-            },
-            body: formData
-          });
-          
-          if (response.ok) {
-            document.getElementById('successAlert').style.display = 'block';
-            document.getElementById('errorAlert').style.display = 'none';
-            
-            // Ocultar el mensaje después de 3 segundos
-            setTimeout(() => {
-              document.getElementById('successAlert').style.display = 'none';
-            }, 3000);
-          } else {
-            const errorData = await response.json();
-            document.getElementById('errorAlert').textContent = errorData.message || 'Error al actualizar el perfil';
-            document.getElementById('errorAlert').style.display = 'block';
-            document.getElementById('successAlert').style.display = 'none';
-          }
-        } catch (error) {
-          console.error('Error:', error);
-          document.getElementById('errorAlert').textContent = 'Error de conexión';
-          document.getElementById('errorAlert').style.display = 'block';
-          document.getElementById('successAlert').style.display = 'none';
-        }
-      });
-      
-      // Cargar los datos del usuario al cargar la página
-      loadUserData();
-    });
-  </script>
-   <script>
-    document.getElementById("toggleSidebar").addEventListener("click", function () {
-      document.querySelector(".sidebar").classList.toggle("collapsed");
+      // Inicializar la página de perfil
+      initPerfil();
     });
   </script>
 </body>
