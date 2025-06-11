@@ -530,12 +530,33 @@ async function getAdminStats(req, res) {
         });
     }
 }
+async function actualizarRol(req, res) {
+  const { id } = req.params;
+  const { role_id } = req.body;
+
+  if (!role_id) {
+    return res.status(400).json({ error: "El campo 'role_id' es requerido." });
+  }
+
+  try {
+    const result = await userService.actualizarRol(id, role_id);
+    if (result.changes === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
+    }
+
+    res.status(200).json({ message: 'Rol actualizado correctamente' });
+  } catch (error) {
+    console.error('Error en actualizarRol:', error);
+    res.status(500).json({ error: 'Error interno al actualizar el rol', detalle: error.message });
+  }
+}
 
 module.exports = {
     execLogin,
     authenticateToken,
     getUsers,
     findUser,
+    actualizarRol,
     publicRegisterUser,
     insertUser,
     updateUser,

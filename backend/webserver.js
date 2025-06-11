@@ -5,7 +5,6 @@ const { createServer: _createServer } = require("http");
 
 const { port, indexURL, apiURL, contextURL } = require("./constants.js");
 const router = require("./routes/router.js");
-
 /**
  * Configura middleware de seguridad (a futuro).
  * @param {Object} app

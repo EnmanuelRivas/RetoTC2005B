@@ -80,6 +80,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
+      margin-bottom: 30px;
     }
     th, td {
       padding: 12px;
@@ -103,6 +104,18 @@
     .badge-pendiente {
       background-color: #ffc107;
       color: black;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    .badge.active {
+      background-color: #28a745;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    .badge.inactive {
+      background-color: #dc3545;
       padding: 4px 10px;
       border-radius: 8px;
       font-weight: bold;
@@ -135,7 +148,7 @@
       <div>
         <nav>
           <a href="/awaq/home">Inicio</a>
-          <a class="active" href="#">Gestion de usuarios </a>
+          <a class="active" href="#">Gestión de usuarios </a>
           <a href="/awaq/metricas">Vista de Administrador</a>
         </nav>
       </div>
@@ -144,85 +157,104 @@
       </div>
     </div>
     <div class="main-content">
-      <div class="section-title">Gestión de Usuarios Pendientes</div>
+      <div class="section-title">Gestión de Todos los Usuarios</div>
 
-      <div class="top-controls">
-        <button onclick="cargarUsuariosPendientes()">Actualizar Lista</button>
-        <button onclick="aprobarTodos()">Aprobar Todos</button>
-      </div>
-
-      <table>
+      <table id="tablaUsuarios">
         <thead>
           <tr>
             <th>Nombre</th>
-            <th>Email</th>
+            <th>Apellidos</th>
+            <th>Correo</th>
             <th>Rol</th>
+            <th>Teléfono</th>
+            <th>País</th>
+            <th>Provincia</th>
+            <th>Ciudad</th>
+            <th>Organización</th>
+            <th>Descripción</th>
             <th>Estado</th>
-            <th>Acciones</th>
+            <th>Acción</th>
           </tr>
         </thead>
-        <tbody id="usuarios-body">
-          <!-- Usuarios se cargan dinámicamente aquí -->
+        <tbody>
+          <!-- Se llenará dinámicamente con JavaScript -->
         </tbody>
       </table>
     </div>
   </div>
 
   <script>
-    async function cargarUsuariosPendientes() {
-      const response = await fetch('http://localhost:4000/usuarios/pendientes');
-      const data = await response.json();
-      const tbody = document.getElementById("usuarios-body");
-      tbody.innerHTML = "";
+    
+  async function cargarUsuarios() {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
 
-      data.records.forEach(user => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${user.nombre}</td>
-          <td>${user.correo}</td>
+    try {
+      const res = await fetch('/awaq/api/getUsers', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      const response = await res.json(); // 🔁 CAMBIO HECHO AQUÍ
+      const usuarios = response.records; // ✅ SE EXTRAE LA LISTA CORRECTAMENTE
+
+      const tbody = document.querySelector('#tablaUsuarios tbody');
+      tbody.innerHTML = '';
+
+      usuarios.forEach(u => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${u.nombre}</td>
+          <td>${u.apellidos}</td>
+          <td>${u.correo}</td>
           <td>
-            <select>
-              <option${user.rol === 'Biomonitor' ? ' selected' : ''}>Biomonitor</option>
-              <option${user.rol === 'Administrador' ? ' selected' : ''}>Administrador</option>
+            <select onchange="cambiarRol(${u.id}, this.value)">
+              <option value="2" ${u.role_id == 2 ? 'selected' : ''}>Usuario</option>
+              <option value="1" ${u.role_id == 1 ? 'selected' : ''}>Administrador</option>
             </select>
           </td>
-          <td><span class="badge-pendiente">${user.estado.toUpperCase()}</span></td>
-          <td>
-            <button class="btn-approve" onclick="aprobarUsuario(${user.id})">Aprobar</button>
-            <button class="btn-reject" onclick="rechazarUsuario(${user.id})">Rechazar</button>
-          </td>
+          <td>${u.numeroTelefono || '-'}</td>
+          <td>${u.pais || '-'}</td>
+          <td>${u.provincia || '-'}</td>
+          <td>${u.ciudad || '-'}</td>
+          <td>${u.organizacion || '-'}</td>
+          <td>${u.descripcion || '-'}</td>
+          <td><span class="badge ${u.estado == 1 ? 'active' : 'inactive'}">${u.estado == 1 ? 'Activo' : 'Inactivo'}</span></td>
+          <td><button onclick="guardarRol(${u.id})">Guardar</button></td>
         `;
-        tbody.appendChild(tr);
+        tbody.appendChild(row);
       });
+    } catch (err) {
+      console.error('Error al cargar usuarios:', err);
     }
+  }
 
-    async function aprobarUsuario(id) {
-      const res = await fetch(`http://localhost:4000/usuarios/${id}/aprobar`, { method: 'POST' });
+  async function guardarRol(id) {
+    const select = document.querySelector(`select[onchange*="${id}"]`);
+    const nuevoRol = select.value;
+
+    try {
+      const res = await fetch(`/awaq/api/usuarios/${id}/rol`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        },
+        
+        body: JSON.stringify({ role_id: nuevoRol })
+      });
+
       if (res.ok) {
-        Swal.fire('✅ Aprobado', 'El usuario ha sido aprobado.', 'success');
-        cargarUsuariosPendientes();
+        alert('Rol actualizado correctamente');
+        cargarUsuarios();
+      } else {
+        alert('Error al actualizar el rol');
       }
+    } catch (err) {
+      console.error(err);
     }
+  }
 
-    async function rechazarUsuario(id) {
-      const res = await fetch(`http://localhost:4000/usuarios/${id}/rechazar`, { method: 'POST' });
-      if (res.ok) {
-        Swal.fire('❌ Rechazado', 'El usuario ha sido rechazado.', 'info');
-        cargarUsuariosPendientes();
-      }
-    }
-
-    async function aprobarTodos() {
-      const response = await fetch('http://localhost:4000/usuarios/pendientes');
-      const data = await response.json();
-      for (const user of data.records) {
-        await fetch(`http://localhost:4000/usuarios/${user.id}/aprobar`, { method: 'POST' });
-      }
-      Swal.fire('✅ Aprobados', 'Todos los usuarios han sido aprobados.', 'success');
-      cargarUsuariosPendientes();
-    }
-
-    document.addEventListener("DOMContentLoaded", cargarUsuariosPendientes);
-  </script>
+  document.addEventListener("DOMContentLoaded", cargarUsuarios);
+</script>
 </body>
 </html>
