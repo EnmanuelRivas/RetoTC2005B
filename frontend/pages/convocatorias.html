@@ -148,16 +148,6 @@
       outline: none;
       box-shadow: none;
     }
-    .logout-button {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      transition: background-color 0.2s;
-      color: #ff6b6b;
-    }
   </style>
 </head>
 
@@ -185,16 +175,18 @@
           <a href="/awaq/AsistenteBiomo">Asistente de Mi Biomo</a>
           <a href="/awaq/AsistenteExplorador">Explorador de Anteproyectos</a>
           <a href="convocatorias.html" class="active">Convocatorias</a>
-          <a href="./metricas.html" style="display: none;">Metricas</a>
-          <a href="./viewEcoRanger.html" style="display: none;">EcoRanger</a>
-          <a href="./gestionUsuario.html" style="display: none;">Gestión de Usuarios</a>
+          <a href="/awaq/metricas">Métricas</a>
+          <a href="./viewEcoRanger.html">View de EcoRanger</a>
+          <a href="./gestionUsuario.html">Gestión de Usuarios</a>          
+          <a href="/awaq/perfil">Mi Perfil</a>
         </nav>
       </div>
-      <div>
-        <div class="support-button">
-          <i class="bi bi-telephone"></i>Contacta con el soporte
-        </div>
-
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="support-button">
+        <i class="bi bi-telephone"></i>Contacta con el soporte
+      </div>
+      <div class="sidebar-logout">
+        <i class="bi bi-box-arrow-right"></i>Cerrar sesión
       </div>
     </div>
     <div class="main-content">
@@ -233,30 +225,5 @@
       sidebar.classList.toggle("collapsed");
     });
   </script>
-  <script type="module">
-  import { getIsAdminFromToken } from '../scripts/auth.js';
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const isAdmin = getIsAdminFromToken();
-
-    if (isAdmin) {
-      const metricasLink =document.querySelector('a[href="./metricas.html"]');
-      if (metricasLink) {
-        metricasLink.style.display = 'block';
-      }
-
-      const gestionUsuariosLink = document.querySelector('a[href="./gestionUsuario.html"]');
-      if (gestionUsuariosLink) {
-        gestionUsuariosLink.style.display = 'block';
-      }
-
-      const EcoRangerLink = document.querySelector('a[href="./viewEcoRanger.html"]');
-      if (EcoRangerLink) {
-        EcoRangerLink.style.display = 'block';
-      }
-
-    }
-  });
-</script>
 </body>
 </html>

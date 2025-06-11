@@ -9,7 +9,7 @@ const upload = require("../middleware/upload.middleware");
 const anteproyectosRest = require("../API/anteproyectosRestController");
 const convocatoriasRest = require('../API/convocatoriasRestController');
 
-const { requireAdmin, requireUser } = require("../middleware/auth.middleware");
+const { requireAdmin, requireUser, requireAdminForPage, authenticateToken } = require("../middleware/auth.middleware");
 
 const router = express.Router();
 
@@ -35,15 +35,15 @@ router.get(`${constants.contextURL}/convocatorias`, templates.convocatoriasPage)
 router.get(`${constants.contextURL}/chatbot`, templates.chatbotPage);
 
 /* Rutas para administradores */
-router.get(`${constants.contextURL}/dashboard`, requireAdmin, templates.dashboardPage);
-router.get(`${constants.contextURL}/gestion_usuario`, requireAdmin, templates.gestionUsuarioPage);
-router.get(`${constants.contextURL}/gestion_ap`, requireAdmin, templates.gestionAPPage);
-router.get(`${constants.contextURL}/metricas`, requireAdmin, templates.metricasPage);
-router.get(`${constants.contextURL}/numAP`, requireAdmin, templates.numAPPage);
-router.get(`${constants.contextURL}/numBiomos`, requireAdmin, templates.numBiomosPage);
-router.get(`${constants.contextURL}/crearEcoRanger`, requireAdmin, templates.crearEcoRangerPage);
-router.get(`${constants.contextURL}/editarEcoRanger`, requireAdmin, templates.editarEcoRangerPage);
-router.get(`${constants.contextURL}/viewEcoRanger`, requireAdmin, templates.viewEcoRangerPage);
+router.get(`${constants.contextURL}/dashboard`, requireAdminForPage, templates.dashboardPage);
+router.get(`${constants.contextURL}/gestion_usuario`, requireAdminForPage, templates.gestionUsuarioPage);
+router.get(`${constants.contextURL}/gestion_ap`, requireAdminForPage, templates.gestionAPPage);
+router.get(`${constants.contextURL}/metricas`, requireAdminForPage, templates.metricasPage);
+router.get(`${constants.contextURL}/numAP`, requireAdminForPage, templates.numAPPage);
+router.get(`${constants.contextURL}/numBiomos`, requireAdminForPage, templates.numBiomosPage);
+router.get(`${constants.contextURL}/crearEcoRanger`, requireAdminForPage, templates.crearEcoRangerPage);
+router.get(`${constants.contextURL}/editarEcoRanger`, requireAdminForPage, templates.editarEcoRangerPage);
+router.get(`${constants.contextURL}/viewEcoRanger`, requireAdminForPage, templates.viewEcoRangerPage);
 
 /* ------------------------ USUARIOS API ------------------------ */
 router.post(`${constants.contextURL}${constants.apiURL}/login`, usersRest.execLogin);
@@ -61,48 +61,67 @@ router.post(`${constants.contextURL}${constants.apiURL}/restablecer-password`, u
 
 router.get(
   `${constants.contextURL}${constants.apiURL}/getUsers`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireAdmin,
   usersRest.getUsers
 );
 
 router.post(
   `${constants.contextURL}${constants.apiURL}/findUser`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireUser,
   usersRest.findUser
 );
 
 router.post(
   `${constants.contextURL}${constants.apiURL}/insertUser`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireAdmin,
   usersRest.insertUser
 );
 
 router.put(
   `${constants.contextURL}${constants.apiURL}/updateUser`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireUser,
   upload.single('profileImg'), // Middleware para subir una única imagen
   usersRest.updateUser
 );
+
 router.delete(
   `${constants.contextURL}${constants.apiURL}/deleteUser`,
-  usersRest.authenticateToken,
+  authenticateToken,
   requireAdmin,
   usersRest.deleteUser
 );
 
+router.get(
+  `${constants.contextURL}${constants.apiURL}/admin/stats`,
+  authenticateToken,
+  requireAdmin,
+  usersRest.getAdminStats
+);
 
 /* ------------------------ ANTEPROYECTOS API ------------------------ */
-router.use(`${constants.contextURL}${constants.apiURL}`, anteproyectosRest);
+router.get(
+  `${constants.contextURL}${constants.apiURL}/getAnteproyectos`,
+  authenticateToken,
+  requireUser,
+  anteproyectosRest.getAnteproyectos
+);
+
+router.post(
+  `${constants.contextURL}${constants.apiURL}/postAnteproyecto`,
+  authenticateToken,
+  requireUser,
+  anteproyectosRest.postAnteproyecto
+);
 
 /* ------------------------ REGISTROS GENERALES Y FORMULARIOS BIOMONITOR ------------------------ */
 
 // Generales
 router.get("/registro", formsRest.getRegistros);
-router.post("/subirRegistro", usersRest.authenticateToken, requireUser, formsRest.postRegistros);
+router.post("/subirRegistro", authenticateToken, requireUser, formsRest.postRegistros);
 
 // Variables Climáticas
 router.get("/registro/getVariableClimatica", formsRest.getVariablesClimatica);
@@ -135,15 +154,26 @@ router.post("/registro/subirFaunaBusquedaLibre", formsRest.postBusquedaLibre);
 /* ------------------------ SUBIDA DE IMÁGENES ------------------------ */
 router.post(
   "/registro/subirImagen",
-  usersRest.authenticateToken,
+  authenticateToken,
   requireUser,
   upload.array("imagen", 5),
   imageRest.subirImagen 
 );
 
-/* ------------------------ CONVOCATORIAS ------------------------ */
-// router.use('/awaq/api', convocatoriasRest);
-router.use(`${constants.contextURL}${constants.apiURL}`, convocatoriasRest);
+/* ------------------------ CONVOCATORIAS API ------------------------ */
+router.get(
+  `${constants.contextURL}${constants.apiURL}/getConvocatorias`,
+  authenticateToken,
+  requireUser,
+  convocatoriasRest.getConvocatorias
+);
+
+router.post(
+  `${constants.contextURL}${constants.apiURL}/postConvocatoria`,
+  authenticateToken,
+  requireUser,
+  convocatoriasRest.postConvocatoria
+);
 
 
 // Exporta el router para usarlo en el servidor principal
