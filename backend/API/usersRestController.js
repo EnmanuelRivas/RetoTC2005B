@@ -28,10 +28,9 @@ async function execLogin(req, res) {
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-  
     //CREATES the token
     const token = jwt.sign(
-      { id: user.id, username: user.correo, isAdmin: user.isAdmin },
+      { id: user.id, username: user.correo, role_id: user.role_id },
       SECRET,
       { expiresIn: '1h' }
     );
@@ -145,15 +144,13 @@ async function publicRegisterUser(req, res) {
         status: "error",
         message: "No se encontró el usuario recién insertado."
       });
-    }
-
-    // Crea el token JWT
+    }    // Crea el token JWT
     console.log("Generando token JWT");
     const token = jwt.sign(
       {
         id: newUser.rows[0].id,
         correo: newUser.rows[0].correo,
-        isAdmin: newUser.rows[0].isAdmin // Si tu tabla tiene ese campo
+        role_id: newUser.rows[0].role_id // Usando role_id en lugar de isAdmin
       },
       SECRET,
       { expiresIn: '1h' }
@@ -489,6 +486,51 @@ async function restablecerPassword(req, res) {
     }
 }
 
+/**
+ * HTTP Method que obtiene estadísticas para administradores
+ */
+async function getAdminStats(req, res) {
+    try {
+        // Verificar que el usuario sea administrador (ya verificado por middleware, pero por seguridad)
+        if (req.user?.role_id !== 1) {
+            return res.status(403).json({
+                status: "error", 
+                message: "Acceso denegado. Se requieren permisos de administrador."
+            });
+        }
+
+        const userService = require('../Service/usersService');
+        
+        // Obtener estadísticas básicas
+        const totalUsers = await userService.getAllUsers();
+        const adminUsers = totalUsers.rows.filter(user => user.role_id === 1);
+        const regularUsers = totalUsers.rows.filter(user => user.role_id === 2);
+        
+        const stats = {
+            total_users: totalUsers.rows.length,
+            admin_users: adminUsers.length,
+            regular_users: regularUsers.length,
+            recent_registrations: totalUsers.rows.filter(user => {
+                const registrationDate = new Date(user.fecha_registro || user.created_at);
+                const thirtyDaysAgo = new Date();
+                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                return registrationDate > thirtyDaysAgo;
+            }).length
+        };
+
+        res.status(200).json({
+            status: "success",
+            data: stats
+        });
+    } catch (error) {
+        console.error('Error al obtener estadísticas de administrador:', error);
+        res.status(500).json({
+            status: "error",
+            message: "Error interno al obtener estadísticas."
+        });
+    }
+}
+
 module.exports = {
     execLogin,
     authenticateToken,
@@ -500,5 +542,6 @@ module.exports = {
     deleteUser,
     recuperarPassword,
     verificarTokenRecuperacion,
-    restablecerPassword
+    restablecerPassword,
+    getAdminStats
 }

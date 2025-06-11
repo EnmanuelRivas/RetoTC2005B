@@ -1,10 +1,16 @@
-const express = require('express');
-const router = express.Router();
+/**
+ * Convocatorias Rest Api File
+ * 
+ * Defines the rest api for the convocatorias table.
+ * It is a good practice to separate the api from the templates.
+ * This way, the api can be used by other applications or services.
+ */
 const convocatoriaService = require('../Service/convocatoriasService.js');
-const { authenticateToken, requireUser } = require('../middleware/auth.middleware.js'); // agregamos esto
 
-// añadimos authenticateToken, requireUser,
-router.get('/getConvocatorias', authenticateToken, requireUser, async (req, res) => {
+/**
+ * HTTP Method that handles getting all convocatorias
+ */
+async function getConvocatorias(req, res) {
   try {
     const convocatorias = await convocatoriaService.obtenerConvocatorias();
     res.status(200).json(convocatorias);
@@ -12,10 +18,12 @@ router.get('/getConvocatorias', authenticateToken, requireUser, async (req, res)
     console.error('Error al obtener convocatorias:', err);
     res.status(500).json({ error: 'Error interno al obtener convocatorias' });
   }
-});
+}
 
-// añadimos authenticateToken, requireUser,
-router.post('/postConvocatoria', authenticateToken, requireUser, async (req, res) => {
+/**
+ * HTTP Method that handles creating a new convocatoria
+ */
+async function postConvocatoria(req, res) {
   try {
     const usuario_id = req.user.id; 
     const data = { ...req.body, usuario_id };
@@ -26,6 +34,9 @@ router.post('/postConvocatoria', authenticateToken, requireUser, async (req, res
     console.error('Error al crear convocatoria:', err);
     res.status(500).json({ error: 'Error interno al crear la convocatoria' });
   }
-});
+}
 
-module.exports = router;
+module.exports = {
+  getConvocatorias,
+  postConvocatoria
+};
