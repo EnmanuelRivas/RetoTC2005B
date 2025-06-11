@@ -1,4 +1,6 @@
 const express = require("express");
+const fs = require("fs");
+const path = require("path");
 const constants = require("../constants");
 
 const usersRest = require("../API/usersRestController");
@@ -100,6 +102,46 @@ router.get(
   authenticateToken,
   requireAdmin,
   usersRest.getAdminStats
+);
+
+// Profile routes
+router.get(
+  `${constants.contextURL}${constants.apiURL}/profile`,
+  authenticateToken,
+  requireUser,
+  usersRest.getProfile
+);
+
+router.put(
+  `${constants.contextURL}${constants.apiURL}/profile`,
+  authenticateToken,
+  requireUser,
+  upload.single('profileImg'),
+  usersRest.updateProfile
+);
+
+// Password update route
+router.put(
+  `${constants.contextURL}${constants.apiURL}/profile/password`,
+  authenticateToken,
+  requireUser,
+  usersRest.updatePassword
+);
+
+// Serve profile images
+router.get(
+  `${constants.contextURL}/uploads/:imageName`,
+  (req, res) => {
+    const imageName = req.params.imageName;
+    const imagePath = path.join(__dirname, '../uploads', imageName);
+    
+    // Check if file exists
+    if (fs.existsSync(imagePath)) {
+      res.sendFile(imagePath);
+    } else {
+      res.status(404).json({ error: 'Image not found' });
+    }
+  }
 );
 
 /* ------------------------ ANTEPROYECTOS API ------------------------ */
