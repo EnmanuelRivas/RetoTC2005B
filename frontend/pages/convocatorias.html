@@ -99,6 +99,19 @@
       color: #00b300;
       margin-right: 8px;
     }
+     .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      color: #ff6b6b;
+    }
+    .logout-button:hover {
+      background-color: #333;
+    }
     .sidebar-logout {
       background-color: #444;
       padding: 12px;
@@ -160,7 +173,6 @@
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
     </div>
     <div class="user-info">
-      <span>Usuario <i class="bi bi-person-fill"></i></span>
       <div class="logout-button">
         <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
       </div>
@@ -223,6 +235,12 @@
       const sidebar = document.querySelector(".sidebar");
       sidebar.classList.toggle("collapsed");
     });
-  </script>
+      document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('.logout-button').addEventListener('click', function() {
+        localStorage.removeItem('authToken');
+        window.location.href = '/awaq';
+      });
+  });
+</script>
 </body>
 </html>
