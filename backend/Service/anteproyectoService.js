@@ -12,9 +12,17 @@ async function getAnteproyectos() {
 }
 
 async function postAnteproyecto(data) {
-  const { usuario_id, titulo, descripcion, fecha_creacion, fecha_limite, estado } = data;
+  const {
+    usuario_id,
+    titulo,
+    descripcion,
+    fecha_limite,
+    estado
+  } = data;
 
-  // Verificación de integridad: asegurar que el usuario exista
+  // Generar fecha_creacion automáticamente
+  const fecha_creacion = new Date();
+
   const verificarUsuarioSQL = `SELECT id FROM usuarios WHERE id = ?`;
 
   return new Promise((resolve, reject) => {
@@ -22,16 +30,20 @@ async function postAnteproyecto(data) {
       if (err) return reject(err);
       if (userResult.length === 0) return reject(new Error(`Usuario con id ${usuario_id} no existe`));
 
-      // Insertar anteproyecto
       const insertSQL = `
-        INSERT INTO anteproyecto (usuario_id, titulo, descripcion, fecha_creacion, fecha_limite, estado)
+        INSERT INTO anteproyecto 
+        (usuario_id, titulo, descripcion, fecha_creacion, fecha_limite, estado)
         VALUES (?, ?, ?, ?, ?, ?)
       `;
 
-      pool.query(insertSQL, [usuario_id, titulo, descripcion, fecha_creacion, fecha_limite, estado], (err, result) => {
-        if (err) return reject(err);
-        resolve(result.insertId);
-      });
+      pool.query(
+        insertSQL,
+        [usuario_id, titulo, descripcion, fecha_creacion, fecha_limite, estado],
+        (err, result) => {
+          if (err) return reject(err);
+          resolve(result.insertId);
+        }
+      );
     });
   });
 }
