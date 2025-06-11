@@ -391,11 +391,16 @@
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
     </div>
     <div class="user-info">
+<<<<<<< HEAD
       <span>Usuario <i class="bi bi-person-fill"></i></span>
       <div class="logout-button">
         <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
       </div>
       
+=======
+      <a href="#" style="color: white; text-decoration: none;">
+        EcoRanger <i class="bi bi-person-fill ms-2"></i>
+>>>>>>> 7a0baca793c41a1e9395413c014344cad30a20d8
       </a>
     </div>
   </div>
@@ -408,9 +413,16 @@
           <a href="/awaq/AsistenteBiomo" class="active">Asistente de Mi Biomo</a>
           <a href="/awaq/AsistenteExplorador">Explorador de Anteproyectos</a>
           <a href="/awaq/convocatorias">Convocatorias</a>
+<<<<<<< HEAD
           <a href="./metricas.html" style="display: none;">Metricas</a>
           <a href="./viewEcoRanger.html" style="display: none;">EcoRanger</a>
           <a href="./gestionUsuario.html" style="display: none;">Gestión de Usuarios</a>      
+=======
+          <a href="/awaq/metricas">Métricas</a>
+          <a href="./viewEcoRanger.html">View de EcoRanger</a>
+          <a href="./gestionUsuario.html">Gestión de Usuarios</a>      
+          <a href="/awaq/perfil">Mi Perfil</a>
+>>>>>>> 7a0baca793c41a1e9395413c014344cad30a20d8
         </nav>
       </div>
       <div>
@@ -438,6 +450,7 @@
     document.getElementById("toggleSidebar").addEventListener("click", function () {
       const sidebar = document.querySelector(".sidebar");
       sidebar.classList.toggle("collapsed");
+<<<<<<< HEAD
     });
   </script>
   <script src="../scripts/chatbot.js"></script>
@@ -466,5 +479,22 @@
     }
   });
 </script>
+=======
+    });
+  </script>
+  <script src="../scripts/chatbot.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('.logout-button').addEventListener('click', function() {
+        localStorage.removeItem('authToken');
+        window.location.href = '/awaq';
+      });
+      document.querySelector('.sidebar-logout').addEventListener('click', function() {
+        localStorage.removeItem('authToken');
+        window.location.href = '/awaq';
+      });
+    });
+  </script>
+>>>>>>> 7a0baca793c41a1e9395413c014344cad30a20d8
 </body>
 </html>
