@@ -108,16 +108,25 @@
       margin-left: 10px;
       cursor: pointer;
     }
+      .sidebar nav a.active,
+    .sidebar nav a:hover {
+      background-color: #198754;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
   <div class="sidebar">
+    <nav>
     <h4><i class="bi bi-eye"></i> Mawi</h4>
-    <a href="metricas.html">Informes, Métricas y Análisis</a>
-    <a href="crearEcoRanger.html">Crear EcoRanger</a>
-    <a href="viewEcoRanger.html">View de Ecoranger</a>
+    <a href="/awaq/metricas">Informes, Métricas y Análisis</a>
+    <a href="/awaq/crearEcoRanger" class="active">Crear EcoRanger</a>
+    <a href="/awaq/viewEcoRanger">View de Ecoranger</a>
  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     <button class="btn btn-dark w-100 mt-3"><i class="bi bi-telephone"></i> Contacta con el soporte</button>
+    </nav>
   </div>
 
   <div class="main-content">
