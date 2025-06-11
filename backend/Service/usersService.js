@@ -296,10 +296,17 @@ async function updatePassword(userId, newPassword) {
     }
     return qResult;
 }
-async function actualizarRol(id, role_id) {
-  const query = `UPDATE usuarios SET role_id = ? WHERE id = ?`;
-  return await dataSource.updateData(query, [role_id, id]);
+async function actualizarRol(userId, role_id) {
+  try {
+    const query = `UPDATE usuarios SET role_id = ? WHERE id = ?`;
+    const result = await dataSource.updateData(query, [role_id, userId]);
+    return result;
+  } catch (error) {
+    return { error: error.message };
+  }
 }
+
+
 
 
 module.exports = {

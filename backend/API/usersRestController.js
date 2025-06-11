@@ -29,11 +29,12 @@ async function execLogin(req, res) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
     //CREATES the token
-    const token = jwt.sign(
-      { id: user.id, username: user.correo, role_id: user.role_id },
-      SECRET,
-      { expiresIn: '1h' }
-    );
+  const token = jwt.sign(
+  { id: user.id, username: user.correo, role_id: user.role_id },
+  SECRET,
+  { expiresIn: '1h' }
+);
+
 
     res.json({ token }); // client stores this token
 }
@@ -531,25 +532,28 @@ async function getAdminStats(req, res) {
     }
 }
 async function actualizarRol(req, res) {
-  const { id } = req.params;
+  const userId = req.params.id;
   const { role_id } = req.body;
 
-  if (!role_id) {
-    return res.status(400).json({ error: "El campo 'role_id' es requerido." });
+  if (!role_id || isNaN(role_id)) {
+    return res.status(400).json({ status: "error", message: "Rol inválido." });
   }
 
   try {
-    const result = await userService.actualizarRol(id, role_id);
-    if (result.changes === 0) {
-      return res.status(404).json({ error: 'Usuario no encontrado.' });
+    const result = await userService.actualizarRol(userId, role_id);
+
+    if (result.error) {
+      return res.status(500).json({ status: "error", message: result.error });
     }
 
-    res.status(200).json({ message: 'Rol actualizado correctamente' });
+    return res.status(200).json({ status: "success", message: "Rol actualizado correctamente." });
   } catch (error) {
-    console.error('Error en actualizarRol:', error);
-    res.status(500).json({ error: 'Error interno al actualizar el rol', detalle: error.message });
+    console.error('Error al actualizar rol:', error);
+    return res.status(500).json({ status: "error", message: "Error interno al actualizar el rol." });
   }
 }
+
+
 
 module.exports = {
     execLogin,

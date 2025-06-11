@@ -54,6 +54,13 @@ router.post(
   usersRest.publicRegisterUser
 );
 
+router.post(
+  `${constants.contextURL}${constants.apiURL}/usuarios/:id/rol`,
+  authenticateToken,
+  requireAdmin,
+  usersRest.actualizarRol
+);
+
 
 router.post(`${constants.contextURL}${constants.apiURL}/recuperar`, usersRest.recuperarPassword);
 router.post(`${constants.contextURL}${constants.apiURL}/verificar-token`, usersRest.verificarTokenRecuperacion);
