@@ -173,10 +173,19 @@
               text-align: center;
             ">
               <strong>Modo Administrador:</strong> Tienes acceso a funciones administrativas.
-              <a href="/awaq/dashboard" class="btn btn-sm btn-outline-success ms-2">Ir al Dashboard</a>
+              <a href="/awaq/metricas" class="btn btn-sm btn-outline-success ms-2">Ir al Dashboard</a>
             </div>
           `;
-          
+          const cardConvocatorias = document.getElementById('card-convocatorias');
+          if (cardConvocatorias) {
+            cardConvocatorias.innerHTML = `
+              <div class="card-option" onclick="location.href='/awaq/AsistenteBiomo'" style="cursor: pointer;">
+                <i class="bi bi-person-badge"></i>
+                <h4>Asistente Mi Biomo</h4>
+                <p>Accede al asistente Mi Biomo</p>
+              </div>
+            `;
+          }
           const container = document.querySelector('.container');
           if (container) {
             container.insertAdjacentHTML('afterbegin', adminAlertHTML);
