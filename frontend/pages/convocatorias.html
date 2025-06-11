@@ -288,12 +288,11 @@
         alert("❌ Error al intentar enviar la convocatoria");
       }    });
     
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelector('.logout-button').addEventListener('click', function() {
-        localStorage.removeItem('authToken');
-        window.location.href = '/awaq';
-      });
+    document.querySelector('.logout-button').addEventListener('click', function() {
+      localStorage.removeItem('authToken');
+      window.location.href = '/awaq';
     });
+  });
 </script>
-</body>
+  </body>
 </html>
