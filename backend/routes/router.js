@@ -267,5 +267,12 @@ router.get(
   metricasRest.obtenerMetricas
 );
 
+router.get(
+  `${constants.contextURL}${constants.apiURL}/getTablaBiomos`,
+  authenticateToken,
+  requireUser,
+  metricasRest.obtenerTablaBiomos
+);
+
 // Exporta el router para usarlo en el servidor principal
 module.exports = router;
