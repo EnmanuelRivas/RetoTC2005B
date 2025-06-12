@@ -40,6 +40,31 @@
       align-items: center;
       gap: 16px;
     }
+    
+    .user-controls {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    
+    .user-profile, .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+    
+    .user-profile:hover, .logout-button:hover {
+      background-color: #333;
+    }
+    
+    .logout-button {
+      color: #ff6b6b;
+    }
+
     .main-body {
       display: flex;
       flex: 1;
@@ -160,6 +185,7 @@
       background: none;
       outline: none;
       box-shadow: none;
+      margin-right: 15px;
     }
   </style>
 </head>
@@ -171,9 +197,8 @@
         <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
       </button>
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
-    </div>
-    <div class="user-info">
-      <span>Usuario <i class="bi bi-person-fill"></i></span>
+    </div>    <div class="user-info">
+      <span id="user-display">Usuario <i class="bi bi-person-fill"></i></span>
       <div class="logout-button">
         <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
       </div>
@@ -192,9 +217,8 @@
           <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>          
           <a href="/awaq/perfil">Mi Perfil</a>
         </nav>
-      </div>
-      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-      <div class="support-button">
+      </div>      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+      <div class="support-button" data-support="true">
         <i class="bi bi-telephone"></i>Contacta con el soporte
       </div>
       <div class="sidebar-logout">
@@ -231,7 +255,11 @@
     </div>
   </div>
 <script type="module">
-  document.addEventListener('DOMContentLoaded', () => {
+  import { AuthService } from '../scripts/auth.js';
+    document.addEventListener('DOMContentLoaded', () => {
+    // Mostrar rol de usuario
+    AuthService.displayUserRoleInElement('user-display', 'bi-person-fill');
+    
     const form = document.getElementById("form-convocatoria");
     const token = localStorage.getItem('authToken');
 
@@ -288,9 +316,12 @@
       }    });
       document.querySelector('.logout-button').addEventListener('click', function() {
       localStorage.removeItem('authToken');
-      window.location.href = '/awaq/login.html';
-    });
+      window.location.href = '/awaq/login.html';    });
   });
 </script>
+
+<!-- Script del sistema de soporte -->
+<script src="../scripts/support.js"></script>
+
   </body>
 </html>

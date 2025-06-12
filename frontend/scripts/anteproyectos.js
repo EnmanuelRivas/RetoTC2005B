@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
       sitioweb: document.getElementById('website-anteproyecto').value,
       region: document.getElementById('region-anteproyecto').value,
       organizacion: document.getElementById('organization-anteproyecto').value,
-      pais: document.getElementById('country-anteproyecto').value
+      pais: document.getElementById('country-anteproyecto').value,
+      convocatoria_id: document.getElementById('convocatoriaSelect').value
     };
 
     try {

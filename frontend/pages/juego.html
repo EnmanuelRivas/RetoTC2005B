@@ -9,7 +9,11 @@
   <link href="../styles/admin.css" rel="stylesheet">
   <link rel="shortcut icon" href="/game/TemplateData/favicon.ico">
   <link rel="stylesheet" href="/game/TemplateData/style.css">
-  <script src="../scripts/auth.js"></script>
+  <script type="module">
+    import { AuthService } from '../scripts/auth.js';
+    // Hacer AuthService global para el script de Unity
+    window.AuthService = AuthService;
+  </script>
   <style>
     body {
       background-color: #2a2a2a;
@@ -263,8 +267,7 @@
         <span id="user-name">Usuario</span> <i class="bi bi-person-fill"></i>
       </div>
       <div class="logout-button" id="logout-btn">
-        <i class="bi bi-box-arrow-right"></i>
-        <span>Cerrar sesión</span>
+        <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
       </div>
     </div>
   </div>
@@ -661,13 +664,9 @@
       .then(function(response) {
         return response.json();
       })
-      .then(function(data) {
-        if (data.status === 'success') {
-          var userName = document.getElementById('user-name');        if (userName) {
-            var isAdmin = data.data.role_id === 1;
-            userName.textContent = isAdmin ? 'Administrador' : 'Eco-Explorer';
-            userName.style.color = isAdmin ? '#00b300' : '#ffffff';
-          }
+      .then(function(data) {        if (data.status === 'success') {
+          // Usar la función del AuthService para mostrar rol consistente
+          AuthService.displayUserRole('user-name', false);
         }
       })
       .catch(function(error) {

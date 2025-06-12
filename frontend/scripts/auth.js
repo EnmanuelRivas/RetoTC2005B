@@ -48,7 +48,76 @@ const AuthService = {
         }
 
         return response;
-    }
+    },
+
+    // Función para mostrar el rol del usuario en todas las páginas
+    displayUserRole(elementId = 'user-name', showAdminAlert = false) {
+        const user = getUserInfoFromToken();
+        if (user) {
+            const nameElement = document.getElementById(elementId);
+            if (nameElement) {
+                if (user.isAdmin) {
+                    nameElement.textContent = 'Administrador';
+                    nameElement.style.color = '#28a745';
+                    nameElement.style.fontWeight = 'bold';
+                    nameElement.style.textShadow = '0 1px 2px rgba(0,0,0,0.5)';
+
+                    // Mostrar alerta solo en página home o si se especifica
+                    if (showAdminAlert) {
+                        this.showAdminAlert();
+                    }
+                } else {
+                    nameElement.textContent = 'Usuario';
+                    nameElement.style.color = '#ffffff';
+                    nameElement.style.fontWeight = 'normal';
+                    nameElement.style.textShadow = '0 1px 2px rgba(0,0,0,0.5)';
+                }
+            }
+        }
+    },
+
+    // Función para mostrar la alerta de modo administrador
+    showAdminAlert() {
+        const adminAlertHTML = `
+            <div class="admin-alert mb-4" style="
+                background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); 
+                border: 2px solid #28a745; 
+                color: #155724; 
+                padding: 20px; 
+                border-radius: 12px;
+                text-align: center;
+                box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+                animation: slideInFromTop 0.5s ease-out;
+            ">
+                <i class="bi bi-shield-check text-success me-2 fs-5"></i>
+                <strong>Modo Administrador:</strong> Tienes acceso a funciones administrativas avanzadas.
+                <a href="/awaq/metricas" class="btn btn-sm btn-success ms-3 shadow-sm">
+                    <i class="bi bi-speedometer2 me-1"></i>Ir al Dashboard
+                </a>
+            </div>
+        `;
+        
+        const container = document.querySelector('.container');
+        if (container && !document.querySelector('.admin-alert')) {
+            container.insertAdjacentHTML('afterbegin', adminAlertHTML);
+        }
+    },
+
+    // Función flexible para mostrar el rol en elementos con contenido mixto
+    displayUserRoleInElement(elementId, iconClass = 'bi-person-fill') {
+        const user = getUserInfoFromToken();
+        if (user) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                const roleName = user.isAdmin ? 'Administrador' : 'Usuario';
+                const roleColor = user.isAdmin ? '#28a745' : '#ffffff';
+                
+                element.innerHTML = `<span style="color: ${roleColor}; font-weight: ${user.isAdmin ? 'bold' : 'normal'}; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">${roleName}</span> <i class="bi ${iconClass}"></i>`;
+            }
+        }
+    },
+
+    // ...existing code...
 };
 
 /**
@@ -108,7 +177,7 @@ function getUserInfoFromToken() {
             id: payload.id,
             name: payload.username || 'Desconocido',
             email: payload.username || 'sin@email.com',
-            isAdmin: payload.role_id === 1,
+            isAdmin: Number(payload.role_id) === 1,
             role_id: payload.role_id
         };
     } catch (err) {
@@ -212,7 +281,7 @@ function displayUserInfo(elementId) {
 // Exports para módulos ES6
 export { 
     AuthService, 
-    checkAuth, 
+    checkAuth,
     getIsAdminFromToken, 
     getUserInfoFromToken,
     toggleAdminElement,

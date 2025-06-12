@@ -426,7 +426,6 @@
       margin-right: 15px;
     }
   </style>
-  </style>
 </head>
 <body class="dark-mode">
   <div class="top-bar">
@@ -435,9 +434,8 @@
         <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
       </button>
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
-    </div>
-    <div class="user-info">
-      <span>Usuario <i class="bi bi-person-fill"></i></span>
+    </div>    <div class="user-info">
+      <span id="user-display">Usuario <i class="bi bi-person-fill"></i></span>
       <div class="logout-button">
         <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
       </div>
@@ -448,21 +446,18 @@
       <div>
         <nav>
           <a href="/awaq/home">Inicio</a>
-          <a href="/awaq/perfil" class="active">Mi Perfil</a>
           <a href="/awaq/AsistenteBiomo">Asistente de Mi Biomo</a>
           <a href="/awaq/AsistenteExplorador">Explorador de Anteproyectos</a>
           <a href="/awaq/convocatorias">Convocatorias</a>
           <a href="/awaq/metricas">Métricas</a>
-          <a href="./viewEcoRanger.html">View de EcoRanger</a>
-          <a href="./gestionUsuario.html">Gestión de Usuarios</a>      
+          <a href="/awaq/viewEcoRanger">View de EcoRanger</a>
+          <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>      
           <a href="/awaq/perfil" class="active">Mi Perfil</a>
         </nav>
-      </div>
-      <div>
-        <div class="support-button">
+      </div>      <div>
+        <div class="support-button" data-support="true">
           <i class="bi bi-telephone"></i>Contacta con el soporte
         </div>
-
       </div>
     </div>    <div class="main-content">
       <h2>Mi Perfil</h2>
@@ -579,20 +574,28 @@
       <div class="alert alert-danger" id="error-alert" style="display: none;">
         Error al guardar los cambios
       </div>
-    </div></div>
+    </div>
+  </div>
 
   <!-- Scripts externos -->
   <script src="../scripts/perfil.js"></script>
   <script>
-    // Script para toggle del sidebar
-    document.addEventListener('DOMContentLoaded', function() {
+    // Script para toggle del sidebar    document.addEventListener('DOMContentLoaded', function() {
+      // Importar y usar AuthService para mostrar rol
+      import('../scripts/auth.js').then(module => {
+        module.AuthService.displayUserRoleInElement('user-display', 'bi-person-fill');
+      });
+      
       document.getElementById("toggleSidebar").addEventListener("click", function () {
         document.querySelector(".sidebar").classList.toggle("collapsed");
       });
-      
-      // Inicializar la página de perfil
+        // Inicializar la página de perfil
       initPerfil();
     });
   </script>
+
+  <!-- Script del sistema de soporte -->
+  <script src="../scripts/support.js"></script>
+
 </body>
 </html>
