@@ -437,14 +437,13 @@
   </script>
   <script src="../scripts/chatbot.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelector('.logout-button').addEventListener('click', function() {
+    document.addEventListener('DOMContentLoaded', function() {      document.querySelector('.logout-button').addEventListener('click', function() {
         localStorage.removeItem('authToken');
-        window.location.href = '/awaq';
+        window.location.href = '/awaq/login.html';
       });
       document.querySelector('.sidebar-logout').addEventListener('click', function() {
         localStorage.removeItem('authToken');
-        window.location.href = '/awaq';
+        window.location.href = '/awaq/login.html';
       });
     });
   </script>

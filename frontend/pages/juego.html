@@ -365,14 +365,12 @@
         }, 5000);
       }
       updateBannerVisibility();
-    }
-
-    var buildUrl = "/game/Build";
-    var loaderUrl = buildUrl + "/UnityReto2.loader.js";
+    }    var buildUrl = "/game/Build";
+    var loaderUrl = buildUrl + "/UnityFinalFinal.loader.js";
     var config = {
-      dataUrl: buildUrl + "/UnityReto2.data.gz",
-      frameworkUrl: buildUrl + "/UnityReto2.framework.js.gz", 
-      codeUrl: buildUrl + "/UnityReto2.wasm.gz",
+      dataUrl: buildUrl + "/UnityFinalFinal.data.gz",
+      frameworkUrl: buildUrl + "/UnityFinalFinal.framework.js.gz", 
+      codeUrl: buildUrl + "/UnityFinalFinal.wasm.gz",
       streamingAssetsUrl: "/game/StreamingAssets",
       companyName: "AWAQ",
       productName: "Eco-Explorer",
@@ -640,12 +638,10 @@
       if (!isAuthenticated()) {
         window.location.href = '/awaq';
         return;
-      }
-
-      document.getElementById('logout-btn').addEventListener('click', function() {
+      }      document.getElementById('logout-btn').addEventListener('click', function() {
         if (confirm('¿Estás seguro de que quieres cerrar sesión? Se perderá el progreso del juego no guardado.')) {
           localStorage.removeItem('authToken');
-          window.location.href = '/awaq';
+          window.location.href = '/awaq/login.html';
         }
       });
 
