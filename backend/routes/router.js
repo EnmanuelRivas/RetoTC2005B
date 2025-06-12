@@ -11,6 +11,7 @@ const upload = require("../middleware/upload.middleware");
 const anteproyectosRest = require("../API/anteproyectosRestController");
 const convocatoriasRest = require('../API/convocatoriasRestController');
 const supportRest = require('../API/supportRestController');
+const metricasRest = require('../API/metricasRestController');
 
 const { requireAdmin, requireUser, requireAdminForPage, authenticateToken } = require("../middleware/auth.middleware");
 
@@ -258,6 +259,13 @@ router.put(
   supportRest.respondToTicket
 );
 
+/* ------------------------ Metricas API ------------------------ */
+router.get(
+  `${constants.contextURL}${constants.apiURL}/getMetricas`,
+  authenticateToken,
+  requireUser,
+  metricasRest.obtenerMetricas
+);
 
 // Exporta el router para usarlo en el servidor principal
 module.exports = router;
