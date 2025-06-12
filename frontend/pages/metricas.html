@@ -343,36 +343,57 @@
             <canvas id="chartEco2"></canvas>
           </div>
         </div>
-        <div class="table-wrapper">
-          <table class="table table-dark-custom" id="registrosTable">
-            <thead>
-              <tr>
-                <th><i class="bi bi-tree"></i> Biomo</th>
-                <th><i class="bi bi-geo-alt"></i> Región</th>
-                <th><i class="bi bi-calendar"></i> Fecha Inicio</th>
-                <th><i class="bi bi-gear"></i> Fase Actual</th>
-                <th><i class="bi bi-people"></i> Comunidad</th>
-                <th><i class="bi bi-bar-chart"></i> Avance</th>
-                <th><i class="bi bi-clock"></i> Última Actividad</th>
-                <th><i class="bi bi-three-dots"></i> Estado</th>
-              </tr>
-            </thead>
-            <tbody id="registrosTableBody">
-              <!-- Los datos se cargarán dinámicamente -->
-            </tbody>
-          </table>
-        </div>
       </div>
+      <table class="table table-dark-custom">
+        <thead>
+          <tr>
+            <th>ID Biomo</th>
+            <th>Usuario</th>
+            <th>Estado de Tiempo</th>
+            <th>Estación</th>
+            <th>Tipo de Registro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Biomo-001</td>
+            <td>Caldas/Riosucio</td>
+            <td>01/02/2024</td>
+            <td>Validación</td>
+            <td>Resguardo Cañamomo</td>
+
+
+          </tr>
+          <tr>
+            <td>Biomo-002</td>
+            <td>Cauca/Silvia</td>
+            <td>15/03/2024</td>
+            <td>Desarrollo</td>
+            <td>Comunidad Misak</td>
+
+
+          </tr>
+          <tr>
+            <td>Biomo-003</td>
+            <td>Putumayo/Mocoa</td>
+            <td>10/01/2024</td>
+            <td>Implementación</td>
+            <td>Cabildo Inga</td>
+
+  
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 <script type="module">
   import { AuthService } from '../scripts/auth.js';
-  AuthService.displayUserRole('user-display', false);
-  // Botón para mostrar u ocultar sidebar
+  AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
+
   document.getElementById('toggleSidebar').addEventListener('click', () => {
     document.querySelector('.sidebar').classList.toggle('collapsed');
   });
-  // Verificación de autenticación y permisos de administrador
+
   function checkAdminAccess() {
     const token = localStorage.getItem('authToken');
 
@@ -401,7 +422,6 @@
     }
   }
 
-  // Ejecutar verificación al cargar la página
   checkAdminAccess();
 
   const chartConfig = (ctx, label, data) => new Chart(ctx, {
@@ -442,6 +462,7 @@
         return;
       }
 
+      // Cargar métricas
       fetch('/awaq/api/getMetricas', {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -473,6 +494,37 @@
           alert('No se pudieron cargar los datos');
         });
 
+      // Cargar tabla de biomos
+      fetch('/awaq/api/getTablaBiomos', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(response => {
+          if (!response.ok) throw new Error('Error al obtener la tabla de biomos');
+          return response.json();
+        })
+        .then(data => {
+          const tbody = document.querySelector('table tbody');
+          tbody.innerHTML = ''; // Limpia los datos actuales
+
+          data.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${item.id}</td>
+              <td>${item.usuario_id}</td>
+              <td>${item.estadoTiempo}</td>
+              <td>${item.estacion}</td>
+              <td>${item.tipoRegistro}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        })
+        .catch(error => {
+          console.error('Error al cargar la tabla de biomos:', error);
+          alert('No se pudieron cargar los registros de biomos');
+        });
+
     } catch (error) {
       console.error('Error al verificar token:', error);
       alert('Token inválido. Por favor, inicia sesión nuevamente.');
@@ -480,90 +532,8 @@
       window.location.href = '/awaq/login';
     }
   }
-
-  // Función para cargar datos de la tabla
-  function cargarDatosTabla() {
-    const datosEjemplo = [
-      {
-        biomo: 'BIOMO-001',
-        region: 'Caldas/Riosucio',
-        fechaInicio: '01/02/2024',
-        fase: 'Validación',
-        comunidad: 'Resguardo Cañamomo',
-        avance: 75,
-        ultimaActividad: '12/05/2025',
-        estado: 'active'
-      },
-      {
-        biomo: 'BIOMO-002',
-        region: 'Cauca/Silvia',
-        fechaInicio: '15/03/2024',
-        fase: 'Desarrollo',
-        comunidad: 'Comunidad Misak',
-        avance: 80,
-        ultimaActividad: '10/05/2025',
-        estado: 'active'
-      },
-      {
-        biomo: 'BIOMO-003',
-        region: 'Putumayo/Mocoa',
-        fechaInicio: '10/01/2024',
-        fase: 'Implementación',
-        comunidad: 'Cabildo Inga',
-        avance: 20,
-        ultimaActividad: '16/05/2025',
-        estado: 'pending'
-      },
-      {
-        biomo: 'BIOMO-004',
-        region: 'Nariño/Pasto',
-        fechaInicio: '22/04/2024',
-        fase: 'Ejecución',
-        comunidad: 'Asociación Campesina',
-        avance: 60,
-        ultimaActividad: '16/05/2025',
-        estado: 'active'
-      }
-    ];
-    
-    const tbody = document.getElementById('registrosTableBody');
-    tbody.innerHTML = '';
-    
-    datosEjemplo.forEach(registro => {
-      const fila = document.createElement('tr');
-      fila.innerHTML = `
-        <td><strong>${registro.biomo}</strong></td>
-        <td>${registro.region}</td>
-        <td>${registro.fechaInicio}</td>
-        <td><span class="badge bg-info">${registro.fase}</span></td>
-        <td>${registro.comunidad}</td>
-        <td>
-          <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-            <div class="progress-bar" style="width: ${registro.avance}px;"></div>
-            <span style="font-weight: bold; color: #00ff00;">${registro.avance}%</span>
-          </div>
-        </td>
-        <td>${registro.ultimaActividad}</td>
-        <td>
-          <span class="status-badge status-${registro.estado}">
-            ${registro.estado === 'active' ? 'Activo' : registro.estado === 'pending' ? 'Pendiente' : 'Inactivo'}
-          </span>
-        </td>
-      `;
-      tbody.appendChild(fila);
-    });
-  }
-
-  // Función para filtrar registros
-  window.filtrarRegistros = function() {
-    alert('Función de filtrado en desarrollo');
-  }
-
-  // Función para exportar datos
-  window.exportarDatos = function() {
-    alert('Función de exportación en desarrollo');
-  }
 </script>
+
 
   <!-- Script del sistema de soporte -->
   <script src="../scripts/support.js"></script>

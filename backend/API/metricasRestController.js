@@ -10,6 +10,17 @@ async function obtenerMetricas(req, res) {
   }
 }
 
+async function obtenerTablaBiomos(req, res) {
+  try {
+    const registros = await metricasService.obtenerTablaBiomos();
+    res.status(200).json(registros);
+  } catch (error) {
+    console.error('Error al obtener tabla biomos:', error);
+    res.status(500).json({ error: 'Error al obtener tabla biomos', detalle: error.message });
+  }
+}
+
 module.exports = {
-  obtenerMetricas
+  obtenerMetricas,
+  obtenerTablaBiomos
 };

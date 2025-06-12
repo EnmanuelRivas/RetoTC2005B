@@ -16,6 +16,22 @@ async function obtenerMetricas() {
   };
 }
 
+async function obtenerTablaBiomos() {
+  const result = await db.getData(`
+    SELECT id, estadoTiempo, estacion, tipoRegistro, usuario_id 
+    FROM registros
+  `);
+
+  if (!result.getStatus()) {
+    throw new Error('Error al obtener registros de biomos desde la base de datos');
+  }
+
+  return result.getRows(); 
+}
+
+
+
 module.exports = {
-  obtenerMetricas
+  obtenerMetricas,
+  obtenerTablaBiomos
 };
