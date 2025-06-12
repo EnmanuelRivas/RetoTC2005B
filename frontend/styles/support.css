@@ -3,6 +3,61 @@
  * Diseñado para integrarse con el tema oscuro de la aplicación
  */
 
+/* Estilo estándar para botones de soporte en todas las páginas */
+.support-button {
+    background: linear-gradient(145deg, #198754, #157347) !important;
+    color: white !important;
+    padding: 12px !important;
+    text-align: center !important;
+    border-radius: 10px !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    border: none !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+}
+
+.support-button:hover {
+    background: linear-gradient(145deg, #157347, #198754) !important;
+    color: #fff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4) !important;
+}
+
+.support-button i {
+    color: #00ff00 !important;
+    margin-right: 8px !important;
+    font-size: 16px !important;
+}
+
+.sidebar .support-button {
+    background: linear-gradient(145deg, #198754, #157347) !important;
+    color: white !important;
+    padding: 12px !important;
+    text-align: center !important;
+    border-radius: 10px !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    border: none !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+}
+
+.sidebar .support-button:hover {
+    background: linear-gradient(145deg, #157347, #198754) !important;
+    color: #fff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4) !important;
+}
+
+.sidebar .support-button i {
+    color: #00ff00 !important;
+    margin-right: 8px !important;
+    font-size: 16px !important;
+}
+
 /* Modal de soporte personalizado - Tema AWAQ */
 #supportModal .modal-content {
     background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%) !important;
