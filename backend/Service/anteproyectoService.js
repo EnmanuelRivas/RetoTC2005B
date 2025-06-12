@@ -16,8 +16,8 @@ async function postAnteproyecto(data) {
     usuario_id,
     titulo,
     descripcion,
-    fecha_limite,
-    estado
+    estado,
+    convocatoria_id
   } = data;
 
   // Generar fecha_creacion automáticamente
@@ -32,13 +32,13 @@ async function postAnteproyecto(data) {
 
       const insertSQL = `
         INSERT INTO anteproyecto 
-        (usuario_id, titulo, descripcion, fecha_creacion, fecha_limite, estado)
-        VALUES (?, ?, ?, ?, ?, ?)
+        (usuario_id, titulo, descripcion, fecha_creacion, estado)
+        VALUES (?, ?, ?, ?, ?)
       `;
 
       pool.query(
         insertSQL,
-        [usuario_id, titulo, descripcion, fecha_creacion, fecha_limite, estado],
+        [usuario_id, titulo, descripcion, fecha_creacion, estado, convocatoria_id],
         (err, result) => {
           if (err) return reject(err);
           resolve(result.insertId);
