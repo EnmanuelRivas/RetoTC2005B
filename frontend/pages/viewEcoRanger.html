@@ -41,7 +41,6 @@
       gap: 16px;
     }
     .main-content {
-      margin-left: 260px;
       padding: 2rem;
       background-color: #2d2d2d;
       min-height: 100vh;
@@ -54,6 +53,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+
     }
     .eco-info {
       display: flex;
@@ -117,9 +117,10 @@
     }
     .main-content {
       flex: 1;
-      padding: 30px;
+      padding: 10px;
       overflow-y: auto;
     }
+    
     .logout-button {
       cursor: pointer;
       display: flex;
@@ -213,12 +214,12 @@
 </head>
 <body>
   <div class="top-bar">
-     <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center;">
       <button id="toggleSidebar" class="me-3">
         <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
       </button>
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
-    </div>    
+    </div>
     <div class="user-info">
       <span id="user-display">Usuario <i class="bi bi-person-fill"></i></span>
       <div class="logout-button">
@@ -228,128 +229,86 @@
   </div>
   <div class="main-body">
     <div class="sidebar">
-      <div>        
-        <nav>
-          <a href="home.html">Inicio</a>
-          <a href="/awaq/metricas">Informes, Métricas y Análisis</a>
-          <a href="/awaq/crearEcoRanger">Crear EcoRanger</a>
-          <a class="active" href="#">View de Ecoranger</a>
-          <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>
-        </nav>
-      </div>      
+      <nav>
+        <a href="home.html">Inicio</a>
+        <a href="/awaq/metricas">Informes, Métricas y Análisis</a>
+        <a href="/awaq/crearEcoRanger">Crear EcoRanger</a>
+        <a class="active" href="#">View de Ecoranger</a>
+        <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>
+      </nav>
       <div class="support-button" data-support="true">
         <i class="bi bi-telephone"></i> Contacta con el soporte
       </div>
     </div>
-  <div class="main-content">
-    <div class="eco-card">
-      <div class="eco-info">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="Foto de Lucas" />
-        <div class="eco-details">
-          <span><strong>Labor:</strong> EcoRanger</span>
-          <span><strong>Nombre:</strong> Lucas</span>
-          <span><strong>Apellidos:</strong> Jiménez Roca</span>
-          <span><strong>País:</strong> España</span>
-          <span><strong>Región:</strong> Castilla y León</span>
-          <span><strong>Ciudad:</strong> Salamanca</span>
-          <span><strong>Correo:</strong> lucas.jiménez@somosawaq.org</span>
-          <span><strong>Número de contacto:</strong> +34 655 76 25 93</span>
-        </div>
-      </div>
-      <div class="eco-actions">
-        <button class="btn btn-secondary" onclick="location.href='metricas.html'">Informes, Métricas y Análisis</button>
-        <button class="btn btn-success" onclick="location.href='crearEcoRanger.html'">Crear EcoRanger</button>
-        <button class="btn btn-success" onclick="location.href='editarEcoRanger.html'">Editar EcoRanger</button>
-      </div>
+    <div class="main-content" id="contenedorUsuarios">
+      <!-- Tarjetas dinámicas -->
     </div>
-
-    <div class="eco-card">
-      <div class="eco-info">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="Foto de María" />
-        <div class="eco-details">
-          <span><strong>Labor:</strong> EcoRanger</span>
-          <span><strong>Nombre:</strong> María</span>
-          <span><strong>Apellidos:</strong> Hernández González</span>
-          <span><strong>País:</strong> México</span>
-          <span><strong>Región:</strong> Chihuahua</span>
-          <span><strong>Ciudad:</strong> San Juanito</span>
-          <span><strong>Correo:</strong> María.Hernandez@somosawaq.org</span>
-          <span><strong>Número de contacto:</strong> +52 614 76 25 93</span>
-        </div>
-      </div>
-      <div class="eco-actions">
-        <button class="btn btn-secondary" onclick="location.href='metricas.html'">Informes, Métricas y Análisis</button>
-        <button class="btn btn-success" onclick="location.href='crearEcoRanger.html'">Crear EcoRanger</button>
-        <button class="btn btn-success" onclick="location.href='editarEcoRanger.html'">Editar EcoRanger</button>
-      </div>
-    </div>
-
-    <div class="chat-box mt-4">
-      <input type="text" placeholder="Escribe..." />
-      <i class="bi bi-arrow-up-circle-fill"></i>
-      <i class="bi bi-mic-fill"></i>
   </div>
-  </div>
-  <script type="module">    import { AuthService } from '../scripts/auth.js';
-    AuthService.displayUserRole('user-display', false);
-    // Botón para mostrar u ocultar sidebar
+  <script type="module">
+    import { AuthService } from '../scripts/auth.js';
+    AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
+
     document.getElementById('toggleSidebar').addEventListener('click', () => {
       document.querySelector('.sidebar').classList.toggle('collapsed');
     });
-    // Verificación de autenticación y permisos de administrador
+
+    async function cargarUsuarios() {
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
+
+      try {
+        const res = await fetch('/awaq/api/getUsers', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        const response = await res.json();
+        const usuarios = response.records;
+        const contenedor = document.getElementById('contenedorUsuarios');
+
+        contenedor.innerHTML = '';
+
+        usuarios.forEach(u => {
+          const div = document.createElement('div');
+          div.className = 'eco-card';
+          div.innerHTML = `
+            <div class="eco-info">
+              <img src="${u.imagen_perfil || 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'}" alt="Foto de ${u.nombre}" />
+              <div class="eco-details">
+                <span><strong>Labor:</strong> EcoRanger</span>
+                <span><strong>Nombre:</strong> ${u.nombre}</span>
+                <span><strong>Apellidos:</strong> ${u.apellidos}</span>
+                <span><strong>País:</strong> ${u.pais}</span>
+                <span><strong>Región:</strong> ${u.provincia}</span>
+                <span><strong>Ciudad:</strong> ${u.ciudad}</span>
+                <span><strong>Correo:</strong> ${u.correo}</span>
+                <span><strong>Número de contacto:</strong> ${u.numeroTelefono}</span>
+              </div>
+            </div>
+          `;
+          contenedor.appendChild(div);
+        });
+      } catch (err) {
+        console.error('Error al cargar usuarios:', err);
+      }
+    }
+
     function checkAdminAccess() {
       const token = localStorage.getItem('authToken');
-
-      if (!token) {
-        alert('Debes iniciar sesión para acceder a esta página.');
-        window.location.href = '/awaq/login';
-        return;
-      }
+      if (!token) return window.location.href = '/awaq/login';
 
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
-        const isAdmin = payload.role_id === 1;
-
-        if (!isAdmin) {
-          alert('Acceso denegado. Se requieren permisos de administrador.');
-          window.location.href = '/awaq/home';
-          return;
-        }
-
-        console.log('Acceso de administrador verificado');
+        if (payload.role_id !== 1) return window.location.href = '/awaq/home';
       } catch (error) {
-        console.error('Error al verificar el token:', error);
-        alert('Token inválido. Por favor, inicia sesión nuevamente.');
+        console.error('Token inválido');
         localStorage.removeItem('authToken');
         window.location.href = '/awaq/login';
       }
     }
 
-    // Ejecutar verificación al cargar la página
     checkAdminAccess();
-
-    const chartConfig = (ctx, label, data) => new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Completado', 'Faltante'],
-        datasets: [{
-          label: label,
-          data: data,
-          backgroundColor: ['#198754', '#444'],
-          borderWidth: 0
-        }]
-      },
-      options: {
-        cutout: '70%',
-        plugins: {
-          legend: { display: false },
-        }
-      }
-    });
-
+    document.addEventListener('DOMContentLoaded', cargarUsuarios);
   </script>
-  <!-- Script del sistema de soporte -->
   <script src="../scripts/support.js"></script>
-
 </body>
 </html>

@@ -91,25 +91,24 @@
       background-color: #198754;
       color: #fff;
       text-decoration: none;
-    }    .sidebar .support-button {
-      background: linear-gradient(135deg, #198754, #20c464);
+    }
+    .sidebar .support-button {
+      background-color: #444;
       padding: 12px;
       text-align: center;
       border-radius: 10px;
+      font-weight: bold;
       color: white;
       font-size: 14px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s;
     }
     .sidebar .support-button:hover {
-      background: linear-gradient(135deg, #20c464, #198754);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+      background-color: #198754;
+      color: #fff;
+      cursor: pointer;
     }
     .sidebar .support-button i {
-      color: #00ff00;
+      color: #00b300;
       margin-right: 8px;
     }
     .sidebar-logout {
@@ -129,7 +128,8 @@
     }
     .sidebar-logout i {
       margin-right: 8px;
-    }    .main-content {
+    }
+    .main-content {
       flex-grow: 1;
       padding: 30px;
       background-color: #2a2a2a;
@@ -139,176 +139,46 @@
       min-height: 600px;
       position: relative;
     }
-    .page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 2px solid #444;
-    }
-    .page-header h2 {
-      color: #00ff00;
-      font-size: 2rem;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .page-header .header-icon {
-      background: linear-gradient(135deg, #198754, #20c464);
-      border-radius: 50%;
-      padding: 12px;
-      color: white;
-      font-size: 1.5rem;
-    }
-    .page-stats {
+    .tabs {
       display: flex;
       gap: 20px;
-      align-items: center;
-      color: #ccc;
-    }
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 16px;
-      background-color: #333;
-      border-radius: 20px;
-      font-size: 0.9rem;
-    }
-    .stat-item i {
-      color: #198754;
-    }    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 30px;
-      background-color: #333;
-      padding: 8px;
-      border-radius: 12px;
-      width: fit-content;
+      margin-bottom: 20px;
     }
     .tab {
       cursor: pointer;
-      font-weight: 600;
-      padding: 12px 24px;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      color: #ccc;
-      background-color: transparent;
-      border: none;
-      outline: none;
+      font-weight: bold;
+      padding-bottom: 5px;
     }
     .tab.active {
-      background: linear-gradient(135deg, #198754, #20c464);
-      color: white;
-      box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+      border-bottom: 3px solid #198754;
+      color: #198754;
     }
-    .tab:hover:not(.active) {
+    .card-anteproyecto {
       background-color: #444;
-      color: white;
-    }.card-anteproyecto {
-      background: linear-gradient(135deg, #2d4a2d, #1f3a1f);
-      padding: 24px;
-      border-radius: 16px;
+      padding: 20px;
+      border-radius: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
-      border-left: 4px solid #198754;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-    .card-anteproyecto:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(25, 135, 84, 0.2);
     }
     .card-anteproyecto .icon {
-      background: linear-gradient(135deg, #198754, #20c464);
+      background-color: #198754;
       border-radius: 50%;
-      padding: 12px;
+      padding: 10px;
       color: white;
       font-size: 24px;
-      margin-right: 20px;
-      min-width: 48px;
-      min-height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    .card-content {
-      flex: 1;
-      padding-left: 16px;
-    }
-    .card-content h5 {
-      color: #00ff00;
-      margin-bottom: 8px;
-      font-size: 1.2rem;
-    }
-    .card-content p {
-      color: #cccccc;
-      margin-bottom: 12px;
-      line-height: 1.4;
-    }
-    .card-content small {
-      color: #999999;
-      display: block;
-      margin-bottom: 4px;
-    }
-    .card-stats {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      margin-top: 12px;
-    }
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #198754;
-      font-size: 0.9rem;
-    }
-    .status-badge {
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    .status-open {
-      background-color: rgba(25, 135, 84, 0.2);
-      color: #00ff00;
-      border: 1px solid #198754;
-    }
-    .status-closed {
-      background-color: rgba(220, 53, 69, 0.2);
-      color: #ff6b6b;
-      border: 1px solid #dc3545;
-    }    .btn-float {
+    .btn-float {
       position: fixed;
       bottom: 30px;
       right: 30px;
-      background: linear-gradient(135deg, #198754, #20c464);
+      background-color: #198754;
       color: white;
-      padding: 16px 24px;
-      border-radius: 50px;
-      font-weight: 600;
+      padding: 12px 20px;
+      border-radius: 15px;
+      font-weight: bold;
       border: none;
-      font-size: 14px;
-      box-shadow: 0 8px 24px rgba(25, 135, 84, 0.3);
-      transition: all 0.3s ease;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .btn-float:hover {
-      background: linear-gradient(135deg, #20c464, #198754);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(25, 135, 84, 0.4);
-    }
-    .btn-float i {
-      font-size: 16px;
     }
     .hidden {
       display: none;
@@ -356,167 +226,45 @@
           <i class="bi bi-telephone"></i>Contacta con el soporte
         </div>
       </div>
-    </div>    <div class="main-content">
-      <div class="page-header">
-        <h2>
-          <div class="header-icon">
-            <i class="bi bi-search"></i>
-          </div>
-          Explorador de Anteproyectos
-        </h2>
-        <div class="page-stats">
-          <div class="stat-item">
-            <i class="bi bi-folder-open"></i>
-            <span>3 Abiertos</span>
-          </div>
-          <div class="stat-item">
-            <i class="bi bi-folder-check"></i>
-            <span>2 Cerrados</span>
-          </div>
-          <div class="stat-item">
-            <i class="bi bi-calendar-week"></i>
-            <span>Esta semana</span>
-          </div>
-        </div>      </div>
-      <div class="search-controls">
-        <div class="search-bar">
-          <i class="bi bi-search"></i>
-          <input type="text" placeholder="Buscar anteproyectos..." id="searchInput" oninput="filtrarAnteproyectos()">
-        </div>
-        <div class="filter-controls">
-          <select id="regionFilter" onchange="filtrarAnteproyectos()">
-            <option value="">Todas las regiones</option>
-            <option value="Cundinamarca">Cundinamarca</option>
-            <option value="Bogotá D.C.">Bogotá D.C.</option>
-            <option value="Putumayo">Putumayo</option>
-            <option value="Valle del Cauca">Valle del Cauca</option>
-            <option value="Quindío">Quindío</option>
-          </select>
-        </div>
-      </div>
+    </div>
+
+    <div class="main-content">
+      <h2>Explorador de Anteproyectos</h2>
       <div class="tabs">
         <div class="tab active" onclick="mostrarTab('abiertos', this)">Abiertos</div>
         <div class="tab" onclick="mostrarTab('cerrados', this)">Cerrados</div>
         <div class="tab" onclick="mostrarTab('todos', this)">Todos</div>
-      </div>      <div id="abiertos">
+      </div>
+      <div id="abiertos">
         <div class="card-anteproyecto">
-          <div class="icon">
-            <i class="bi bi-tree-fill"></i>
-          </div>
-          <div class="card-content">
-            <h5><strong>Restauración de Ecosistemas Andinos</strong></h5>
-            <p>Proyecto de restauración de bosques altoandinos y páramos en la cordillera oriental, enfocado en la recuperación de especies nativas y el fortalecimiento de servicios ecosistémicos.</p>
-            <small><i class="bi bi-calendar"></i> Fecha de creación: 15/03/2025</small>
-            <small><i class="bi bi-calendar-x"></i> Fecha límite: 30/08/2025</small>
-            <div class="card-stats">
-              <div class="stat-item">
-                <i class="bi bi-geo-alt"></i>
-                <span>Cundinamarca</span>
-              </div>
-              <div class="stat-item">
-                <i class="bi bi-people"></i>
-                <span>5 participantes</span>
-              </div>
-              <span class="status-badge status-open">Abierto</span>
-            </div>
+          <div>
+            <h5><strong>Título</strong></h5>
+            <p>Descripción</p>
+            <small>Fecha de creación: 00/00/0000</small><br>
+            <small>Fecha límite: 00/00/0000</small>
           </div>
         </div>
         <div class="card-anteproyecto">
-          <div class="icon">
-            <i class="bi bi-droplet-fill"></i>
-          </div>
-          <div class="card-content">
-            <h5><strong>Conservación de Humedales Urbanos</strong></h5>
-            <p>Iniciativa para la protección y manejo sostenible de humedales urbanos, incluyendo programas de educación ambiental y monitoreo de biodiversidad acuática.</p>
-            <small><i class="bi bi-calendar"></i> Fecha de creación: 22/04/2025</small>
-            <small><i class="bi bi-calendar-x"></i> Fecha límite: 15/09/2025</small>
-            <div class="card-stats">
-              <div class="stat-item">
-                <i class="bi bi-geo-alt"></i>
-                <span>Bogotá D.C.</span>
-              </div>
-              <div class="stat-item">
-                <i class="bi bi-people"></i>
-                <span>8 participantes</span>
-              </div>
-              <span class="status-badge status-open">Abierto</span>
-            </div>
-          </div>
-        </div>
-        <div class="card-anteproyecto">
-          <div class="icon">
-            <i class="bi bi-flower1"></i>
-          </div>
-          <div class="card-content">
-            <h5><strong>Corredor Biológico Amazónico</strong></h5>
-            <p>Establecimiento de corredores biológicos para conectar fragmentos de bosque amazónico, facilitando el tránsito de fauna y fortaleciendo la conectividad del paisaje.</p>
-            <small><i class="bi bi-calendar"></i> Fecha de creación: 10/05/2025</small>
-            <small><i class="bi bi-calendar-x"></i> Fecha límite: 20/10/2025</small>
-            <div class="card-stats">
-              <div class="stat-item">
-                <i class="bi bi-geo-alt"></i>
-                <span>Putumayo</span>
-              </div>
-              <div class="stat-item">
-                <i class="bi bi-people"></i>
-                <span>12 participantes</span>
-              </div>
-              <span class="status-badge status-open">Abierto</span>
-            </div>
+          <div>
+            <h5><strong>Título</strong></h5>
+            <p>Descripción</p>
+            <small>Fecha de creación: 00/00/0000</small><br>
+            <small>Fecha límite: 00/00/0000</small>
           </div>
         </div>
       </div>
       <div id="cerrados" class="hidden">
         <div class="card-anteproyecto">
-          <div class="icon">
-            <i class="bi bi-check-circle-fill"></i>
-          </div>
-          <div class="card-content">
-            <h5><strong>Reforestación Comunitaria Valle del Cauca</strong></h5>
-            <p>Proyecto completado de reforestación con especies nativas en colaboración con comunidades locales, resultando en la plantación de 5,000 árboles nativos.</p>
-            <small><i class="bi bi-calendar"></i> Fecha de creación: 12/01/2025</small>
-            <small><i class="bi bi-calendar-check"></i> Fecha de finalización: 28/04/2025</small>
-            <div class="card-stats">
-              <div class="stat-item">
-                <i class="bi bi-geo-alt"></i>
-                <span>Valle del Cauca</span>
-              </div>
-              <div class="stat-item">
-                <i class="bi bi-people"></i>
-                <span>15 participantes</span>
-              </div>
-              <span class="status-badge status-closed">Cerrado</span>
-            </div>
-          </div>
-        </div>
-        <div class="card-anteproyecto">
-          <div class="icon">
-            <i class="bi bi-award-fill"></i>
-          </div>
-          <div class="card-content">
-            <h5><strong>Monitoreo de Aves Migratorias</strong></h5>
-            <p>Programa exitoso de seguimiento de rutas migratorias y estado poblacional de aves en la región andina, con resultados publicados en revistas científicas.</p>
-            <small><i class="bi bi-calendar"></i> Fecha de creación: 08/02/2025</small>
-            <small><i class="bi bi-calendar-check"></i> Fecha de finalización: 15/05/2025</small>
-            <div class="card-stats">
-              <div class="stat-item">
-                <i class="bi bi-geo-alt"></i>
-                <span>Quindío</span>
-              </div>
-              <div class="stat-item">
-                <i class="bi bi-people"></i>
-                <span>7 participantes</span>
-              </div>
-              <span class="status-badge status-closed">Cerrado</span>
-            </div>
+          <div>
+            <h5><strong>Título</strong></h5>
+            <p>Descripción</p>
+            <small>Fecha de creación: 00/00/0000</small><br>
+            <small>Fecha límite: 00/00/0000</small>
           </div>
         </div>
       </div>
       <div id="todos" class="hidden"></div>
-      <button class="btn-float" onclick="window.location.href='/awaq/crearap'">
-        <i class="bi bi-plus-circle"></i>
-        Crear Nuevo Anteproyecto
-      </button>
+      <button class="btn-float" onclick="window.location.href='/awaq/crearap'">Crear Nuevo Anteproyecto</button>
     </div>
   </div>
 
@@ -540,10 +288,12 @@
         cerrados.querySelectorAll('.card-anteproyecto').forEach(card => todos.appendChild(card.cloneNode(true)));
       }
       document.getElementById(tabId).classList.remove('hidden');
-    }    document.addEventListener('DOMContentLoaded', function() {
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
       // Importar y usar AuthService
       import('../scripts/auth.js').then(module => {
-        module.AuthService.displayUserRole('user-display', false);
+        module.AuthService.displayUserRoleInElement('user-display', 'bi-person-fill');
       });
       
       document.querySelector('.logout-button').addEventListener('click', function() {

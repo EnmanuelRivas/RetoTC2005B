@@ -532,19 +532,30 @@
     });
   </script>
 <script type="module">
-  import { getIsAdminFromToken } from '../scripts/auth.js';
+  import { getIsAdminFromToken, AuthService } from '../scripts/auth.js';
 
   document.addEventListener('DOMContentLoaded', async function () {
     const isAdmin = await getIsAdminFromToken();
 
-    const metricasLink = document.querySelector('a[href="/awaq/metricas"]');
-    const gestionUsuariosLink = document.querySelector('a[href="/awaq/gestionUsuario"]');
-    const ecoRangerLink = document.querySelector('a[href="/awaq/viewEcoRanger"]');
+    // Configurar botón de logout
+    const logoutButton = document.querySelector('.logout-button');
+    if (logoutButton) {
+      logoutButton.addEventListener('click', function () {
+        AuthService.logout();
+      });
+    }
 
+    // Ocultar enlaces restringidos si no es admin
     if (!isAdmin) {
-      if (metricasLink) metricasLink.style.display = 'none';
-      if (gestionUsuariosLink) gestionUsuariosLink.style.display = 'none';
-      if (ecoRangerLink) ecoRangerLink.style.display = 'none';
+      const restrictedLinks = [
+        "a[href='./gestionUsuario.html']",
+        "a[href='./viewEcoRanger.html']",
+        "a[href='/awaq/metricas']"
+      ];
+      restrictedLinks.forEach(selector => {
+        const link = document.querySelector(selector);
+        if (link) link.style.display = 'none';
+      });
     }
   });
 </script>
