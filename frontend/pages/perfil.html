@@ -107,24 +107,6 @@
       color: #00b300;
       margin-right: 8px;
     }
-    .sidebar-logout {
-      background-color: #444;
-      padding: 12px;
-      text-align: center;
-      border-radius: 10px;
-      font-weight: bold;
-      color: #ff6b6b;
-      font-size: 14px;
-      margin-top: 10px;
-      transition: background-color 0.2s, color 0.2s;
-      cursor: pointer;
-    }
-    .sidebar-logout:hover {
-      background-color: #333;
-    }
-    .sidebar-logout i {
-      margin-right: 8px;
-    }
     .main-content {
       flex-grow: 1;
       padding: 30px 40px 90px 40px;
@@ -360,64 +342,6 @@
       padding: 0;
       overflow: hidden;
     }
-    .sidebar nav {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
-    .sidebar nav a {
-      padding: 12px 18px;
-      border-radius: 8px;
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 16px;
-      letter-spacing: 0.5px;
-      transition: background-color 0.2s, color 0.2s;
-    }
-    .sidebar nav a.active,
-    .sidebar nav a:hover {
-      background-color: #198754;
-      color: #fff;
-      text-decoration: none;
-    }
-    .sidebar .support-button {
-      background-color: #444;
-      padding: 12px;
-      text-align: center;
-      border-radius: 10px;
-      font-weight: bold;
-      color: white;
-      font-size: 14px;
-      transition: background-color 0.2s, color 0.2s;
-    }
-    .sidebar .support-button:hover {
-      background-color: #198754;
-      color: #fff;
-      cursor: pointer;
-    }
-    .sidebar .support-button i {
-      color: #00b300;
-      margin-right: 8px;
-    }
-    .sidebar-logout {
-      background-color: #444;
-      padding: 12px;
-      text-align: center;
-      border-radius: 10px;
-      font-weight: bold;
-      color: #ff6b6b;
-      font-size: 14px;
-      margin-top: 10px;
-      transition: background-color 0.2s, color 0.2s;
-      cursor: pointer;
-    }
-    .sidebar-logout:hover {
-      background-color: #333;
-    }
-    .sidebar-logout i {
-      margin-right: 8px;
-    }
     #toggleSidebar {
       border: none;
       background: none;
@@ -455,12 +379,14 @@
           <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>      
           <a href="/awaq/perfil" class="active">Mi Perfil</a>
         </nav>
-      </div>      <div>
+      </div>      
+      <div>
         <div class="support-button" data-support="true">
           <i class="bi bi-telephone"></i>Contacta con el soporte
         </div>
       </div>
-    </div>    <div class="main-content">
+    </div>    
+    <div class="main-content">
       <h2>Mi Perfil</h2>
       
       <!-- Sección de información del usuario (solo lectura) -->

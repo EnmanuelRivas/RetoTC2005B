@@ -444,19 +444,39 @@
     });
   </script>
   <script src="../scripts/chatbot.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Importar y usar AuthService para mostrar rol
-      import('../scripts/auth.js').then(module => {
-        module.AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
-        
-        const logoutButton = document.querySelector('.logout-button');
+  <script type="module">
+  document.addEventListener('DOMContentLoaded', function () {
+    import('../scripts/auth.js').then(module => {
+      const AuthService = module.AuthService;
+      const getIsAdminFromToken = module.getIsAdminFromToken;
+
+      // Mostrar nombre de rol en barra superior
+      AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
+
+      // Botón de logout
+      const logoutButton = document.querySelector('.logout-button');
+      if (logoutButton) {
         logoutButton.addEventListener('click', function () {
-          module.AuthService.logout();
+          AuthService.logout();
         });
-      });
-     });
-  </script>
+      }
+
+      // Ocultar enlaces restringidos si no es admin
+      if (!getIsAdminFromToken()) {
+        const restrictedLinks = [
+          "a[href='/awaq/gestionUsuario']",
+          "a[href='/awaq/viewEcoRanger']",
+          "a[href='/awaq/metricas']"
+        ];
+        restrictedLinks.forEach(selector => {
+          const link = document.querySelector(selector);
+          if (link) link.style.display = 'none';
+        });
+      }
+    });
+  });
+</script>
+
 
   <!-- Script del sistema de soporte -->
   <script src="../scripts/support.js"></script>

@@ -31,6 +31,9 @@
       color: white;
       margin: 0;
     }
+    .top-bar h1::before {
+      margin-right: 10px;
+    }
     .top-bar .user-info {
       color: white;
       display: flex;
@@ -265,7 +268,7 @@
     </div>
   </div>
 
-  <script>
+<script>
     document.getElementById("toggleSidebar").addEventListener("click", function () {
       document.querySelector(".sidebar").classList.toggle("collapsed");
     });
@@ -306,24 +309,18 @@
   <script type="module">
   import { getIsAdminFromToken } from '../scripts/auth.js';
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const isAdmin = getIsAdminFromToken();
+  document.addEventListener('DOMContentLoaded', async function () {
+    const isAdmin = await getIsAdminFromToken();
 
-    if (isAdmin) {
-      const metricasLink =document.querySelector('a[href="./metricas.html"]');
-      if (metricasLink) {
-        metricasLink.style.display = 'block';
-      }
+    const metricasLink = document.querySelector('a[href="/awaq/metricas"]');
+    const gestionUsuariosLink = document.querySelector('a[href="/awaq/gestionUsuario"]');
+    const ecoRangerLink = document.querySelector('a[href="/awaq/viewEcoRanger"]');
 
-      const gestionUsuariosLink = document.querySelector('a[href="./gestionUsuario.html"]');
-      if (gestionUsuariosLink) {
-        gestionUsuariosLink.style.display = 'block';
-      }
-
-      const EcoRangerLink = document.querySelector('a[href="./viewEcoRanger.html"]');
-      if (EcoRangerLink) {
-        EcoRangerLink.style.display = 'block';
-      }    }
+    if (!isAdmin) {
+      if (metricasLink) metricasLink.style.display = 'none';
+      if (gestionUsuariosLink) gestionUsuariosLink.style.display = 'none';
+      if (ecoRangerLink) ecoRangerLink.style.display = 'none';
+    }
   });
 </script>
 

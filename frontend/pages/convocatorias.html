@@ -221,9 +221,6 @@
       <div class="support-button" data-support="true">
         <i class="bi bi-telephone"></i>Contacta con el soporte
       </div>
-      <div class="sidebar-logout">
-        <i class="bi bi-box-arrow-right"></i>Cerrar sesión
-      </div>
     </div>
     <div class="main-content">
       <h2><strong>Nuevas Convocatorias</strong></h2>
@@ -323,7 +320,23 @@
       window.location.href = '/awaq/login.html';    });
   });
 </script>
+<script type="module">
+  import { getIsAdminFromToken } from '../scripts/auth.js';
 
+  document.addEventListener('DOMContentLoaded', async function () {
+    const isAdmin = await getIsAdminFromToken();
+
+    const metricasLink = document.querySelector('a[href="/awaq/metricas"]');
+    const gestionUsuariosLink = document.querySelector('a[href="/awaq/gestionUsuario"]');
+    const ecoRangerLink = document.querySelector('a[href="/awaq/viewEcoRanger"]');
+
+    if (!isAdmin) {
+      if (metricasLink) metricasLink.style.display = 'none';
+      if (gestionUsuariosLink) gestionUsuariosLink.style.display = 'none';
+      if (ecoRangerLink) ecoRangerLink.style.display = 'none';
+    }
+  });
+</script>
 <!-- Script del sistema de soporte -->
 <script src="../scripts/support.js"></script>
 
