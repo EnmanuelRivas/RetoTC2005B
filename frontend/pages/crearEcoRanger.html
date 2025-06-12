@@ -315,56 +315,6 @@
     }
   });
 
-  window.onload = () => {
-    const token = localStorage.getItem('authToken');
-
-    if (!token) {
-      alert('Debes iniciar sesión para acceder a esta página.');
-      window.location.href = '/awaq/login';
-      return;
-    }
-
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const isAdmin = payload.role_id === 1;
-
-      if (!isAdmin) {
-        alert('Acceso denegado. Se requieren permisos de administrador.');
-        window.location.href = '/awaq/home';
-        return;
-      }
-
-      fetch('/awaq/api/getMetricas', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-        .then(response => {
-          if (!response.ok) throw new Error('Error al obtener los datos');
-          return response.json();
-        })
-        .then(data => {
-          const totalBiomos = data.registros || 0;
-          const totalEcoranger = data.usuarios || 0;
-          const totalAnteproyectos = data.anteproyectos || 0;
-
-          chartConfig(document.getElementById('chartBiomos'), 'Biomos', [totalBiomos, 100 - totalBiomos]);
-          chartConfig(document.getElementById('chartEco1'), 'EcoRanger', [totalEcoranger, 100 - totalEcoranger]);
-          chartConfig(document.getElementById('chartEco2'), 'Anteproyectos', [totalAnteproyectos, 100 - totalAnteproyectos]);
-        })
-        .catch(error => {
-          console.error('Error cargando métricas:', error);
-          alert('No se pudieron cargar los datos');
-        });
-
-    } catch (error) {
-      console.error('Error al verificar token:', error);
-      alert('Token inválido. Por favor, inicia sesión nuevamente.');
-      localStorage.removeItem('authToken');
-      window.location.href = '/awaq/login';
-    }
-  }
-
 </script>
   <!-- Script del sistema de soporte -->
   <script src="../scripts/support.js"></script>
