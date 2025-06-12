@@ -25,7 +25,7 @@
     }
     .form-control {
       background-color: #333;
-      color: white;
+      color: gray;
       border: none;
     }
     .form-control::placeholder {
@@ -47,46 +47,54 @@
 </head>
 <body>
 
-  <div class="form-container">
-    <h2 class="mb-4">Crear Nuevo Anteproyecto</h2>
+  <div class="container">
+    <!-- <h2 class="mb-4">Crear Nuevo Anteproyecto</h2> -->
+    <h2 class="mb-4">Crear Anteproyecto</h2>
     <form id="anteproyectoForm">
       <div class="mb-3">
-        <label class="form-label">Nombre del anteproyecto</label>
+
+       <!-- Convocatoria seleccionable -->
+          <label for="convocatoriaSelect">Selecciona una convocatoria:</label>
+          <select name="convocatoria_id" id="convocatoriaSelect" class="form-control" required>
+            <option value="" disabled selected hidden>Selecciona una convocatoria</option>
+          </select>
+
+        <!-- <label class="form-label">Nombre del anteproyecto</label>
         <input type="text" name="titulo" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Fecha límite</label>
-        <input type="date" name="fecha_limite" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Sitio web</label>
-        <input type="text" name="sitioweb" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Región</label>
-        <input type="text" name="region" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Organización</label>
-        <input type="text" name="organizacion" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">País</label>
-        <input type="text" name="pais" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Descripción</label>
-        <textarea name="descripcion" class="form-control" rows="3"></textarea>
+        <input type="text" name="titulo" class="form-control" value="Título Anteproyecto" disabled />-->
       </div>
 
-      <!-- Valor por defecto para estado -->
-      <input type="hidden" name="estado" value="1" />
+      <div class="mb-3">
+        <label>Título</label>
+        <input type="text" class="form-control" value="Generando Anteproyecto..." disabled style="color: black;"/>
+      </div>
+
+      <div class="mb-3">
+        <label>Descripción</label>
+        <textarea class="form-control" disabled style="color: black;">Generando descripción...</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Fecha de creación</label>
+        <!-- <input type="date" name="fecha_limite" class="form-control" required /> -->
+        <input type="text" class="form-control" value="Generando fecha de creación..." disabled style="color: black;"/>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Fecha límite</label>
+        <!-- <input type="date" name="fecha_limite" class="form-control" required /> -->
+        <input type="text" class="form-control" value="Generando fecha límite..." disabled style="color: black;"/>
+      </div>
+
+
+      <!-- Valor por defecto para estado
+      <input type="hidden" name="estado" value="0" /> -->
 
       <!-- Botones -->
       <div class="d-flex gap-2">
-        <button type="submit" class="btn btn-submit">Guardar</button>
-        <a href="/awaq/home" class="btn btn-secondary">
-          <i class="bi bi-house"></i> Inicio
+        <button type="submit" class="btn btn-submit">Guardar Anteproyecto</button>
+        <a href="/awaq/AsistenteExplorador" class="btn btn-secondary">
+          Explorador de Anteproyectos
         </a>
       </div>
 
@@ -95,46 +103,94 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+  async function cargarConvocatorias() {
+    try {
       const token = localStorage.getItem('authToken');
+      const res = await fetch('/awaq/api/getConvocatorias', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
-      if (!token) {
-        document.getElementById('alertContainer').innerHTML = '<div class="alert alert-danger">No hay sesión activa. Por favor inicia sesión primero.</div>';
-        document.getElementById('anteproyectoForm').style.display = 'none';
+      const data = await res.json();
+      const select = document.getElementById('convocatoriaSelect');
+
+      // Limpia cualquier opción previa
+      select.innerHTML = '';
+
+      // Añade opción por defecto
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = 'Selecciona una convocatoria';
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      select.appendChild(defaultOption);
+
+      // Agrega las opciones reales
+      data.forEach(conv => {
+        const option = document.createElement('option');
+        option.value = conv.convocatoria_id;
+        option.textContent = `${conv.nombre_anteproyecto} - ${conv.organizacion} `;
+        select.appendChild(option);
+      });
+
+    } catch (error) {
+      console.error('Error al cargar convocatorias:', error);
+    }
+  }
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+    cargarConvocatorias();
+
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      document.getElementById('alertContainer').innerHTML = '<div class="alert alert-danger">No hay sesión activa. Por favor inicia sesión primero.</div>';
+      document.getElementById('anteproyectoForm').style.display = 'none';
+      return;
+    }
+
+    document.getElementById('anteproyectoForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = Object.fromEntries(new FormData(form));
+
+      const convocatoriaSelect = document.getElementById('convocatoriaSelect');
+      if (!convocatoriaSelect.value) {
+        document.getElementById('alertContainer').innerHTML =
+          '<div class="alert alert-warning">Debes seleccionar una convocatoria antes de continuar.</div>';
         return;
       }
 
-      document.getElementById('anteproyectoForm').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const form = e.target;
-        const data = Object.fromEntries(new FormData(form));
+      try {
+        const res = await fetch('/awaq/api/postAnteproyecto', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(data)
+        });
 
-        try {
-          const res = await fetch('/awaq/api/postAnteproyecto', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(data)
-          });
+        const json = await res.json();
+        const alertBox = document.getElementById('alertContainer');
+        alertBox.innerHTML = '';
 
-          const json = await res.json();
-          const alertBox = document.getElementById('alertContainer');
-          alertBox.innerHTML = '';
-
-          if (res.ok) {
-            alertBox.innerHTML = `<div class="alert alert-success">${json.message}</div>`;
-            form.reset();
-          } else {
-            alertBox.innerHTML = `<div class="alert alert-danger">${json.message || json.error || 'Error inesperado'}</div>`;
-          }
-        } catch (err) {
-          console.error(err);
-          document.getElementById('alertContainer').innerHTML = '<div class="alert alert-danger">Error de conexión</div>';
+        if (res.ok) {
+          alertBox.innerHTML = `<div class="alert alert-success">${json.message}</div>`;
+          form.reset();
+          convocatoriaSelect.selectedIndex = 0; // vuelve a cargar por si hubo cambios
+        } else {
+          alertBox.innerHTML = `<div class="alert alert-danger">${json.message || json.error || 'Error inesperado'}</div>`;
         }
-      });
+      } catch (err) {
+        console.error(err);
+        document.getElementById('alertContainer').innerHTML = '<div class="alert alert-danger">Error de conexión</div>';
+      }
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>

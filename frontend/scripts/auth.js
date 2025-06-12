@@ -110,7 +110,7 @@ function getUserInfoFromToken() {
             id: payload.id,
             name: payload.username || 'Desconocido',
             email: payload.username || 'sin@email.com',
-            isAdmin: payload.role_id === 1,
+            isAdmin: Number(payload.role_id) === 1,
             role_id: payload.role_id
         };
     } catch (err) {
