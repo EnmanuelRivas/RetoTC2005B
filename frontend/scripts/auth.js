@@ -16,12 +16,10 @@ const AuthService = {
 
     isAuthenticated() {
         return !!this.getToken();
-    },
-
-    logout() {
+    },    logout() {
         this.removeToken();
-        // Redirigir al login o página inicial
-        window.location.href = "/awaq";
+        // Redirigir al login
+        window.location.href = "/awaq/login.html";
     },
 
     getAuthHeaders() {
@@ -58,7 +56,7 @@ const AuthService = {
  */
 function checkAuth() {
     if (!AuthService.isAuthenticated()) {
-        window.location.href = "/awaq";
+        window.location.href = "/awaq/login.html";
         return false;
     }
     return true;
@@ -66,8 +64,8 @@ function checkAuth() {
 
 document.addEventListener("DOMContentLoaded", () => {
     const publicPages = [
-        "/awaq", "/awaq/", "/awaq/login", "/awaq/registro",
-        "/awaq/recuperar", "/awaq/changepwd", "/awaq/confirmacion"
+        "/awaq", "/awaq/", "/awaq/login.html", "/awaq/registro.html",
+        "/awaq/recuperar.html", "/awaq/changepwd.html", "/awaq/confirmacion.html"
     ];
 
     const currentPath = window.location.pathname;
@@ -210,3 +208,16 @@ function displayUserInfo(elementId) {
         }
     }
 }
+
+// Exports para módulos ES6
+export { 
+    AuthService, 
+    checkAuth, 
+    getIsAdminFromToken, 
+    getUserInfoFromToken,
+    toggleAdminElement,
+    hideForNonAdmins,
+    checkAdminAccess,
+    addAdminButtons,
+    displayUserInfo
+};
