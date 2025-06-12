@@ -184,8 +184,8 @@
 </head>
 <body>
   <div class="top-bar">
-    <h1><i class="bi bi-eye" style="margin-right: 10px;"></i>Mawi</h1>
-    <div class="user-info">
+    <h1><i class="bi bi-eye" style="margin-right: 10px;"></i>Mawi</h1>    <div class="user-info">
+      <span id="user-display">Usuario <i class="bi bi-person-fill"></i></span>
       <div class="logout-button">
         <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
       </div>
@@ -202,8 +202,7 @@
           <a href="/awaq/perfil">Mi Perfil</a>
         </nav>
       </div>
-      <div>
-        <div class="support-button">
+      <div>        <div class="support-button" data-support="true">
           <i class="bi bi-telephone"></i>Contacta con el soporte
         </div>
         <div class="sidebar-logout">
@@ -229,7 +228,13 @@
     </div>
   </div>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {      // Manejar el cierre de sesión desde ambos botones
+    document.addEventListener('DOMContentLoaded', function() {
+      // Importar y usar AuthService para mostrar rol
+      import('../scripts/auth.js').then(module => {
+        module.AuthService.displayUserRoleInElement('user-display', 'bi-person-fill');
+      });
+      
+      // Manejar el cierre de sesión desde ambos botones
       document.querySelector('.logout-button').addEventListener('click', function() {
         localStorage.removeItem('authToken');
         window.location.href = '/awaq/login.html';
@@ -238,9 +243,11 @@
       document.querySelector('.sidebar-logout').addEventListener('click', function() {
         localStorage.removeItem('authToken');
         window.location.href = '/awaq/login.html';
-      });
-    });
+      });    });
   </script>
+  
+  <!-- Script del sistema de soporte -->
+  <script src="../scripts/support.js"></script>
   
 </body>
 </html>

@@ -136,11 +136,10 @@
 </head>
 <body>
   <div class="top-bar">
-    <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
-    <div class="user-info">
-      <a href="#" style="color: white; text-decoration: none;">
-        Administrador <i class="bi bi-person-fill ms-2"></i>
-      </a>
+    <h1><i class="bi bi-eye me-2"></i>Mawi</h1>    <div class="user-info">
+      <span id="user-display" style="color: white;">
+        Usuario <i class="bi bi-person-fill ms-2"></i>
+      </span>
     </div>
   </div>
   <div class="main-body">
@@ -151,8 +150,7 @@
           <a class="active" href="#">Gestión de usuarios </a>
           <a href="/awaq/metricas">Vista de Administrador</a>
         </nav>
-      </div>
-      <div class="support-button">
+      </div>      <div class="support-button" data-support="true">
         <i class="bi bi-telephone"></i> Contacta con el soporte
       </div>
     </div>
@@ -182,8 +180,10 @@
       </table>
     </div>
   </div>
-
-  <script>
+  <script type="module">
+    // Importar y mostrar rol del usuario
+    import { AuthService } from '../scripts/auth.js';
+    AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
     
   async function cargarUsuarios() {
     const token = localStorage.getItem('authToken');
@@ -256,5 +256,9 @@
 
   document.addEventListener("DOMContentLoaded", cargarUsuarios);
 </script>
+
+<!-- Script del sistema de soporte -->
+<script src="../scripts/support.js"></script>
+
 </body>
 </html>

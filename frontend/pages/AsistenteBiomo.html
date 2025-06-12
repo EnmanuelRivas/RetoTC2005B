@@ -398,11 +398,10 @@
         <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
       </button>
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
-    </div>
-    <div class="user-controls">
-      <div class="user-profile" onclick="location.href='/awaq/perfil'">
-        <span id="user-name">Usuario</span> <i class="bi bi-person-fill"></i>
-      </div>
+    </div>    <div class="user-info">
+      <span id="user-display" style="color: white;">
+        Usuario <i class="bi bi-person-fill ms-2"></i>
+      </span>
       <div class="logout-button">
         <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
       </div>
@@ -421,19 +420,15 @@
           <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>      
           <a href="/awaq/perfil">Mi Perfil</a>
         </nav>
-      </div>
-      <div>
-        <div class="support-button">
+      </div>      <div>
+        <div class="support-button" data-support="true">
           <i class="bi bi-telephone"></i>Contacta con el soporte
         </div>
-
       </div>
     </div>
     <div class="main-content">
       <h2>Asistente de Mi Biomo</h2>
       <p>Biomo ID: 1234</p>
-      <div class="mt-4">
-      </div>
       <div id="chat-history" class="d-flex flex-column mt-4" style="overflow-y: auto; max-height: 400px;"></div>
       <div class="chat-input">
         <input type="text" id="user-input" placeholder="Escribe..." />
@@ -448,85 +443,22 @@
     });
   </script>
   <script src="../scripts/chatbot.js"></script>
-  <script type="module">
-    import { getUserInfoFromToken, AuthService } from '../scripts/auth.js';
-
-    document.addEventListener('DOMContentLoaded', function() {      document.querySelector('.logout-button').addEventListener('click', function() {
-        localStorage.removeItem('authToken');
-        window.location.href = '/awaq/login.html';
-      });
-
-      const logoutButton = document.querySelector('.logout-button');
-      if (logoutButton) {
-        logoutButton.addEventListener('click', function () {
-          AuthService.logout();
-        });
-      }
-      });
-
-      function obtenerDatosUsuario() {
-        var token = localStorage.getItem('authToken');
-        if (!token) return Promise.resolve(null);
-
-        return fetch('/awaq/api/profile', {
-          headers: {
-            'Authorization': 'Bearer ' + token
-          }
-        })
-        .then(function(response) {
-          if (response.ok) {
-            return response.json();
-          }
-          return null;
-        })
-        .then(function(data) {
-          return data && data.status === 'success' ? data.data : null;
-        })
-        .catch(function(error) {
-          console.error('Error al obtener datos del usuario:', error);
-          return null;
-        });
-      }
-
-      function loadUserInfo() {
-        var token = localStorage.getItem('authToken');
-        if (!token) return;
-
-        fetch('/awaq/api/profile', {
-          headers: {
-            'Authorization': 'Bearer ' + token
-          }
-        })
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(data) {
-          if (data.status === 'success') {
-            var userName = document.getElementById('user-name');        if (userName) {
-              var isAdmin = data.data.role_id === 1;
-              userName.textContent = isAdmin ? 'Administrador' : 'Usuario';
-              userName.style.color = isAdmin ? '#00b300' : '#ffffff';
-            }
-          }
-        })
-        .catch(function(error) {
-          console.error('Error loading user info:', error);
-        });
-      }
-
-      function isAuthenticated() {
-        const token = localStorage.getItem('authToken');
-        if (!token) return false;
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Importar y usar AuthService para mostrar rol
+      import('../scripts/auth.js').then(module => {
+        module.AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
         
-        try {
-          const payload = JSON.parse(atob(token.split('.')[1]));
-          const exp = payload.exp * 1000;
-          return Date.now() < exp;
-        } catch (error) {
-          console.error('Token inválido:', error);
-          return false;
-        }
-      }
+        const logoutButton = document.querySelector('.logout-button');
+        logoutButton.addEventListener('click', function () {
+          module.AuthService.logout();
+        });
+      });
+     });
   </script>
+
+  <!-- Script del sistema de soporte -->
+  <script src="../scripts/support.js"></script>
+
 </body>
 </html>
