@@ -286,10 +286,9 @@
         console.error("🔥 Error inesperado:", error);
         alert("❌ Error al intentar enviar la convocatoria");
       }    });
-    
-    document.querySelector('.logout-button').addEventListener('click', function() {
+      document.querySelector('.logout-button').addEventListener('click', function() {
       localStorage.removeItem('authToken');
-      window.location.href = '/awaq';
+      window.location.href = '/awaq/login.html';
     });
   });
 </script>

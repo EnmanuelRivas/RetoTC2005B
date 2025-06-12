@@ -150,13 +150,12 @@
   </div>  
   
   <script type="module">
-  import { getUserInfoFromToken } from '../scripts/auth.js';
+  import { getUserInfoFromToken, AuthService } from '../scripts/auth.js';
 
   document.addEventListener('DOMContentLoaded', function () {
     const logoutButton = document.querySelector('.logout-button');
     logoutButton.addEventListener('click', function () {
-      localStorage.removeItem('authToken');
-      window.location.href = '/awaq';
+      AuthService.logout();
     });
 
     // Obtener información del usuario
