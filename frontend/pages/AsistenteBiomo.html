@@ -393,6 +393,9 @@
       <span id="user-display" style="color: white;">
         Usuario <i class="bi bi-person-fill ms-2"></i>
       </span>
+      <div class="logout-button">
+        <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
+      </div>
     </div>
   </div>
   <div class="main-body">
@@ -417,10 +420,6 @@
     <div class="main-content">
       <h2>Asistente de Mi Biomo</h2>
       <p>Biomo ID: 1234</p>
-      <div class="mt-4">
-        <button class="btn-green"><i class="bi bi-upload"></i> Subir Datos</button>
-        <button class="btn-green"><i class="bi bi-file-earmark-pdf"></i> Generar PDF</button>
-      </div>
       <div id="chat-history" class="d-flex flex-column mt-4" style="overflow-y: auto; max-height: 400px;"></div>
       <div class="chat-input">
         <input type="text" id="user-input" placeholder="Escribe..." />
@@ -440,16 +439,13 @@
       // Importar y usar AuthService para mostrar rol
       import('../scripts/auth.js').then(module => {
         module.AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
+        
+        const logoutButton = document.querySelector('.logout-button');
+        logoutButton.addEventListener('click', function () {
+          module.AuthService.logout();
+        });
       });
-      
-      document.querySelector('.logout-button').addEventListener('click', function() {
-        localStorage.removeItem('authToken');
-        window.location.href = '/awaq/login.html';
-      });      document.querySelector('.sidebar-logout').addEventListener('click', function() {
-        localStorage.removeItem('authToken');
-        window.location.href = '/awaq/login.html';
-      });
-    });
+     });
   </script>
 
   <!-- Script del sistema de soporte -->
