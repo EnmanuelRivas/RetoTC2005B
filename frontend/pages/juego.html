@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eco-Explorer - Mawi</title>  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="../styles/admin.css" rel="stylesheet">
+  <link rel="shortcut icon" href="/game/TemplateData/favicon.ico">
+  <link rel="stylesheet" href="/game/TemplateData/style.css">
+  <script src="../scripts/auth.js"></script>
+  <style>
+    body {
+      background-color: #2a2a2a;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .top-bar {
+      background-color: #1f1f1f;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .top-bar h1 {
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      color: white;
+      margin: 0;
+    }
+    
+    .top-bar h1::before {
+      margin-right: 10px;
+    }
+    
+    .user-controls {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    
+    .user-profile, .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+    
+    .user-profile:hover, .logout-button:hover {
+      background-color: #333;
+    }
+    
+    .logout-button {
+      color: #ff6b6b;
+    }
+    
+    .main-container {
+      padding: 20px;
+      min-height: calc(100vh - 80px);
+    }
+    
+    .game-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .game-title {
+      font-size: 2.5em;
+      color: #00b300;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    .game-description {
+      font-size: 1.1em;
+      color: #ccc;
+      max-width: 800px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+    
+    .game-container {
+      background-color: #444;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 0 auto;
+      max-width: 1200px;
+      box-shadow: 0 0 15px rgba(0, 179, 0, 0.2);
+      text-align: center;
+    }
+    
+    .unity-container-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 600px;
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    /* Override Unity CSS */
+    #unity-container {
+      position: static !important;
+      left: auto !important;
+      top: auto !important;
+      transform: none !important;
+      margin: 0 auto;
+    }
+    
+    #unity-canvas {
+      background: #000 !important;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+    
+    .game-controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .game-btn {
+      background-color: #00b300;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .game-btn:hover {
+      background-color: #00d900;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 179, 0, 0.4);
+    }
+    
+    .game-btn:disabled {
+      background-color: #666;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .loading-message {
+      text-align: center;
+      color: #00b300;
+      margin: 20px 0;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+    
+    .leaderboard-panel {
+      background-color: #333;
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 20px;
+      border: 1px solid #00b300;
+    }
+    
+    .leaderboard-title {
+      color: #00b300;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.5em;
+    }
+    
+    .leaderboard-table {
+      width: 100%;
+      color: white;
+      border-collapse: collapse;
+    }
+    
+    .leaderboard-table th {
+      background-color: #00b300;
+      color: white;
+      padding: 12px;
+      text-align: center;
+    }
+    
+    .leaderboard-table td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #555;
+    }
+    
+    .leaderboard-table tr:hover {
+      background-color: #555;
+    }
+    
+    /* Unity específico */
+    #unity-footer {
+      background-color: transparent !important;
+      color: white !important;
+    }
+    
+    #unity-build-title {
+      color: #00b300 !important;
+      font-weight: bold !important;
+    }
+    
+    #unity-warning {
+      z-index: 2000 !important;
+      background: #444 !important;
+      color: white !important;
+      border-radius: 8px !important;
+      border: 2px solid #00b300 !important;
+    }
+    
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 10px;
+      }
+      
+      .game-title {
+        font-size: 2em;
+      }
+      
+      .game-container {
+        padding: 15px;
+      }
+      
+      #unity-canvas {
+        max-width: 100%;
+        height: auto;
+      }
+      
+      .game-controls {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .game-btn {
+        width: 200px;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <div class="top-bar">
+    <h1><i class="bi bi-controller" style="margin-right: 10px;"></i>Eco-Explorer Game</h1>
+    <div class="user-controls">
+      <div class="user-profile" onclick="location.href='/awaq/perfil'">
+        <span id="user-name">Usuario</span> <i class="bi bi-person-fill"></i>
+      </div>
+      <div class="logout-button" id="logout-btn">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Cerrar sesión</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <div class="game-header">
+      <h1 class="game-title">
+        <i class="bi bi-tree-fill"></i>
+        Eco-Explorer Game
+        <i class="bi bi-controller"></i>
+      </h1>
+      <p class="game-description">
+        Embárcate en una aventura educativa donde explorarás ecosistemas, aprenderás sobre biodiversidad 
+        y tomarás decisiones que impactan el medio ambiente. ¡Conviértete en un verdadero guardián de la naturaleza!
+      </p>
+    </div>
+
+    <div class="game-container">
+      <div class="unity-container-wrapper">
+        <div id="unity-container" class="unity-desktop">
+          <canvas id="unity-canvas" width="960" height="600" tabindex="-1"></canvas>
+          <div id="unity-loading-bar">
+            <div id="unity-logo"></div>
+            <div id="unity-progress-bar-empty">
+              <div id="unity-progress-bar-full"></div>
+            </div>
+          </div>
+          <div id="unity-warning"></div>
+          <div id="unity-footer">
+            <div id="unity-logo-title-footer"></div>
+            <div id="unity-fullscreen-button"></div>
+            <div id="unity-build-title">Eco-Explorer</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="loading-message" id="loading-message">
+        🌱 Cargando experiencia eco-educativa...
+      </div>
+      
+      <div class="game-controls">
+        <button class="game-btn" onclick="toggleFullscreen()" id="fullscreen-btn">
+          <i class="bi bi-fullscreen"></i> Pantalla Completa
+        </button>
+        <button class="game-btn" onclick="resetGame()" id="reset-btn" disabled>
+          <i class="bi bi-arrow-clockwise"></i> Reiniciar
+        </button>
+        <button class="game-btn" onclick="toggleLeaderboard()" id="leaderboard-btn">
+          <i class="bi bi-trophy"></i> Ranking
+        </button>
+        <button class="game-btn" onclick="location.href='/awaq/home'">
+          <i class="bi bi-house-fill"></i> Volver al Inicio
+        </button>
+      </div>
+      
+      <!-- Panel del Leaderboard -->
+      <div id="leaderboard-panel" class="leaderboard-panel" style="display: none;">
+        <h3 class="leaderboard-title">
+          🏆 Tabla de Clasificación
+        </h3>
+        <div id="leaderboard-content">
+          <div style="text-align: center; color: #888;">
+            Cargando clasificación...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    console.log('🎮 Inicializando Eco-Explorer Game...');
+    
+    var canvas = document.querySelector("#unity-canvas");
+    var loadingMessage = document.getElementById("loading-message");
+    var resetBtn = document.getElementById("reset-btn");
+    var warningBanner = document.querySelector("#unity-warning");
+
+    function unityShowBanner(msg, type) {
+      function updateBannerVisibility() {
+        warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+      }
+      var div = document.createElement('div');
+      div.innerHTML = msg;
+      warningBanner.appendChild(div);
+      
+      var styles = 'padding: 10px; margin: 5px 0; border-radius: 5px; font-weight: bold;';
+      if (type == 'error') {
+        div.style.cssText = styles + 'background: #dc3545; color: white;';
+      } else if (type == 'warning') {
+        div.style.cssText = styles + 'background: #ffc107; color: black;';
+      } else {
+        div.style.cssText = styles + 'background: #28a745; color: white;';
+        setTimeout(function() {
+          try {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          } catch(e) {}
+        }, 5000);
+      }
+      updateBannerVisibility();
+    }    var buildUrl = "/game/Build";
+    var loaderUrl = buildUrl + "/UnityFinalFinal.loader.js";
+    var config = {
+      dataUrl: buildUrl + "/UnityFinalFinal.data.gz",
+      frameworkUrl: buildUrl + "/UnityFinalFinal.framework.js.gz", 
+      codeUrl: buildUrl + "/UnityFinalFinal.wasm.gz",
+      streamingAssetsUrl: "/game/StreamingAssets",
+      companyName: "AWAQ",
+      productName: "Eco-Explorer",
+      productVersion: "1.0"
+    };
+
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      var meta = document.createElement('meta');
+      meta.name = 'viewport';
+      meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+      document.getElementsByTagName('head')[0].appendChild(meta);
+      
+      var container = document.querySelector("#unity-container");
+      container.className = "unity-mobile";
+      canvas.className = "unity-mobile";
+
+      unityShowBanner('WebGL builds are not supported on mobile devices.', 'warning');
+    } else {
+      canvas.style.width = "960px";
+      canvas.style.height = "600px";
+    }
+
+    document.querySelector("#unity-loading-bar").style.display = "block";
+    console.log('🔄 Cargando Unity loader desde:', loaderUrl);
+
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = function() {
+      console.log('✅ Unity loader cargado, creando instancia...');
+      
+      createUnityInstance(canvas, config, function(progress) {
+        console.log('📈 Progreso de carga:', Math.round(progress * 100) + '%');
+        document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+        loadingMessage.textContent = "🌱 Cargando... " + Math.round(progress * 100) + "%";
+      }).then(function(unityInstance) {
+        console.log('🎉 Unity instance creada exitosamente!');
+        
+        document.querySelector("#unity-loading-bar").style.display = "none";
+        loadingMessage.style.display = "none";
+        resetBtn.disabled = false;
+        
+        setTimeout(function() {
+          unityShowBanner('¡Eco-Explorer cargado exitosamente! 🌿');
+        }, 1000);
+
+        window.unityInstance = unityInstance;
+        
+      }).catch(function(message) {
+        console.error('❌ Error al cargar Unity:', message);
+        loadingMessage.textContent = "❌ Error al cargar el juego";
+        loadingMessage.style.color = "#dc3545";
+        unityShowBanner('Error al cargar el juego: ' + message, 'error');
+      });
+    };
+    
+    script.onerror = function() {
+      console.error('❌ Error al cargar el script de Unity loader');
+      loadingMessage.textContent = "❌ Error al cargar Unity loader";
+      loadingMessage.style.color = "#dc3545";
+      unityShowBanner('Error al cargar el Unity loader. Verifica que los archivos del juego estén disponibles.', 'error');
+    };
+    
+    document.body.appendChild(script);
+
+    function toggleFullscreen() {
+      if (window.unityInstance) {
+        window.unityInstance.SetFullscreen(1);
+      }
+    }
+
+    function resetGame() {
+      if (window.unityInstance && confirm('¿Estás seguro de que quieres reiniciar el juego?')) {
+        location.reload();
+      }
+    }
+
+    var GAME_API_URL = 'http://localhost:3000';
+
+    function obtenerPreguntas() {
+      return fetch(GAME_API_URL + '/api/preguntas')
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          console.log('✅ Preguntas obtenidas:', data.length);
+          return data;
+        })
+        .catch(function(error) {
+          console.error('❌ Error al obtener preguntas:', error);
+          return [];
+        });
+    }
+
+    function enviarPuntuacion(nombre, tiempo) {
+      return fetch(GAME_API_URL + '/api/leaderboard', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nombre: nombre, tiempo: tiempo })
+      })
+      .then(function(response) {
+        if (response.ok) {
+          console.log('✅ Puntuación enviada al leaderboard');
+          mostrarNotificacion('🏆 ¡Puntuación registrada!', 'success');
+          var panel = document.getElementById('leaderboard-panel');
+          if (panel.style.display !== 'none') {
+            setTimeout(function() { mostrarLeaderboard(); }, 500);
+          }
+        } else {
+          console.error('❌ Error al enviar puntuación');
+          mostrarNotificacion('❌ Error al registrar puntuación', 'error');
+        }
+      })
+      .catch(function(error) {
+        console.error('❌ Error al enviar puntuación:', error);
+        mostrarNotificacion('❌ Error de conexión', 'error');
+      });
+    }
+
+    function enviarPuntuacionUsuario(tiempo) {
+      obtenerDatosUsuario().then(function(userData) {
+        var nombreUsuario = userData ? userData.nombre : 'Jugador Anónimo';
+        enviarPuntuacion(nombreUsuario, tiempo);
+      });
+    }
+
+    function obtenerDatosUsuario() {
+      var token = localStorage.getItem('authToken');
+      if (!token) return Promise.resolve(null);
+
+      return fetch('/awaq/api/profile', {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .then(function(response) {
+        if (response.ok) {
+          return response.json();
+        }
+        return null;
+      })
+      .then(function(data) {
+        return data && data.status === 'success' ? data.data : null;
+      })
+      .catch(function(error) {
+        console.error('Error al obtener datos del usuario:', error);
+        return null;
+      });
+    }
+
+    function mostrarNotificacion(mensaje, tipo) {
+      if (!tipo) tipo = 'info';
+      
+      var notification = document.createElement('div');
+      notification.style.cssText = 
+        'position: fixed; top: 80px; right: 20px; padding: 15px 20px; ' +
+        'border-radius: 8px; color: white; font-weight: bold; z-index: 2000; ' +
+        'max-width: 300px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); ' +
+        'transition: opacity 0.3s ease;';
+      
+      switch (tipo) {
+        case 'success':
+          notification.style.backgroundColor = '#28a745';
+          break;
+        case 'error':
+          notification.style.backgroundColor = '#dc3545';
+          break;
+        default:
+          notification.style.backgroundColor = '#17a2b8';
+      }
+      
+      notification.textContent = mensaje;
+      document.body.appendChild(notification);
+      
+      setTimeout(function() {
+        notification.style.opacity = '0';
+        setTimeout(function() {
+          try {
+            document.body.removeChild(notification);
+          } catch(e) {}
+        }, 300);
+      }, 3000);
+    }
+
+    function mostrarLeaderboard() {
+      fetch(GAME_API_URL + '/api/leaderboard')
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          var leaderboardContent = document.getElementById('leaderboard-content');
+          if (data.length === 0) {
+            leaderboardContent.innerHTML = 
+              '<div style="text-align: center; color: #888;">' +
+              'No hay puntuaciones registradas aún.<br>' +
+              '¡Sé el primero en completar el juego!' +
+              '</div>';
+          } else {
+            var tableHtml = '<table class="leaderboard-table">' +
+              '<thead><tr>' +
+              '<th>Posición</th><th>Jugador</th><th>Tiempo</th><th>Fecha</th>' +
+              '</tr></thead><tbody>';
+            
+            for (var i = 0; i < data.length; i++) {
+              var score = data[i];
+              var position = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+              var playerColor = i < 3 ? '#00b300' : 'white';
+              var date = new Date(score.fecha).toLocaleDateString('es-ES');
+              
+              tableHtml += '<tr>' +
+                '<td>' + position + '</td>' +
+                '<td style="color: ' + playerColor + ';">' + score.nombre + '</td>' +
+                '<td>' + formatTime(score.tiempo) + '</td>' +
+                '<td style="font-size: 12px; color: #888;">' + date + '</td>' +
+                '</tr>';
+            }
+            
+            tableHtml += '</tbody></table>';
+            leaderboardContent.innerHTML = tableHtml;
+          }
+        })
+        .catch(function(error) {
+          console.error('Error al obtener leaderboard:', error);
+          var leaderboardContent = document.getElementById('leaderboard-content');
+          leaderboardContent.innerHTML = 
+            '<div style="text-align: center; color: #ff6b6b;">' +
+            'Error al cargar la clasificación' +
+            '</div>';
+        });
+    }
+
+    function formatTime(seconds) {
+      var minutes = Math.floor(seconds / 60);
+      var remainingSeconds = (seconds % 60).toFixed(1);
+      return minutes + ':' + remainingSeconds.padStart(4, '0');
+    }
+
+    function toggleLeaderboard() {
+      var panel = document.getElementById('leaderboard-panel');
+      var btn = document.getElementById('leaderboard-btn');
+      
+      if (panel.style.display === 'none') {
+        panel.style.display = 'block';
+        mostrarLeaderboard();
+        btn.innerHTML = '<i class="bi bi-x-lg"></i> Cerrar Ranking';
+      } else {
+        panel.style.display = 'none';
+        btn.innerHTML = '<i class="bi bi-trophy"></i> Ranking';
+      }
+    }
+
+    // Exponer funciones globalmente para Unity
+    window.enviarPuntuacion = enviarPuntuacion;
+    window.enviarPuntuacionUsuario = enviarPuntuacionUsuario;
+    window.obtenerPreguntas = obtenerPreguntas;
+    window.mostrarLeaderboard = mostrarLeaderboard;
+    window.toggleLeaderboard = toggleLeaderboard;
+    window.formatTime = formatTime;
+    window.obtenerDatosUsuario = obtenerDatosUsuario;
+
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('🔐 Verificando autenticación...');
+      
+      if (!isAuthenticated()) {
+        window.location.href = '/awaq';
+        return;
+      }      document.getElementById('logout-btn').addEventListener('click', function() {
+        if (confirm('¿Estás seguro de que quieres cerrar sesión? Se perderá el progreso del juego no guardado.')) {
+          localStorage.removeItem('authToken');
+          window.location.href = '/awaq/login.html';
+        }
+      });
+
+      loadUserInfo();
+      console.log('✅ Inicialización de página completada');
+    });
+
+    function loadUserInfo() {
+      var token = localStorage.getItem('authToken');
+      if (!token) return;
+
+      fetch('/awaq/api/profile', {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        if (data.status === 'success') {
+          var userName = document.getElementById('user-name');        if (userName) {
+            var isAdmin = data.data.role_id === 1;
+            userName.textContent = isAdmin ? 'Administrador' : 'Eco-Explorer';
+            userName.style.color = isAdmin ? '#00b300' : '#ffffff';
+          }
+        }
+      })
+      .catch(function(error) {
+        console.error('Error loading user info:', error);
+      });
+    }
+
+    // Función de autenticación que faltaba
+    function isAuthenticated() {
+      const token = localStorage.getItem('authToken');
+      if (!token) return false;
+      
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const exp = payload.exp * 1000;
+        return Date.now() < exp;
+      } catch (error) {
+        console.error('Token inválido:', error);
+        return false;
+      }
+    }
+  </script>
+</body>
+</html>

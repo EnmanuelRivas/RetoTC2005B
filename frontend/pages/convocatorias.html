@@ -160,6 +160,7 @@
       background: none;
       outline: none;
       box-shadow: none;
+      margin-right: 15px;
     }
   </style>
 </head>
@@ -188,8 +189,8 @@
           <a href="/awaq/AsistenteExplorador">Explorador de Anteproyectos</a>
           <a href="convocatorias.html" class="active">Convocatorias</a>
           <a href="/awaq/metricas">Métricas</a>
-          <a href="./viewEcoRanger.html">View de EcoRanger</a>
-          <a href="./gestionUsuario.html">Gestión de Usuarios</a>          
+          <a href="/awaq/viewEcoRanger">View de EcoRanger</a>
+          <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>          
           <a href="/awaq/perfil">Mi Perfil</a>
         </nav>
       </div>
@@ -202,7 +203,7 @@
       </div>
     </div>
     <div class="main-content">
-      <h2><strong>Asistente de Nuevas Convocatorias</strong></h2>
+      <h2><strong>Nuevas Convocatorias</strong></h2>
       <form class="mt-4" id="form-convocatoria">
         <input type="hidden" id="usuario_id" value="1">
         <div class="row">
@@ -257,9 +258,7 @@
 
       try {
         console.log("📦 Datos a enviar:", data);
-
-        const response = await fetch(`http://localhost:4000/awaq/api/postConvocatoria`, {
-
+        const response = await fetch(`http://localhost:5000/awaq/api/postConvocatoria`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -288,10 +287,9 @@
         console.error("🔥 Error inesperado:", error);
         alert("❌ Error al intentar enviar la convocatoria");
       }    });
-    
-    document.querySelector('.logout-button').addEventListener('click', function() {
+      document.querySelector('.logout-button').addEventListener('click', function() {
       localStorage.removeItem('authToken');
-      window.location.href = '/awaq';
+      window.location.href = '/awaq/login.html';
     });
   });
 </script>

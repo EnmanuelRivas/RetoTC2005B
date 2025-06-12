@@ -379,6 +379,13 @@
     .btn-green:hover {
       background-color: #157347;
     }
+    #toggleSidebar {
+      border: none;
+      background: none;
+      outline: none;
+      box-shadow: none;
+      margin-right: 15px;
+    }
   
   </style>
 </head>
@@ -437,14 +444,13 @@
   </script>
   <script src="../scripts/chatbot.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelector('.logout-button').addEventListener('click', function() {
+    document.addEventListener('DOMContentLoaded', function() {      document.querySelector('.logout-button').addEventListener('click', function() {
         localStorage.removeItem('authToken');
-        window.location.href = '/awaq';
+        window.location.href = '/awaq/login.html';
       });
       document.querySelector('.sidebar-logout').addEventListener('click', function() {
         localStorage.removeItem('authToken');
-        window.location.href = '/awaq';
+        window.location.href = '/awaq/login.html';
       });
     });
   </script>

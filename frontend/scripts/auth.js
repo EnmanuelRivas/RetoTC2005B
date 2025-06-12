@@ -16,12 +16,10 @@ const AuthService = {
 
     isAuthenticated() {
         return !!this.getToken();
-    },
-
-    logout() {
+    },    logout() {
         this.removeToken();
-        // Redirigir al login o página inicial
-        window.location.href = "/awaq";
+        // Redirigir al login
+        window.location.href = "/awaq/login.html";
     },
 
     getAuthHeaders() {
@@ -58,7 +56,7 @@ const AuthService = {
  */
 function checkAuth() {
     if (!AuthService.isAuthenticated()) {
-        window.location.href = "/awaq";
+        window.location.href = "/awaq/login.html";
         return false;
     }
     return true;
@@ -66,8 +64,8 @@ function checkAuth() {
 
 document.addEventListener("DOMContentLoaded", () => {
     const publicPages = [
-        "/awaq", "/awaq/", "/awaq/login", "/awaq/registro",
-        "/awaq/recuperar", "/awaq/changepwd", "/awaq/confirmacion"
+        "/awaq", "/awaq/", "/awaq/login.html", "/awaq/registro.html",
+        "/awaq/recuperar.html", "/awaq/changepwd.html", "/awaq/confirmacion.html"
     ];
 
     const currentPath = window.location.pathname;
@@ -86,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Decodifica JWT para obtener rol administrador
-export function getIsAdminFromToken() {
+function getIsAdminFromToken() {
     const token = localStorage.getItem('authToken');
     if (!token) return false;
 
@@ -100,7 +98,7 @@ export function getIsAdminFromToken() {
 }
 
 // Obtiene info básica del usuario desde token
-export function getUserInfoFromToken() {
+function getUserInfoFromToken() {
     const token = localStorage.getItem('authToken');
     if (!token) return null;
 
@@ -110,7 +108,7 @@ export function getUserInfoFromToken() {
             id: payload.id,
             name: payload.username || 'Desconocido',
             email: payload.username || 'sin@email.com',
-            isAdmin: payload.role_id === 1,
+            isAdmin: Number(payload.role_id) === 1,
             role_id: payload.role_id
         };
     } catch (err) {
@@ -120,7 +118,7 @@ export function getUserInfoFromToken() {
 }
 
 // Muestra u oculta elemento según rol admin
-export function toggleAdminElement(elementId, showForAdmin = true) {
+function toggleAdminElement(elementId, showForAdmin = true) {
     const element = document.getElementById(elementId);
     const isAdmin = getIsAdminFromToken();
 
@@ -130,7 +128,7 @@ export function toggleAdminElement(elementId, showForAdmin = true) {
 }
 
 // Oculta varios elementos si no es admin
-export function hideForNonAdmins(elementIds) {
+function hideForNonAdmins(elementIds) {
     const isAdmin = getIsAdminFromToken();
 
     if (!isAdmin) {
@@ -142,7 +140,7 @@ export function hideForNonAdmins(elementIds) {
 }
 
 // Verifica acceso admin y redirige si no tiene permisos
-export function checkAdminAccess() {
+function checkAdminAccess() {
     const isAdmin = getIsAdminFromToken();
     const currentPath = window.location.pathname;
 
@@ -165,7 +163,7 @@ export function checkAdminAccess() {
 }
 
 // Agrega botones admin dinámicamente
-export function addAdminButtons(containerId) {
+function addAdminButtons(containerId) {
     const isAdmin = getIsAdminFromToken();
     const container = document.getElementById(containerId);
 
@@ -194,7 +192,7 @@ export function addAdminButtons(containerId) {
 }
 
 // Muestra info del usuario con estilo según rol
-export function displayUserInfo(elementId) {
+function displayUserInfo(elementId) {
     const user = getUserInfoFromToken();
     const element = document.getElementById(elementId);
 
@@ -210,3 +208,16 @@ export function displayUserInfo(elementId) {
         }
     }
 }
+
+// Exports para módulos ES6
+export { 
+    AuthService, 
+    checkAuth, 
+    getIsAdminFromToken, 
+    getUserInfoFromToken,
+    toggleAdminElement,
+    hideForNonAdmins,
+    checkAdminAccess,
+    addAdminButtons,
+    displayUserInfo
+};

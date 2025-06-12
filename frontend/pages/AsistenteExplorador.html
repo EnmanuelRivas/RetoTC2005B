@@ -228,7 +228,7 @@
     </div>
 
     <div class="main-content">
-      <h2>Asistente Explorador de Anteproyectos</h2>
+      <h2>Explorador de Anteproyectos</h2>
       <div class="tabs">
         <div class="tab active" onclick="mostrarTab('abiertos', this)">Abiertos</div>
         <div class="tab" onclick="mostrarTab('cerrados', this)">Cerrados</div>
@@ -289,14 +289,13 @@
       document.getElementById(tabId).classList.remove('hidden');
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelector('.logout-button').addEventListener('click', function() {
+    document.addEventListener('DOMContentLoaded', function() {      document.querySelector('.logout-button').addEventListener('click', function() {
         localStorage.removeItem('authToken');
-        window.location.href = '/awaq';
+        window.location.href = '/awaq/login.html';
       });
       document.querySelector('.sidebar-logout').addEventListener('click', function() {
         localStorage.removeItem('authToken');
-        window.location.href = '/awaq';
+        window.location.href = '/awaq/login.html';
       });
     });
   </script>

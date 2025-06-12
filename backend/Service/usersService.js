@@ -171,6 +171,10 @@ async function updateUser(user, profileImagePath = null){
         if (user.contraseñaHash !== undefined) {
             updateFields.push("contraseñaHash = ?");
             params.push(user.contraseñaHash);
+        }        // Si hay imagen de perfil para actualizar, agregarla a los campos
+        if (profileImagePath) {
+            updateFields.push("imagen_perfil = ?");
+            params.push(profileImagePath);
         }
         
         // Solo proceder si hay campos para actualizar
@@ -186,12 +190,6 @@ async function updateUser(user, profileImagePath = null){
         
         console.log("updateUser: Ejecutando query de actualización");
         qResult = await dataSource.updateData(query, params);
-        
-        // Si la actualización fue exitosa y hay una nueva imagen, actualizarla
-        if (qResult.status && profileImagePath) {
-            console.log("updateUser: Actualizando imagen de perfil");
-            await imageUploadService.insertProfileImage(profileImagePath, user.id);
-        }
         
         console.log("updateUser: Resultado de la actualización:", {
             status: qResult.status,

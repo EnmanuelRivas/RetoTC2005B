@@ -35,6 +35,7 @@ router.get(`${constants.contextURL}/AsistenteExplorador`, templates.asistenteExp
 router.get(`${constants.contextURL}/AsistenteProyectos`, templates.asistenteProyectosPage);
 router.get(`${constants.contextURL}/convocatorias`, templates.convocatoriasPage);
 router.get(`${constants.contextURL}/chatbot`, templates.chatbotPage);
+router.get(`${constants.contextURL}/juego`, templates.juegoPage);
 
 /* Rutas para administradores */
 router.get(`${constants.contextURL}/dashboard`, requireAdminForPage, templates.dashboardPage);
