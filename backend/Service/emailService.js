@@ -88,14 +88,64 @@ async function enviarEmailRecuperacion(email, nombre, token) {
         });
         
         console.log("Correo de recuperación enviado: %s", info.messageId);
-        return { success: true, messageId: info.messageId };    } catch (error) {
+        return { success: true, messageId: info.messageId };
+    } catch (error) {
         console.error("Error al enviar correo de recuperación:", error);
+        return { success: false, error: error.message };
+    }
+}
+
+/**
+ * Envía un correo informativo a direcciones no registradas
+ * @param {string} email - Correo electrónico del destinatario
+ * @returns {Promise} - Resultado del envío
+ */
+async function enviarEmailNoRegistrado(email) {
+    try {
+        const info = await transporter.sendMail({
+            from: `"Mawi - Soporte" <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: 'Solicitud de recuperación de contraseña - Mawi',
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+                    <h2 style="color: #198754; text-align: center;">Solicitud de recuperación de contraseña</h2>
+                    <p>Hola,</p>
+                    <p>Hemos recibido una solicitud para restablecer la contraseña de una cuenta asociada a esta dirección de correo electrónico.</p>
+                    <p><strong>Sin embargo, no encontramos ninguna cuenta registrada con este correo en nuestra plataforma Mawi.</strong></p>
+                    <div style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin: 20px 0;">
+                        <h4 style="color: #495057; margin-top: 0;">¿Qué puedes hacer?</h4>
+                        <ul style="color: #6c757d; margin-bottom: 0;">
+                            <li>Verifica que hayas ingresado el correo correcto</li>
+                            <li>Si aún no tienes una cuenta, puedes registrarte en nuestra plataforma</li>
+                            <li>Si crees que esto es un error, contacta con nuestro equipo de soporte</li>
+                        </ul>
+                    </div>
+                    <div style="text-align: center; margin: 30px 0;">
+                        <a href="http://localhost:4000/awaq/registro" style="background-color: #198754; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-right: 10px;">
+                            Crear cuenta
+                        </a>
+                        <a href="http://localhost:4000/awaq/login" style="background-color: #6c757d; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                            Iniciar sesión
+                        </a>
+                    </div>
+                    <p>Si no solicitaste esta recuperación de contraseña, puedes ignorar este mensaje de forma segura.</p>
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                    <p style="color: #666; font-size: 12px; text-align: center;">© ${new Date().getFullYear()} Mawi. Todos los derechos reservados.</p>
+                </div>
+            `
+        });
+        
+        console.log("Correo informativo enviado: %s", info.messageId);
+        return { success: true, messageId: info.messageId };
+    } catch (error) {
+        console.error("Error al enviar correo informativo:", error);
         return { success: false, error: error.message };
     }
 }
 
 module.exports = {
     enviarEmailBienvenida,
-    enviarEmailRecuperacion
+    enviarEmailRecuperacion,
+    enviarEmailNoRegistrado
 };
 

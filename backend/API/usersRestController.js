@@ -364,11 +364,28 @@ async function recuperarPassword(req, res) {
     try {
         const { correo } = req.body;
         
+        // Validar formato de correo
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(correo)) {
+            return res.status(400).json({
+                status: "error",
+                message: "Por favor ingresa un correo electrónico válido."
+            });
+        }
+        
         // Verificar si el correo existe en la base de datos
         const userResult = await userService.findUserByEmail(correo);
         
         if (!userResult.rows || userResult.rows.length === 0) {
-            // Por seguridad, no revelamos si el correo existe o no
+            // Enviar correo informativo aunque el usuario no exista
+            try {
+                const info = await emailService.enviarEmailNoRegistrado(correo);
+                console.log(`Correo informativo enviado a ${correo}: ${info.messageId}`);
+            } catch (emailError) {
+                console.error('Error al enviar correo informativo:', emailError);
+            }
+            
+            // Por seguridad, siempre devolvemos el mismo mensaje
             return res.status(200).json({
                 status: "success",
                 message: "Si el correo existe en nuestra base de datos, recibirás un enlace para restablecer tu contraseña."
