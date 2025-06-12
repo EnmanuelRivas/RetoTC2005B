@@ -122,25 +122,23 @@
 </head>
 <body>
   <div class="top-bar">
-    <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
-    <div class="user-info">
-      <a href="#" style="color: white; text-decoration: none;">
-        Administrador <i class="bi bi-person-fill ms-2"></i>
-      </a>
+    <h1><i class="bi bi-eye me-2"></i>Mawi</h1>    <div class="user-info">
+      <span id="user-display" style="color: white;">
+        Usuario <i class="bi bi-person-fill ms-2"></i>
+      </span>
     </div>
   </div>
   <div class="main-body">
     <div class="sidebar">
-      <div>
-        <nav>
+      <div>        <nav>
           <a href="home.html">Inicio</a>
           <a class="active" href="#">Informes, Métricas y Análisis</a>
           <a href="/awaq/crearEcoRanger">Crear EcoRanger</a>
           <a href="/awaq/viewEcoRanger">View de Ecoranger</a>
           <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>
+          <a href="/awaq/gestion_soporte">Gestión de Soporte</a>
         </nav>
-      </div>
-      <div class="support-button">
+      </div>      <div class="support-button" data-support="true">
         <i class="bi bi-telephone"></i> Contacta con el soporte
       </div>
     </div>
@@ -212,7 +210,11 @@
         </tbody>
       </table>
     </div>
-  </div>  <script>
+  </div>  <script type="module">
+    // Importar y mostrar rol del usuario
+    import { AuthService } from '../scripts/auth.js';
+    AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
+    
     // Verificación de autenticación y permisos de administrador
     function checkAdminAccess() {
       const token = localStorage.getItem('authToken');
@@ -288,12 +290,15 @@
         chartConfig(document.getElementById('chartEco1'), 'EcoRanger', [80, 20]);
         chartConfig(document.getElementById('chartEco2'), 'Anteproyectos', [60, 40]);
       } catch (error) {
-        console.error('Error al verificar token:', error);
-        alert('Token inválido. Por favor, inicia sesión nuevamente.');
+        console.error('Error al verificar token:', error);        alert('Token inválido. Por favor, inicia sesión nuevamente.');
         localStorage.removeItem('authToken');
         window.location.href = '/awaq/login';
       }
     }
   </script>
+
+  <!-- Script del sistema de soporte -->
+  <script src="../scripts/support.js"></script>
+
 </body>
 </html>

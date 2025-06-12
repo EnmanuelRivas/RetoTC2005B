@@ -10,6 +10,7 @@ const templates = require("../Templates/templates");
 const upload = require("../middleware/upload.middleware");
 const anteproyectosRest = require("../API/anteproyectosRestController");
 const convocatoriasRest = require('../API/convocatoriasRestController');
+const supportRest = require('../API/supportRestController');
 
 const { requireAdmin, requireUser, requireAdminForPage, authenticateToken } = require("../middleware/auth.middleware");
 
@@ -41,6 +42,7 @@ router.get(`${constants.contextURL}/juego`, templates.juegoPage);
 router.get(`${constants.contextURL}/dashboard`, requireAdminForPage, templates.dashboardPage);
 router.get(`${constants.contextURL}/gestion_usuario`, requireAdminForPage, templates.gestionUsuarioPage);
 router.get(`${constants.contextURL}/gestion_ap`, requireAdminForPage, templates.gestionAPPage);
+router.get(`${constants.contextURL}/gestion_soporte`, requireAdminForPage, templates.gestionSoportePage);
 router.get(`${constants.contextURL}/metricas`, requireAdminForPage, templates.metricasPage);
 router.get(`${constants.contextURL}/numAP`, requireAdminForPage, templates.numAPPage);
 router.get(`${constants.contextURL}/numBiomos`, requireAdminForPage, templates.numBiomosPage);
@@ -223,6 +225,37 @@ router.post(
   authenticateToken,
   requireUser,
   convocatoriasRest.postConvocatoria
+);
+
+/* ------------------------ SOPORTE API ------------------------ */
+// Crear nueva solicitud de soporte (público - no requiere autenticación)
+router.post(
+  `${constants.contextURL}${constants.apiURL}/support/ticket`,
+  supportRest.createSupportTicket
+);
+
+// Obtener todos los tickets (solo admin)
+router.get(
+  `${constants.contextURL}${constants.apiURL}/support/tickets`,
+  authenticateToken,
+  requireAdmin,
+  supportRest.getSupportTickets
+);
+
+// Obtener ticket específico (admin o propietario)
+router.get(
+  `${constants.contextURL}${constants.apiURL}/support/ticket/:id`,
+  authenticateToken,
+  requireUser,
+  supportRest.getSupportTicket
+);
+
+// Responder a un ticket (solo admin)
+router.put(
+  `${constants.contextURL}${constants.apiURL}/support/ticket/:id/response`,
+  authenticateToken,
+  requireAdmin,
+  supportRest.respondToTicket
 );
 
 

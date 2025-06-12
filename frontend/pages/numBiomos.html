@@ -98,8 +98,7 @@
     <h4><i class="bi bi-eye"></i> Mawi</h4>
     <a href="/awaq/metricas">Informes, Métricas y Análisis</a>
     <a href="/awaq/crearEcoRanger">Crear EcoRanger</a>
-    <a href="/awaq/viewEcoRanger">View de EcoRanger</a>
-    <button class="btn btn-dark w-100 mt-3"><i class="bi bi-telephone"></i> Contacta con el soporte</button>
+    <a href="/awaq/viewEcoRanger">View de EcoRanger</a>    <button class="btn btn-dark w-100 mt-3" data-support="true"><i class="bi bi-telephone"></i> Contacta con el soporte</button>
     </nav>
   </div>
 
@@ -188,9 +187,12 @@
       const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
       const link = document.createElement("a");
       link.setAttribute("href", csvContent);
-      link.setAttribute("download", "biomos.csv");
-      link.click();
+      link.setAttribute("download", "biomos.csv");    link.click();
     }
   </script>
+
+  <!-- Script del sistema de soporte -->
+  <script src="../scripts/support.js"></script>
+
 </body>
 </html>

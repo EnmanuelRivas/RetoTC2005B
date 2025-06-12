@@ -389,11 +389,10 @@
         <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
       </button>
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
-    </div>
-    <div class="user-info">
-      <a href="#" style="color: white; text-decoration: none;">
-        EcoRanger <i class="bi bi-person-fill ms-2"></i>
-      </a>
+    </div>    <div class="user-info">
+      <span id="user-display" style="color: white;">
+        Usuario <i class="bi bi-person-fill ms-2"></i>
+      </span>
     </div>
   </div>
   <div class="main-body">
@@ -409,12 +408,10 @@
           <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>      
           <a href="/awaq/perfil">Mi Perfil</a>
         </nav>
-      </div>
-      <div>
-        <div class="support-button">
+      </div>      <div>
+        <div class="support-button" data-support="true">
           <i class="bi bi-telephone"></i>Contacta con el soporte
         </div>
-
       </div>
     </div>
     <div class="main-content">
@@ -439,15 +436,24 @@
   </script>
   <script src="../scripts/chatbot.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {      document.querySelector('.logout-button').addEventListener('click', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+      // Importar y usar AuthService para mostrar rol
+      import('../scripts/auth.js').then(module => {
+        module.AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
+      });
+      
+      document.querySelector('.logout-button').addEventListener('click', function() {
         localStorage.removeItem('authToken');
         window.location.href = '/awaq/login.html';
-      });
-      document.querySelector('.sidebar-logout').addEventListener('click', function() {
+      });      document.querySelector('.sidebar-logout').addEventListener('click', function() {
         localStorage.removeItem('authToken');
         window.location.href = '/awaq/login.html';
       });
     });
   </script>
+
+  <!-- Script del sistema de soporte -->
+  <script src="../scripts/support.js"></script>
+
 </body>
 </html>

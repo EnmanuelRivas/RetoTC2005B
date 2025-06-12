@@ -91,6 +91,18 @@
       margin-right: 10px;
       color: #00b300;
     }
+    
+    /* Animación para el alert de administrador */
+    @keyframes slideInFromTop {
+      0% {
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
   </style>
 </head>
 <body class="dark-mode">
@@ -138,11 +150,9 @@
           <p>¡Aprende sobre ecosistemas jugando! Pon a prueba tus conocimientos en nuestro videojuego educativo.</p>
         </div>
       </div>    
-    </div>
-
-    <div class="row justify-content-center">
+    </div>    <div class="row justify-content-center">
       <div class="col-md-6">
-        <div class="support-button">
+        <div class="support-button" data-support="true">
           <i class="bi bi-telephone"></i>Contacta con el soporte
         </div>
       </div>
@@ -156,44 +166,13 @@
     const logoutButton = document.querySelector('.logout-button');
     logoutButton.addEventListener('click', function () {
       AuthService.logout();
-    });
-
-    // Obtener información del usuario
-    const user = getUserInfoFromToken();
-    if (user) {
-      const nameElement = document.getElementById('user-name');
-      if (nameElement) {
-        if (user.isAdmin) {
-          nameElement.textContent = 'Administrador';
-          nameElement.style.color = '#28a745';
-          nameElement.style.fontWeight = 'bold';
-
-          // Mostrar alerta modo administrador
-          const adminAlertHTML = `
-            <div class="admin-alert mb-4" style="
-              background-color: #d4edda; 
-              border: 1px solid #c3e6cb; 
-              color: #155724; 
-              padding: 15px; 
-              border-radius: 8px;
-              text-align: center;
-            ">
-              <strong>Modo Administrador:</strong> Tienes acceso a funciones administrativas.
-              <a href="/awaq/metricas" class="btn btn-sm btn-outline-success ms-2">Ir al Dashboard</a>
-            </div>
-          `;
-          const container = document.querySelector('.container');
-          if (container) {
-            container.insertAdjacentHTML('afterbegin', adminAlertHTML);
-          }
-        } else {
-          nameElement.textContent = 'Usuario';
-          nameElement.style.color = '#ffffff';
-        }
-      }
-    }
+    });    // Obtener información del usuario y mostrar rol
+    AuthService.displayUserRole('user-name', true); // true para mostrar alerta de admin
   });
 </script>
+
+<!-- Script del sistema de soporte -->
+<script src="../scripts/support.js"></script>
 
 </body>
 </html>

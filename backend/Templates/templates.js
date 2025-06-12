@@ -229,12 +229,12 @@ async function juegoPage(req, res) {
 }
 
 /**
- * Muestra la página del juego (juego.html).
+ * Muestra la página de gestión de soporte (gestion_soporte.html).
  * @param {Object} req Client request
  * @param {Object} res Server response
  */
-async function juegoPage(req, res) {
-    res.sendFile(path.join(frontendPath, "pages", "juego.html"));
+async function gestionSoportePage(req, res) {
+    res.sendFile(path.join(frontendPath, "pages", "gestion_soporte.html"));
 }
 
 module.exports = {
@@ -247,9 +247,9 @@ module.exports = {
     asistenteBiomoPage,
     asistenteConvocatoriasPage,
     asistenteExploradorPage,
-    asistenteProyectosPage,
-    gestionUsuarioPage,
+    asistenteProyectosPage,    gestionUsuarioPage,
     gestionAPPage,
+    gestionSoportePage,
     recuperarPage,
     cambiarPasswordPage,
     confirmacionPage,
