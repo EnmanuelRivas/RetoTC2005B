@@ -23,45 +23,28 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      height: 60px;
+    }
+    .top-bar h1 {
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      color: white;
+      margin: 0;
+    }
+    .top-bar h1::before {
+      margin-right: 10px;
+    }
+    .top-bar .user-info {
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
     .main-body {
       display: flex;
       flex: 1;
       overflow: hidden;
-    }
-    .sidebar {
-      width: 270px;
-      background-color: #1f1f1f;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 2px 0 6px rgba(0,0,0,0.3);
-    }
-    .sidebar nav a {
-      padding: 12px 18px;
-      border-radius: 8px;
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      margin-bottom: 8px;
-      display: block;
-      transition: background-color 0.3s;
-    }
-    .sidebar nav a.active,
-    .sidebar nav a:hover {
-      background-color: #198754;
-      color: #fff;
-    }
-    .sidebar .support-button {
-      background-color: #198754;
-      padding: 12px;
-      text-align: center;
-      border-radius: 10px;
-      color: white;
-      font-size: 14px;
-      font-weight: 500;
     }
     .main-content {
       flex: 1;
@@ -132,23 +115,121 @@
       border-radius: 8px;
       color: white;
     }
+    .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      color: #ff6b6b;
+    }
+    .logout-button:hover {
+      background-color: #333;
+    }
+    .sidebar {
+      width: 270px;
+      background-color: #1f1f1f;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+    .sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .sidebar nav a {
+      padding: 12px 18px;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .sidebar nav a.active,
+    .sidebar nav a:hover {
+      background-color: #198754;
+      color: #fff;
+      text-decoration: none;
+    }
+    .sidebar .support-button {
+      background-color: #198754;
+      padding: 12px;
+      text-align: center;
+      border-radius: 10px;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .sidebar .support-button:hover {
+      background-color: #198754;
+      color: #fff;
+      cursor: pointer;
+      transition:  0.2s, color 0.2s;
+    }
+    .sidebar .support-button i {
+      color: #00b300;
+      margin-right: 8px;
+    }
+    .sidebar.collapsed {
+      width: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #toggleSidebar {
+      border: none;
+      background: none;
+      outline: none;
+      box-shadow: none;
+      margin-right: 15px;
+    }
+    
+    .btn-report {
+      background-color: #198754;
+      color: white;
+      border: none;
+      padding: 4px 12px;
+      font-size: 14px;
+      border-radius: 6px;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+    .btn-report:hover {
+      background-color: #157347;
+    }
   </style>
 </head>
 <body>
   <div class="top-bar">
-    <h1><i class="bi bi-eye me-2"></i>Mawi</h1>    <div class="user-info">
-      <span id="user-display" style="color: white;">
-        Usuario <i class="bi bi-person-fill ms-2"></i>
-      </span>
+     <div style="display: flex; align-items: center;">
+      <button id="toggleSidebar" class="me-3">
+        <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
+      </button>
+      <h3><i class="bi bi-eye me-2"></i>Mawi</h3>
+    </div>    
+    <div class="user-info">
+      <span id="user-display">Usuario <i class="bi bi-person-fill"></i></span>
+      <div class="logout-button">
+        <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
+      </div>
     </div>
   </div>
   <div class="main-body">
     <div class="sidebar">
       <div>
         <nav>
-          <a href="/awaq/home">Inicio</a>
-          <a class="active" href="#">Gestión de usuarios </a>
-          <a href="/awaq/metricas">Vista de Administrador</a>
+          <a href="home.html">Inicio</a>
+          <a href="/awaq/metricas">Informes, Métricas y Análisis</a>
+          <a href="/awaq/crearEcoRanger">Crear EcoRanger</a>
+          <a href="/awaq/viewEcoRanger">View de Ecoranger</a>
+          <a class="active" href="#">Gestión de Usuarios</a>
         </nav>
       </div>      <div class="support-button" data-support="true">
         <i class="bi bi-telephone"></i> Contacta con el soporte
@@ -184,7 +265,10 @@
     // Importar y mostrar rol del usuario
     import { AuthService } from '../scripts/auth.js';
     AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
-    
+    // Botón para mostrar u ocultar sidebar
+    document.getElementById('toggleSidebar').addEventListener('click', () => {
+      document.querySelector('.sidebar').classList.toggle('collapsed');
+    });
   async function cargarUsuarios() {
     const token = localStorage.getItem('authToken');
     if (!token) return;
@@ -255,6 +339,56 @@
   }
 
   document.addEventListener("DOMContentLoaded", cargarUsuarios);
+  // Verificación de autenticación y permisos de administrador
+  function checkAdminAccess() {
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      alert('Debes iniciar sesión para acceder a esta página.');
+      window.location.href = '/awaq/login';
+      return;
+    }
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const isAdmin = payload.role_id === 1;
+
+      if (!isAdmin) {
+        alert('Acceso denegado. Se requieren permisos de administrador.');
+        window.location.href = '/awaq/home';
+        return;
+      }
+
+      console.log('Acceso de administrador verificado');
+    } catch (error) {
+      console.error('Error al verificar el token:', error);
+      alert('Token inválido. Por favor, inicia sesión nuevamente.');
+      localStorage.removeItem('authToken');
+      window.location.href = '/awaq/login';
+    }
+  }
+
+  // Ejecutar verificación al cargar la página
+  checkAdminAccess();
+
+  const chartConfig = (ctx, label, data) => new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Completado', 'Faltante'],
+      datasets: [{
+        label: label,
+        data: data,
+        backgroundColor: ['#198754', '#444'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      cutout: '70%',
+      plugins: {
+        legend: { display: false },
+      }
+    }
+  });
 </script>
 
 <!-- Script del sistema de soporte -->

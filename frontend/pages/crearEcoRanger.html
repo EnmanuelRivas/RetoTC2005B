@@ -8,10 +8,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     body {
-      margin: 0;
-      background-color: #1f1f1f;
+      background-color: #2f2f2f;
       color: white;
       font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     .top-bar {
       background-color: #1f1f1f;
@@ -111,6 +114,16 @@
       margin-left: 10px;
       cursor: pointer;
     }
+    .main-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }
     .logout-button {
       cursor: pointer;
       display: flex;
@@ -144,14 +157,15 @@
       color: white;
       text-decoration: none;
       font-weight: 500;
-      margin-bottom: 8px;
-      display: block;
-      transition: background-color 0.3s;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      transition: background-color 0.2s, color 0.2s;
     }
     .sidebar nav a.active,
     .sidebar nav a:hover {
       background-color: #198754;
       color: #fff;
+      text-decoration: none;
     }
     .sidebar .support-button {
       background-color: #198754;
@@ -161,11 +175,13 @@
       color: white;
       font-size: 14px;
       font-weight: 500;
+      transition: background-color 0.2s, color 0.2s;
     }
     .sidebar .support-button:hover {
       background-color: #198754;
       color: #fff;
       cursor: pointer;
+      transition:  0.2s, color 0.2s;
     }
     .sidebar .support-button i {
       color: #00b300;
