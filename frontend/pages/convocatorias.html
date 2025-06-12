@@ -180,12 +180,12 @@
     .btn-green:hover {
       background-color: #157347;
     }
+
     #toggleSidebar {
       border: none;
       background: none;
       outline: none;
-      box-shadow: none;
-      margin-right: 15px;
+      box-shadow: 15px;
     }
   </style>
 </head>
@@ -256,6 +256,10 @@
   </div>
 <script type="module">
   import { AuthService } from '../scripts/auth.js';
+
+  document.getElementById('toggleSidebar').addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.toggle('collapsed');
+  });
     document.addEventListener('DOMContentLoaded', () => {
     // Mostrar rol de usuario
     AuthService.displayUserRoleInElement('user-display', 'bi-person-fill');

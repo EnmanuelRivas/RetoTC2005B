@@ -581,15 +581,16 @@
   <!-- Scripts externos -->
   <script src="../scripts/perfil.js"></script>
   <script>
-    // Script para toggle del sidebar    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById("toggleSidebar").addEventListener("click", function () {
+        document.querySelector(".sidebar").classList.toggle("collapsed");
+      });
+    // Script para toggle del sidebar  
+    document.addEventListener('DOMContentLoaded', function() {
       // Importar y usar AuthService para mostrar rol
       import('../scripts/auth.js').then(module => {
         module.AuthService.displayUserRoleInElement('user-display', 'bi-person-fill');
       });
       
-      document.getElementById("toggleSidebar").addEventListener("click", function () {
-        document.querySelector(".sidebar").classList.toggle("collapsed");
-      });
         // Inicializar la página de perfil
       initPerfil();
     });
