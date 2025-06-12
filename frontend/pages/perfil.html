@@ -425,6 +425,17 @@
       box-shadow: none;
       margin-right: 15px;
     }
+    
+    /* Estilo para el rol de administrador */
+    .admin-role {
+      color: #00ff00 !important;
+      font-weight: bold !important;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+    }
+      .user-role {
+      color: #ffffff;
+      font-weight: normal;
+    }
   </style>
 </head>
 <body class="dark-mode">
@@ -450,8 +461,8 @@
           <a href="/awaq/AsistenteExplorador">Explorador de Anteproyectos</a>
           <a href="/awaq/convocatorias">Convocatorias</a>
           <a href="/awaq/metricas">Métricas</a>
-          <a href="/awaq/viewEcoRanger">View de EcoRanger</a>
-          <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>      
+          <a href="./viewEcoRanger.html">View de EcoRanger</a>
+          <a href="./gestionUsuario.html">Gestión de Usuarios</a>      
           <a href="/awaq/perfil" class="active">Mi Perfil</a>
         </nav>
       </div>      <div>
@@ -461,7 +472,6 @@
       </div>
     </div>    <div class="main-content">
       <h2>Mi Perfil</h2>
-      
       <!-- Sección de información del usuario (solo lectura) -->
       <div class="profile-section">
         <h3>Información de la cuenta</h3>
@@ -574,22 +584,23 @@
       <div class="alert alert-danger" id="error-alert" style="display: none;">
         Error al guardar los cambios
       </div>
-    </div>
-  </div>
+    </div></div>
 
   <!-- Scripts externos -->
-  <script src="../scripts/perfil.js"></script>
-  <script>
-    // Script para toggle del sidebar    document.addEventListener('DOMContentLoaded', function() {
+  <script src="../scripts/perfil.js"></script>  <script>
+    // Script para toggle del sidebar
+    document.addEventListener('DOMContentLoaded', function() {
       // Importar y usar AuthService para mostrar rol
       import('../scripts/auth.js').then(module => {
-        module.AuthService.displayUserRoleInElement('user-display', 'bi-person-fill');
+        // Usar displayUserRole directamente en lugar de displayUserRoleInElement
+        module.AuthService.displayUserRole('user-display', false);
       });
       
       document.getElementById("toggleSidebar").addEventListener("click", function () {
         document.querySelector(".sidebar").classList.toggle("collapsed");
       });
-        // Inicializar la página de perfil
+      
+      // Inicializar la página de perfil
       initPerfil();
     });
   </script>
