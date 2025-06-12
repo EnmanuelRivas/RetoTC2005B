@@ -6,7 +6,8 @@
   <title>Asistente de Nuevas Convocatorias</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-   <style>
+  <link href="../styles/admin.css" rel="stylesheet"> 
+  <style>
     body {
       background-color: #2a2a2a;
       color: white;
@@ -39,6 +40,23 @@
       display: flex;
       align-items: center;
       gap: 16px;
+    }
+    .user-controls {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .user-profile, .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+    .user-profile:hover, .logout-button:hover {
+      background-color: #333;
     }
     .logout-button {
       cursor: pointer;
@@ -138,6 +156,23 @@
     }
     .main-content h2 {
       margin-top: 20px;
+    }
+        .user-controls {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .user-profile, .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+    .user-profile:hover, .logout-button:hover {
+      background-color: #333;
     }
     .btn-green {
       background-color: #198754;
@@ -397,10 +432,13 @@
       </button>
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
     </div>
-    <div class="user-info">
-      <a href="#" style="color: white; text-decoration: none;">
-        EcoRanger <i class="bi bi-person-fill ms-2"></i>
-      </a>
+    <div class="user-controls">
+      <div class="user-profile" onclick="location.href='/awaq/perfil'">
+        <span id="user-name">Usuario</span> <i class="bi bi-person-fill"></i>
+      </div>
+      <div class="logout-button">
+        <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
+      </div>
     </div>
   </div>
   <div class="main-body">
@@ -443,7 +481,9 @@
     });
   </script>
   <script src="../scripts/chatbot.js"></script>
-  <script>
+  <script type="module">
+    import { getUserInfoFromToken, AuthService } from '../scripts/auth.js';
+
     document.addEventListener('DOMContentLoaded', function() {      document.querySelector('.logout-button').addEventListener('click', function() {
         localStorage.removeItem('authToken');
         window.location.href = '/awaq/login.html';
@@ -452,7 +492,54 @@
         localStorage.removeItem('authToken');
         window.location.href = '/awaq/login.html';
       });
-    });
+
+      const logoutButton = document.querySelector('.logout-button');
+      if (logoutButton) {
+        logoutButton.addEventListener('click', function () {
+          AuthService.logout();
+        });
+      }
+      });
+
+      function loadUserInfo() {
+        var token = localStorage.getItem('authToken');
+        if (!token) return;
+
+        fetch('/awaq/api/profile', {
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        })
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          if (data.status === 'success') {
+            var userName = document.getElementById('user-name');        if (userName) {
+              var isAdmin = data.data.role_id === 1;
+              userName.textContent = isAdmin ? 'Administrador' : 'Usuario';
+              userName.style.color = isAdmin ? '#00b300' : '#ffffff';
+            }
+          }
+        })
+        .catch(function(error) {
+          console.error('Error loading user info:', error);
+        });
+      }
+
+      function isAuthenticated() {
+        const token = localStorage.getItem('authToken');
+        if (!token) return false;
+        
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          const exp = payload.exp * 1000;
+          return Date.now() < exp;
+        } catch (error) {
+          console.error('Token inválido:', error);
+          return false;
+        }
+      }
   </script>
 </body>
 </html>

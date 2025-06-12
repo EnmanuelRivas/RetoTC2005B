@@ -40,6 +40,31 @@
       align-items: center;
       gap: 16px;
     }
+    
+    .user-controls {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    
+    .user-profile, .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+    
+    .user-profile:hover, .logout-button:hover {
+      background-color: #333;
+    }
+    
+    .logout-button {
+      color: #ff6b6b;
+    }
+
     .main-body {
       display: flex;
       flex: 1;
@@ -173,8 +198,10 @@
       </button>
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
     </div>
-    <div class="user-info">
-      <span>Usuario <i class="bi bi-person-fill"></i></span>
+    <div class="user-controls">
+      <div class="user-profile" onclick="location.href='/awaq/perfil'">
+        <span id="user-name">Usuario</span> <i class="bi bi-person-fill"></i>
+      </div>
       <div class="logout-button">
         <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
       </div>
