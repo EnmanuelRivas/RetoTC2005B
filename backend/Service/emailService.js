@@ -88,8 +88,7 @@ async function enviarEmailRecuperacion(email, nombre, token) {
         });
         
         console.log("Correo de recuperación enviado: %s", info.messageId);
-        return { success: true, messageId: info.messageId };
-    } catch (error) {
+        return { success: true, messageId: info.messageId };    } catch (error) {
         console.error("Error al enviar correo de recuperación:", error);
         return { success: false, error: error.message };
     }
