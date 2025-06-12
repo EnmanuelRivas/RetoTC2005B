@@ -50,69 +50,187 @@
       flex: 1;
       padding: 30px;
       overflow-y: auto;
-    }
-    .dashboard-box {
-      background-color: #3d3d3d;
-      border-radius: 12px;
-      padding: 15px;
+    }    .dashboard-box {
+      background: linear-gradient(145deg, #3d3d3d, #2a2a2a);
+      border-radius: 15px;
+      padding: 20px;
       text-align: center;
       margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      border: 1px solid #4a4a4a;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .dashboard-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.5);
     }
     .dashboard-box h5 {
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       font-size: 16px;
+      color: #00b300;
+      font-weight: 600;
+    }
+    .dashboard-box h5 i {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+    .chart-container {
+      position: relative;
+      height: 120px;
+      margin: 15px 0;
     }
     .dashboard-box canvas {
       max-width: 120px;
+      max-height: 120px;
       margin: 0 auto;
     }
-    .btn-report {
-      background-color: #198754;
+    .metric-summary {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .metric-number {
+      font-size: 24px;
+      font-weight: bold;
+      color: #00ff00;
+      text-shadow: 0 2px 4px rgba(0,255,0,0.3);
+    }
+    .metric-label {
+      font-size: 12px;
+      color: #cccccc;
+      margin-top: 2px;
+    }
+    
+    /* Estilos para la tabla mejorada */
+    .table-section {
+      margin-top: 30px;
+      background: linear-gradient(145deg, #3d3d3d, #2a2a2a);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      border: 1px solid #4a4a4a;
+    }
+    
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #198754;
+    }
+    
+    .table-header h4 {
+      color: #00b300;
+      margin: 0;
+      font-weight: 600;
+    }
+    
+    .table-header h4 i {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    
+    .table-controls {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn-filter, .btn-export {
+      background: linear-gradient(145deg, #198754, #157347);
       color: white;
       border: none;
-      padding: 4px 12px;
+      padding: 8px 15px;
+      border-radius: 8px;
       font-size: 14px;
-      border-radius: 6px;
-      margin-top: 10px;
-      transition: background-color 0.3s;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
-    .btn-report:hover {
-      background-color: #157347;
+    
+    .btn-filter:hover, .btn-export:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+      background: linear-gradient(145deg, #157347, #198754);
     }
+    
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 10px;
+    }
+    
     .table-dark-custom {
       border-collapse: separate;
       border-spacing: 0;
       border-radius: 12px;
       overflow: hidden;
+      width: 100%;
+      margin: 0;
     }
-    .table-dark-custom th, .table-dark-custom td {
+    
+    .table-dark-custom th {
+      background: linear-gradient(145deg, #198754, #157347);
+      color: white;
+      border: none;
+      padding: 15px 12px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .table-dark-custom th i {
+      margin-right: 5px;
+    }
+    
+    .table-dark-custom td {
       background-color: #3d3d3d;
-      border: 2px solid #198754;
+      border: 1px solid #4a4a4a;
       color: white;
       text-align: center;
+      padding: 12px 10px;
+      font-size: 13px;
+      transition: background-color 0.3s ease;
     }
-    .section-title {
-      background-color: #444;
+    
+    .table-dark-custom tbody tr:hover td {
+      background-color: #4a4a4a;
+    }
+    
+    .progress-bar {
+      background: linear-gradient(90deg, #198754, #00ff00);
+      height: 6px;
+      border-radius: 3px;
+      margin: 3px auto;
       display: inline-block;
-      padding: 10px 20px;
+      min-width: 40px;
+    }
+    
+    .status-badge {
+      padding: 4px 8px;
       border-radius: 12px;
+      font-size: 11px;
       font-weight: bold;
-      margin-bottom: 30px;
-      font-size: 20px;
+      text-transform: uppercase;
     }
-    .logout-button {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      transition: background-color 0.2s;
-      color: #ff6b6b;
+    
+    .status-active {
+      background-color: #198754;
+      color: white;
     }
-    .logout-button:hover {
-      background-color: #333;
+    
+    .status-pending {
+      background-color: #ffc107;
+      color: #000;
+    }
+    
+    .status-inactive {
+      background-color: #dc3545;
+      color: white;
     }
     .sidebar {
       width: 270px;
@@ -206,8 +324,7 @@
       </div>
     </div>
     <div class="main-content">
-      <div class="section-title">Informes, Métricas y Análisis</div>
-      <div class="row mb-4">
+      <div class="section-title">Informes, Métricas y Análisis</div>      <div class="row mb-4">
         <div class="col-md-4">
           <div class="dashboard-box">
             <h5>Número de Biomos</h5>
@@ -268,7 +385,7 @@
         </tbody>
       </table>
     </div>
-  </div>  
+  </div>
 <script type="module">
   import { AuthService } from '../scripts/auth.js';
   AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
@@ -363,6 +480,14 @@
           chartConfig(document.getElementById('chartBiomos'), 'Biomos', [totalBiomos, 100 - totalBiomos]);
           chartConfig(document.getElementById('chartEco1'), 'EcoRanger', [totalEcoranger, 100 - totalEcoranger]);
           chartConfig(document.getElementById('chartEco2'), 'Anteproyectos', [totalAnteproyectos, 100 - totalAnteproyectos]);
+          
+          // Actualizar números en las métricas
+          document.getElementById('totalBiomos').textContent = totalBiomos;
+          document.getElementById('totalEcoRangers').textContent = totalEcoranger;
+          document.getElementById('totalAnteproyectos').textContent = totalAnteproyectos;
+          
+          // Cargar datos de la tabla
+          cargarDatosTabla();
         })
         .catch(error => {
           console.error('Error cargando métricas:', error);

@@ -156,25 +156,25 @@
     .sidebar nav a:hover {
       background-color: #198754;
       color: #fff;
-    }
-    .sidebar .support-button {
-      background-color: #198754;
+    }    .sidebar .support-button {
+      background: linear-gradient(135deg, #198754, #20c464);
       padding: 12px;
       text-align: center;
       border-radius: 10px;
       color: white;
       font-size: 14px;
       font-weight: 500;
-      transition: background-color 0.2s, color 0.2s;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
     }
     .sidebar .support-button:hover {
-      background-color: #198754;
-      color: #fff;
-      cursor: pointer;  
-      transition:  0.2s, color 0.2s;
+      background: linear-gradient(135deg, #20c464, #198754);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
     }
     .sidebar .support-button i {
-      color: #00b300;
+      color: #00ff00;
       margin-right: 8px;
     }
     .sidebar.collapsed {
@@ -262,8 +262,8 @@
   </div>
   <script type="module">
     // Importar y mostrar rol del usuario
-    import { AuthService } from '../scripts/auth.js';
-    AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
+  import { AuthService } from '../scripts/auth.js';
+  AuthService.displayUserRole('user-display', false);
     // Botón para mostrar u ocultar sidebar
     document.getElementById('toggleSidebar').addEventListener('click', () => {
       document.querySelector('.sidebar').classList.toggle('collapsed');

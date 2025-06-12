@@ -219,7 +219,7 @@
     </div>
     <div class="user-controls">
       <div class="user-profile" onclick="location.href='/awaq/perfil'">
-        <span id="user-name">Usuario</span> <i class="bi bi-person-fill"></i>
+        <span id="user-name">Usuario</span>
       </div>
       <div class="logout-button">
         <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
@@ -274,12 +274,24 @@
         </div>
       </div>
     </div>
-  </div>
-  <script>
+  </div>  <script type="module">
+  import { getUserInfoFromToken, AuthService } from '../scripts/auth.js';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const logoutButton = document.querySelector('.logout-button');
+    logoutButton.addEventListener('click', function () {
+      AuthService.logout();
+    });
+
+    // Obtener información del usuario y mostrar rol
+    AuthService.displayUserRole('user-name', true); // true para mostrar alerta de admin
+    
+    // Toggle del sidebar
     document.getElementById("toggleSidebar").addEventListener("click", function () {
       const sidebar = document.querySelector(".sidebar");
       sidebar.classList.toggle("collapsed");
     });
+  });
   </script>
   <script type="module">
     import { getIsAdminFromToken } from '../scripts/auth.js';

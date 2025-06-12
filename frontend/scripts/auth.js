@@ -55,22 +55,17 @@ const AuthService = {
         const user = getUserInfoFromToken();
         if (user) {
             const nameElement = document.getElementById(elementId);
-            if (nameElement) {
-                if (user.isAdmin) {
-                    nameElement.textContent = 'Administrador';
-                    nameElement.style.color = '#28a745';
-                    nameElement.style.fontWeight = 'bold';
-                    nameElement.style.textShadow = '0 1px 2px rgba(0,0,0,0.5)';
+            if (nameElement) {                if (user.isAdmin) {
+                    // Para administradores: texto en verde + ícono de escudo
+                    nameElement.innerHTML = '<span style="color: #00ff00; font-weight: bold; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Administrador</span> <i class="bi bi-shield-check" style="color: #00ff00;"></i>';
 
                     // Mostrar alerta solo en página home o si se especifica
                     if (showAdminAlert) {
                         this.showAdminAlert();
                     }
                 } else {
-                    nameElement.textContent = 'Usuario';
-                    nameElement.style.color = '#ffffff';
-                    nameElement.style.fontWeight = 'normal';
-                    nameElement.style.textShadow = '0 1px 2px rgba(0,0,0,0.5)';
+                    // Para usuarios normales: texto blanco + ícono de persona
+                    nameElement.innerHTML = '<span style="color: #ffffff; font-weight: normal; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Usuario</span> <i class="bi bi-person-fill" style="color: #ffffff;"></i>';
                 }
             }
         }
@@ -101,18 +96,18 @@ const AuthService = {
         if (container && !document.querySelector('.admin-alert')) {
             container.insertAdjacentHTML('afterbegin', adminAlertHTML);
         }
-    },
-
-    // Función flexible para mostrar el rol en elementos con contenido mixto
+    },    // Función flexible para mostrar el rol en elementos con contenido mixto
     displayUserRoleInElement(elementId, iconClass = 'bi-person-fill') {
         const user = getUserInfoFromToken();
         if (user) {
             const element = document.getElementById(elementId);
             if (element) {
                 const roleName = user.isAdmin ? 'Administrador' : 'Usuario';
-                const roleColor = user.isAdmin ? '#28a745' : '#ffffff';
+                const roleColor = user.isAdmin ? '#00ff00' : '#ffffff';
+                const roleClass = user.isAdmin ? 'admin-role' : 'user-role';
+                const roleIcon = user.isAdmin ? 'bi-shield-check' : iconClass;
                 
-                element.innerHTML = `<span style="color: ${roleColor}; font-weight: ${user.isAdmin ? 'bold' : 'normal'}; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">${roleName}</span> <i class="bi ${iconClass}"></i>`;
+                element.innerHTML = `<span class="${roleClass}" style="color: ${roleColor}; font-weight: ${user.isAdmin ? 'bold' : 'normal'}; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">${roleName}</span> <i class="bi ${roleIcon}" style="color: ${roleColor};"></i>`;
             }
         }
     },
@@ -267,14 +262,10 @@ function displayUserInfo(elementId) {
 
     if (user && element) {
         const roleText = user.isAdmin ? 'Administrador' : 'Usuario';
-        element.textContent = roleText;
-
-        if (user.isAdmin) {
-            element.style.color = '#28a745'; // verde admin
-            element.style.fontWeight = 'bold';
-        } else {
-            element.style.color = '#ffffff'; // blanco usuario normal
-        }
+        const roleColor = user.isAdmin ? '#00ff00' : '#ffffff';
+        const roleIcon = user.isAdmin ? 'bi-shield-check' : 'bi-person-fill';
+        
+        element.innerHTML = `<span style="color: ${roleColor}; font-weight: ${user.isAdmin ? 'bold' : 'normal'};">${roleText}</span> <i class="bi ${roleIcon}" style="color: ${roleColor};"></i>`;
     }
 }
 
