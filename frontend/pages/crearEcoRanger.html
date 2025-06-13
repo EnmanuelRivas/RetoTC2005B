@@ -41,7 +41,7 @@
       gap: 16px;
     }
     .main-content {
-      margin-left: 260px;
+      margin-left: 0px;
       padding: 2rem;
       background-color: #2d2d2d;
       min-height: 100vh;
@@ -117,13 +117,13 @@
     .main-body {
       display: flex;
       flex: 1;
-      overflow: hidden;
+      
     }
     .main-content {
       flex: 1;
       padding: 30px;
       overflow-y: auto;
-    }
+    }    
     .logout-button {
       cursor: pointer;
       display: flex;
@@ -217,122 +217,163 @@
 </head>
 <body>
   <div class="top-bar">
-     <div style="display: flex; align-items: center;">
+    <div style="display: flex; align-items: center;">
       <button id="toggleSidebar" class="me-3">
         <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
       </button>
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
-    </div>    
-    <div class="user-info">
+    </div>
+    <div class="user-info d-flex gap-3">
       <span id="user-display">Usuario <i class="bi bi-person-fill"></i></span>
-      <div class="logout-button">
-        <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
-      </div>
+      <div class="logout-button" style="cursor: pointer;">Cerrar sesión <i class="bi bi-box-arrow-right"></i></div>
     </div>
   </div>
+
   <div class="main-body">
     <div class="sidebar">
-      <div>        
-        <nav>
-          <a href="home.html">Inicio</a>
-          <a href="/awaq/metricas">Informes, Métricas y Análisis</a>
-          <a class="active" href="#">Crear EcoRanger</a>
-          <a href="/awaq/viewEcoRanger">View de Ecoranger</a>
-          <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>
-        </nav>
-      </div>      
-      <div class="support-button" data-support="true">
+      <nav>
+        <a href="home.html">Inicio</a>
+        <a href="/awaq/metricas">Informes, Métricas y Análisis</a>
+        <a class="active" href="#">Crear EcoRanger</a>
+        <a href="/awaq/viewEcoRanger">View de Ecoranger</a>
+        <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>
+      </nav>
+      <div class="support-button text-center mt-4">
         <i class="bi bi-telephone"></i> Contacta con el soporte
       </div>
     </div>
-  <div class="main-content">
-    <div class="eco-card">
-      <div class="eco-info">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="Placeholder" />
-        <div class="eco-details">
-          <span><strong>Labor:</strong> <span class="btn btn-secondary btn-sm">Ecoranger</span></span>
-          <span><strong>Nombre:</strong> <input type="text" placeholder="Ingresa nombre"></span>
-          <span><strong>Apellidos:</strong> <input type="text" placeholder="Ingresa apellidos"></span>
-          <span><strong>País:</strong> <input type="text" placeholder="Ingresa país"></span>
-          <span><strong>Región:</strong> <input type="text" placeholder="Ingresa región"></span>
-          <span><strong>Ciudad:</strong> <input type="text" placeholder="Ingresa ciudad"></span>
-          <span><strong>Correo:</strong> <input type="text" placeholder="Ingresa correo"></span>
-          <span><strong>Número de contacto:</strong> <input type="text" placeholder="Ingresa número de contacto"></span>
+
+    <div class="main-content">
+      <div class="form-box" style="margin-bottom: 0; padding-bottom: 0;">
+        <h2>Registrar EcoRanger</h2>
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Apellidos</label>
+          <input type="text" class="form-control" id="apellidos" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Correo</label>
+          <input type="email" class="form-control" id="correo" required>
+        </div>
+         <div class="mb-3">
+        <label class="form-label">Organización</label>
+        <input type="text" class="form-control" id="organizacion" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">País</label>
+          <input type="text" class="form-control" id="pais" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Región / Provincia</label>
+          <input type="text" class="form-control" id="provincia" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Ciudad</label>
+          <input type="text" class="form-control" id="ciudad" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Número de contacto</label>
+          <input type="text" class="form-control" id="numeroTelefono" required>
+        </div>
+         <div class="mb-3">
+          <label class="form-label">Descripción (opcional)</label>
+          <input type="text" class="form-control" id="descripcion" placeholder="Descripción del EcoRanger">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Contraseña (opcional)</label>
+          <input type="password" class="form-control" id="contrasena" placeholder="123 por defecto si se deja vacío">
+        </div>
+        <div class="mb-3">  
+        <div class="text-end">
+          <button class="btn btn-success" id="btnFinalizar">Finalizar</button>
         </div>
       </div>
-      <div class="eco-actions">
-        <button class="btn btn-secondary" onclick="location.href='metricas.html'">Informes, Métricas y Análisis</button>
-        <button class="btn btn-success">Finalizar</button>
-      </div>
     </div>
-
-    <div class="chat-box mt-4">
-      <input type="text" placeholder="Escribe..." />
-      <i class="bi bi-arrow-up-circle-fill"></i>
-      <i class="bi bi-mic-fill"></i>
   </div>
-  </div>
-<script type="module">
-  import { AuthService } from '../scripts/auth.js';
-  AuthService.displayUserRole('user-display', false);
-  // Botón para mostrar u ocultar sidebar
-  document.getElementById('toggleSidebar').addEventListener('click', () => {
-    document.querySelector('.sidebar').classList.toggle('collapsed');
-  });
-  // Verificación de autenticación y permisos de administrador
-  function checkAdminAccess() {
-    const token = localStorage.getItem('authToken');
+  <script type="module">
+    import { AuthService } from '../scripts/auth.js';
+    AuthService.displayUserRole('user-display', false);
 
-    if (!token) {
-      alert('Debes iniciar sesión para acceder a esta página.');
-      window.location.href = '/awaq/login';
-      return;
+    document.getElementById('toggleSidebar').addEventListener('click', () => {
+      document.querySelector('.sidebar').classList.toggle('collapsed');
+    });
+
+    // Función para registrar usuario con el endpoint registerUser
+    window.registerUserEndpoint = async function(data) {
+      try {
+        const res = await fetch('/awaq/api/registerUser', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          alert('Usuario registrado correctamente');
+          window.location.href = '/awaq/viewEcoRanger';
+        } else {
+          alert(result.message || 'Error al registrar usuario');
+        }
+      } catch (err) {
+        alert('Error de red: ' + err.message);
+      }
+    };
+  </script>
+  <script src="../scripts/register.js"></script>
+<script src="../scripts/auth.js"></script>
+</body>
+<script>
+  document.getElementById('btnFinalizar').addEventListener('click', async () => {
+    const formData = new FormData();
+
+    formData.append('nombre', document.getElementById('nombre').value);
+    formData.append('apellidos', document.getElementById('apellidos').value);
+    formData.append('correo', document.getElementById('correo').value);
+    formData.append('organizacion', document.getElementById('organizacion').value);
+    formData.append('pais', document.getElementById('pais').value);
+    formData.append('provincia', document.getElementById('provincia').value);
+    formData.append('ciudad', document.getElementById('ciudad').value);
+    formData.append('numeroTelefono', document.getElementById('numeroTelefono').value);
+    formData.append('contrasena', document.getElementById('contrasena').value || '123');
+    formData.append('descripcion', document.getElementById('descripcion').value || '');
+    formData.append('role_id', 2);
+
+    // Opcional: si agregas soporte para imagen de perfil más adelante
+    const profileInput = document.getElementById('profileImgInput');
+    if (profileInput && profileInput.files.length > 0) {
+      formData.append('profileImg', profileInput.files[0]);
     }
 
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const isAdmin = payload.role_id === 1;
+      const response = await fetch('/awaq/api/register', {
+        method: 'POST',
+        body: formData
+      });
 
-      if (!isAdmin) {
-        alert('Acceso denegado. Se requieren permisos de administrador.');
-        window.location.href = '/awaq/home';
-        return;
+      const text = await response.text();
+      console.log('Respuesta cruda:', text);
+
+      try {
+        const result = JSON.parse(text);
+
+        if (response.ok) {
+          alert('Usuario registrado correctamente');
+          window.location.href = '/awaq/viewEcoRanger';
+        } else {
+          alert(result.message || 'Error al registrar usuario');
+        }
+      } catch (parseError) {
+        console.error('Respuesta inesperada:', text);
+        alert('Error inesperado del servidor.');
       }
-
-      console.log('Acceso de administrador verificado');
-    } catch (error) {
-      console.error('Error al verificar el token:', error);
-      alert('Token inválido. Por favor, inicia sesión nuevamente.');
-      localStorage.removeItem('authToken');
-      window.location.href = '/awaq/login';
-    }
-  }
-
-  // Ejecutar verificación al cargar la página
-  checkAdminAccess();
-
-  const chartConfig = (ctx, label, data) => new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Completado', 'Faltante'],
-      datasets: [{
-        label: label,
-        data: data,
-        backgroundColor: ['#198754', '#444'],
-        borderWidth: 0
-      }]
-    },
-    options: {
-      cutout: '70%',
-      plugins: {
-        legend: { display: false },
-      }
+    } catch (err) {
+      alert('Error de red: ' + err.message);
     }
   });
-
 </script>
-  <!-- Script del sistema de soporte -->
-  <script src="../scripts/support.js"></script>
 
-</body>
 </html>

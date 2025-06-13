@@ -6,8 +6,7 @@
   <title>Usuarios Pendientes</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>  <style>
     body {
       background-color: #2f2f2f;
       color: white;
@@ -52,69 +51,177 @@
       overflow-y: auto;
     }
     .section-title {
-      background-color: #444;
-      display: inline-block;
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-weight: bold;
+      font-size: 28px;
+      font-weight: 700;
+      color: #00b300;
       margin-bottom: 30px;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0,179,0,0.3);
+      border-bottom: 2px solid #198754;
+      padding-bottom: 10px;
+    }
+    
+    /* Estilos para la tabla mejorada */
+    .table-section {
+      margin-top: 20px;
+      background: linear-gradient(145deg, #3d3d3d, #2a2a2a);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      border: 1px solid #4a4a4a;
+    }
+    
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #198754;
+    }
+    
+    .table-header h4 {
+      color: #00b300;
+      margin: 0;
+      font-weight: 600;
+    }
+    
+    .table-header h4 i {
+      margin-right: 10px;
       font-size: 20px;
     }
-    table {
+    
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 10px;
+    }
+    
+    .table-dark-custom {
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 12px;
+      overflow: hidden;
       width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 30px;
+      margin: 0;
     }
-    th, td {
-      padding: 12px;
+    
+    .table-dark-custom th {
+      background: linear-gradient(145deg, #198754, #157347);
+      color: white;
+      border: none;
+      padding: 15px 12px;
       text-align: center;
-      border: 2px solid #198754;
-      background-color: #3d3d3d;
+      font-weight: 600;
+      font-size: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
-    select, button {
+    
+    .table-dark-custom th i {
+      margin-right: 5px;
+    }
+    
+    .table-dark-custom td {
+      background-color: #3d3d3d;
+      border: 1px solid #4a4a4a;
+      color: white;
+      text-align: center;
+      padding: 12px 10px;
+      font-size: 13px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .table-dark-custom tbody tr:hover td {
+      background-color: #4a4a4a;
+    }
+    
+    /* Estilo especial para la columna nombre */
+    .table-dark-custom td:first-child {
+      font-weight: bold;
+      color: #00ff00;
+      text-shadow: 0 1px 2px rgba(0,255,0,0.3);
+    }
+    
+    /* Estilos para selects y botones */
+    .rol-selector {
       background-color: #1f1f1f;
       color: white;
       border: 1px solid #198754;
       border-radius: 6px;
       padding: 6px 12px;
+      font-size: 12px;
     }
-    .btn-approve {
+    
+    .guardar-btn {
+      background: linear-gradient(145deg, #198754, #157347);
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .guardar-btn:hover {
+      background: linear-gradient(145deg, #157347, #198754);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+      /* Badges para estados */
+    .badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    
+    .badge.active {
       background-color: #198754;
+      color: white;
     }
-    .btn-reject {
+    
+    .badge.inactive {
       background-color: #dc3545;
+      color: white;
     }
+    
     .badge-pendiente {
       background-color: #ffc107;
       color: black;
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-weight: bold;
     }
-    .badge.active {
-      background-color: #28a745;
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-    .badge.inactive {
-      background-color: #dc3545;
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-    .top-controls {
-      text-align: right;
-      margin-bottom: 20px;
-    }
-    .top-controls button {
-      background-color: #198754;
-      border: none;
-      padding: 8px 16px;
-      margin-left: 10px;
-      border-radius: 8px;
+    
+    /* Badges para datos de la tabla */
+    .user-badge {
+      background: linear-gradient(145deg, #6c757d, #495057);
       color: white;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
     }
+    
+    .admin-badge {
+      background: linear-gradient(145deg, #dc3545, #b02a37);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .pending-badge {
+      background: linear-gradient(145deg, #ffc107, #e0a800);
+      color: black;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
     .logout-button {
       cursor: pointer;
       display: flex;
@@ -123,7 +230,7 @@
       padding: 8px 12px;
       border-radius: 8px;
       transition: background-color 0.2s;
-      color: #ff6b6b;
+      color: #ff6b6b !important;
     }
     .logout-button:hover {
       background-color: #333;
@@ -156,7 +263,8 @@
     .sidebar nav a:hover {
       background-color: #198754;
       color: #fff;
-    }    .sidebar .support-button {
+    }
+    .sidebar .support-button {
       background: linear-gradient(135deg, #198754, #20c464);
       padding: 12px;
       text-align: center;
@@ -189,20 +297,6 @@
       box-shadow: none;
       margin-right: 15px;
     }
-    
-    .btn-report {
-      background-color: #198754;
-      color: white;
-      border: none;
-      padding: 4px 12px;
-      font-size: 14px;
-      border-radius: 6px;
-      margin-top: 10px;
-      transition: background-color 0.3s;
-    }
-    .btn-report:hover {
-      background-color: #157347;
-    }
   </style>
 </head>
 <body>
@@ -212,18 +306,16 @@
         <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
       </button>
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
-    </div>    
-    <div class="user-info">
+    </div>      <div class="user-info">
       <span id="user-display">Usuario <i class="bi bi-person-fill"></i></span>
-      <div class="logout-button">
+      <div class="logout-button text-danger" style="cursor: pointer;">
         <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
       </div>
     </div>
   </div>
   <div class="main-body">
     <div class="sidebar">
-      <div>
-        <nav>
+      <div>        <nav>
           <a href="home.html">Inicio</a>
           <a href="/awaq/metricas">Informes, Métricas y Análisis</a>
           <a href="/awaq/crearEcoRanger">Crear EcoRanger</a>
@@ -233,31 +325,38 @@
       </div>      <div class="support-button" data-support="true">
         <i class="bi bi-telephone"></i> Contacta con el soporte
       </div>
-    </div>
-    <div class="main-content">
-      <div class="section-title">Gestión de Todos los Usuarios</div>
+    </div>    <div class="main-content">
+      <div class="section-title">Gestión de Usuarios</div>
 
-      <table id="tablaUsuarios">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>Correo</th>
-            <th>Rol</th>
-            <th>Teléfono</th>
-            <th>País</th>
-            <th>Provincia</th>
-            <th>Ciudad</th>
-            <th>Organización</th>
-            <th>Descripción</th>
-            <th>Estado</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Se llenará dinámicamente con JavaScript -->
-        </tbody>
-      </table>
+      <!-- Sección de tabla mejorada -->
+      <div class="table-section">
+        <div class="table-header">
+          <h4><i class="bi bi-people"></i>Administrar Usuarios del Sistema</h4>
+        </div>
+        <div class="table-wrapper">
+          <table class="table-dark-custom" id="tablaUsuarios">
+            <thead>
+              <tr>
+                <th><i class="bi bi-person"></i>Nombre</th>
+                <th><i class="bi bi-person"></i>Apellidos</th>
+                <th><i class="bi bi-envelope"></i>Correo</th>
+                <th><i class="bi bi-shield"></i>Rol</th>
+                <th><i class="bi bi-telephone"></i>Teléfono</th>
+                <th><i class="bi bi-flag"></i>País</th>
+                <th><i class="bi bi-geo-alt"></i>Provincia</th>
+                <th><i class="bi bi-geo"></i>Ciudad</th>
+                <th><i class="bi bi-building"></i>Organización</th>
+                <th><i class="bi bi-chat-text"></i>Descripción</th>
+                <th><i class="bi bi-activity"></i>Estado</th>
+                <th><i class="bi bi-gear"></i>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Se llenará dinámicamente con JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
   <script type="module">
@@ -267,75 +366,176 @@
     // Botón para mostrar u ocultar sidebar
     document.getElementById('toggleSidebar').addEventListener('click', () => {
       document.querySelector('.sidebar').classList.toggle('collapsed');
-    });
-  async function cargarUsuarios() {
-    const token = localStorage.getItem('authToken');
-    if (!token) return;
-
-    try {
-      const res = await fetch('/awaq/api/getUsers', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-
-      const response = await res.json(); // 🔁 CAMBIO HECHO AQUÍ
-      const usuarios = response.records; // ✅ SE EXTRAE LA LISTA CORRECTAMENTE
-
-      const tbody = document.querySelector('#tablaUsuarios tbody');
-      tbody.innerHTML = '';
-
-      usuarios.forEach(u => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${u.nombre}</td>
-          <td>${u.apellidos}</td>
-          <td>${u.correo}</td>
-          <td>
-            <select onchange="actualizarRol(${u.id}, this.value)">
-              <option value="2" ${u.role_id == 2 ? 'selected' : ''}>Usuario</option>
-              <option value="1" ${u.role_id == 1 ? 'selected' : ''}>Administrador</option>
-              <option value="3" ${u.role_id == 3 ? 'selected' : ''}>Pendiente</option>
-            </select>
-          </td>
-          <td>${u.numeroTelefono || '-'}</td>
-          <td>${u.pais || '-'}</td>
-          <td>${u.provincia || '-'}</td>
-          <td>${u.ciudad || '-'}</td>
-          <td>${u.organizacion || '-'}</td>
-          <td>${u.descripcion || '-'}</td>
-          <td><span class="badge ${u.estado == 1 ? 'active' : 'inactive'}">${u.estado == 1 ? 'Activo' : 'Inactivo'}</span></td>
-          <td><button onclick="actualizarRol(${u.id})">Guardar</button></td>
-        `;
-        tbody.appendChild(row);
-      });
-    } catch (err) {
-      console.error('Error al cargar usuarios:', err);
-    }  }
-
-  async function actualizarRol(id) {
-    const select = document.querySelector(`select[onchange*="${id}"]`);
-    const nuevoRol = select.value;
-
-    try {
-      const res = await fetch(`/awaq/api/usuarios/${id}/rol`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-        },
-        
-        body: JSON.stringify({ role_id: nuevoRol })
-      });
-
-      if (res.ok) {
-        alert('Rol actualizado correctamente');
-        cargarUsuarios();
-      } else {
-        alert('Error al actualizar el rol');
-      }
-    } catch (err) {
-      console.error(err);
-    }
+    });  async function cargarUsuarios() {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    alert('No hay token de autenticación');
+    return;
   }
+
+  try {
+    console.log('Cargando usuarios...');
+    const res = await fetch('/awaq/api/getUsers', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (!res.ok) {
+      throw new Error(`Error HTTP: ${res.status}`);
+    }
+
+    const response = await res.json();
+    console.log('Respuesta del servidor:', response);
+    
+    const usuarios = response.records || response;
+
+    if (!Array.isArray(usuarios)) {
+      throw new Error('La respuesta no contiene un array de usuarios');
+    }
+
+    const tbody = document.querySelector('#tablaUsuarios tbody');
+    tbody.innerHTML = '';    usuarios.forEach(u => {
+      const row = document.createElement('tr');
+      
+      console.log(`Procesando usuario: ID=${u.id}, Nombre=${u.nombre}, Role=${u.role_id}`);
+      
+      // Determinar el rol string y badge
+      let rolBadge = '';
+      if (u.role_id == 1) rolBadge = '<span class="admin-badge">Administrador</span>';
+      else if (u.role_id == 2) rolBadge = '<span class="user-badge">Usuario</span>';
+      else if (u.role_id == 3) rolBadge = '<span class="pending-badge">Pendiente</span>';
+      else rolBadge = '<span class="badge">Desconocido</span>';
+      
+      row.innerHTML = `
+        <td><strong>${u.nombre || '-'}</strong></td>
+        <td>${u.apellidos || '-'}</td>
+        <td>${u.correo || '-'}</td>
+        <td>
+          ${rolBadge}
+          <br>
+          <select class="rol-selector mt-1" data-user-id="${u.id}">
+            <option value="2" ${u.role_id == 2 ? 'selected' : ''}>Usuario</option>
+            <option value="1" ${u.role_id == 1 ? 'selected' : ''}>Administrador</option>
+            <option value="3" ${u.role_id == 3 ? 'selected' : ''}>Pendiente</option>
+          </select>
+        </td>
+        <td>${u.numeroTelefono || '-'}</td>
+        <td>${u.pais || '-'}</td>
+        <td>${u.provincia || '-'}</td>
+        <td>${u.ciudad || '-'}</td>
+        <td>${u.organizacion || '-'}</td>
+        <td>${u.descripcion || '-'}</td>
+        <td><span class="badge ${u.estado == 1 ? 'active' : 'inactive'}">${u.estado == 1 ? 'Activo' : 'Inactivo'}</span></td>
+        <td><button class="guardar-btn" data-user-id="${u.id}"><i class="bi bi-check2"></i> Guardar</button></td>
+      `;
+
+      tbody.appendChild(row);
+    });// Agregar event listeners a todos los botones de guardar
+    document.querySelectorAll('.guardar-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const userId = e.target.getAttribute('data-user-id');
+        const select = document.querySelector(`.rol-selector[data-user-id="${userId}"]`);
+        const nuevoRol = select.value;
+        
+        console.log(`Frontend: Usuario ID: ${userId}, Nuevo rol: ${nuevoRol}`);
+        console.log(`Tipo de userId: ${typeof userId}, Tipo de nuevoRol: ${typeof nuevoRol}`);
+        
+        // Validar que tenemos los datos necesarios
+        if (!userId || !nuevoRol) {
+          alert('Error: No se pudo obtener la información del usuario');
+          return;
+        }
+        
+        // Deshabilitar el botón y mostrar carga
+        const originalText = e.target.innerHTML;
+        e.target.disabled = true;
+        e.target.innerHTML = '<i class="bi bi-hourglass-split"></i> Guardando...';
+        
+        console.log(`Actualizando usuario ${userId} a rol ${nuevoRol}`);
+        await actualizarRol(userId, nuevoRol);
+        
+        // Restaurar el botón
+        e.target.disabled = false;
+        e.target.innerHTML = originalText;
+      });
+    });
+
+    console.log(`Cargados ${usuarios.length} usuarios correctamente`);
+
+  } catch (err) {
+    console.error('Error al cargar usuarios:', err);
+    alert(`Error al cargar usuarios: ${err.message}`);
+  }
+}
+
+async function actualizarRol(id, nuevoRol) {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    alert('No hay token de autenticación');
+    return;
+  }
+
+  try {
+    console.log(`Frontend actualizarRol: ID=${id}, Rol=${nuevoRol}`);
+    console.log(`URL que se va a llamar: /awaq/api/usuarios/${id}/rol`);
+    
+    const payload = {
+      role_id: parseInt(nuevoRol)
+    };
+    console.log('Payload a enviar:', payload);
+    
+    const res = await fetch(`/awaq/api/usuarios/${id}/rol`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
+
+    console.log('Status de la respuesta:', res.status);
+    
+    let result;
+    try {
+      result = await res.json();
+    } catch (parseError) {
+      console.error('Error al parsear JSON:', parseError);
+      const text = await res.text();
+      console.error('Respuesta como texto:', text);
+      throw new Error('Respuesta inválida del servidor');
+    }
+    
+    console.log('Respuesta de actualización de rol:', result);
+
+    if (res.ok && result.status === 'success') {
+      // Usar SweetAlert2 para una mejor experiencia
+      Swal.fire({
+        title: '¡Éxito!',
+        text: 'Rol actualizado correctamente',
+        icon: 'success',
+        background: '#2a2a2a',
+        color: 'white',
+        confirmButtonColor: '#198754'
+      });
+      
+      // Recargar la tabla para reflejar los cambios
+      await cargarUsuarios();
+    } else {
+      throw new Error(result.message || `Error HTTP ${res.status}`);
+    }
+  } catch (err) {
+    console.error('Error en actualizarRol:', err);
+    
+    Swal.fire({
+      title: 'Error',
+      text: `Error al actualizar el rol: ${err.message}`,
+      icon: 'error',
+      background: '#2a2a2a',
+      color: 'white',
+      confirmButtonColor: '#dc3545'
+    });
+  }
+}
+
 
   document.addEventListener("DOMContentLoaded", cargarUsuarios);
   // Verificación de autenticación y permisos de administrador

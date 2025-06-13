@@ -324,10 +324,13 @@ async function updatePassword(userId, newPassword) {
  */
 async function actualizarRol(userId, role_id) {
   try {
+    console.log(`usersService.actualizarRol: Actualizando usuario ${userId} al rol ${role_id}`);
     const query = `UPDATE usuarios SET role_id = ? WHERE id = ?`;
     const result = await dataSource.updateData(query, [role_id, userId]);
+    console.log('usersService.actualizarRol: Resultado de la query:', result);
     return result;
   } catch (error) {
+    console.error('usersService.actualizarRol: Error:', error);
     return { error: error.message };
   }
 }

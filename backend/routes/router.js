@@ -27,6 +27,11 @@ router.get(`${constants.contextURL}/recuperar`, templates.recuperarPage);
 router.get(`${constants.contextURL}/changepwd`, templates.cambiarPasswordPage);
 router.get(`${constants.contextURL}/confirmacion`, templates.confirmacionPage);
 router.get(`${constants.contextURL}/preReg`, templates.preRegPage);
+// Ruta pública para explorador de anteproyectos (sin token)
+router.get(
+  `${constants.contextURL}/api/anteproyectos`,
+  anteproyectosRest.getAnteproyectos
+);
 
 /* Rutas para usuarios autenticados */
 router.get(`${constants.contextURL}/home`, templates.homePage);
@@ -42,6 +47,7 @@ router.get(`${constants.contextURL}/juego`, templates.juegoPage);
 /* Rutas para administradores */
 router.get(`${constants.contextURL}/dashboard`, requireAdminForPage, templates.dashboardPage);
 router.get(`${constants.contextURL}/gestion_usuario`, requireAdminForPage, templates.gestionUsuarioPage);
+router.get(`${constants.contextURL}/gestionUsuario`, requireAdminForPage, templates.gestionUsuarioPage);
 router.get(`${constants.contextURL}/gestion_ap`, requireAdminForPage, templates.gestionAPPage);
 router.get(`${constants.contextURL}/gestion_soporte`, requireAdminForPage, templates.gestionSoportePage);
 router.get(`${constants.contextURL}/metricas`, requireAdminForPage, templates.metricasPage);
@@ -71,7 +77,7 @@ router.post(
 router.post(`${constants.contextURL}${constants.apiURL}/recuperar`, usersRest.recuperarPassword);
 router.post(`${constants.contextURL}${constants.apiURL}/verificar-token`, usersRest.verificarTokenRecuperacion);
 router.post(`${constants.contextURL}${constants.apiURL}/restablecer-password`, usersRest.restablecerPassword);
-
+  
 router.get(
   `${constants.contextURL}${constants.apiURL}/getUsers`,
   authenticateToken,

@@ -235,34 +235,8 @@
         <div class="tab" onclick="mostrarTab('cerrados', this)">Cerrados</div>
         <div class="tab" onclick="mostrarTab('todos', this)">Todos</div>
       </div>
-      <div id="abiertos">
-        <div class="card-anteproyecto">
-          <div>
-            <h5><strong>Título</strong></h5>
-            <p>Descripción</p>
-            <small>Fecha de creación: 00/00/0000</small><br>
-            <small>Fecha límite: 00/00/0000</small>
-          </div>
-        </div>
-        <div class="card-anteproyecto">
-          <div>
-            <h5><strong>Título</strong></h5>
-            <p>Descripción</p>
-            <small>Fecha de creación: 00/00/0000</small><br>
-            <small>Fecha límite: 00/00/0000</small>
-          </div>
-        </div>
-      </div>
-      <div id="cerrados" class="hidden">
-        <div class="card-anteproyecto">
-          <div>
-            <h5><strong>Título</strong></h5>
-            <p>Descripción</p>
-            <small>Fecha de creación: 00/00/0000</small><br>
-            <small>Fecha límite: 00/00/0000</small>
-          </div>
-        </div>
-      </div>
+   <div id="abiertos"></div>
+<div id="cerrados" class="hidden"></div>
       <div id="todos" class="hidden"></div>
       <button class="btn-float" onclick="window.location.href='/awaq/crearap'">Crear Nuevo Anteproyecto</button>
     </div>
@@ -326,6 +300,47 @@
 
 <!-- Script del sistema de soporte -->
 <script src="../scripts/support.js"></script>
+<script type="module">
+  async function cargarAnteproyectos() {
+    try {
+      const res = await fetch('/awaq/api/anteproyectos');
+      const data = await res.json();
 
+      const abiertos = document.getElementById('abiertos');
+      const cerrados = document.getElementById('cerrados');
+      const todos = document.getElementById('todos');
+
+      abiertos.innerHTML = '';
+      cerrados.innerHTML = '';
+      todos.innerHTML = '';
+
+      data.forEach(ap => {
+        if (!ap.titulo || !ap.descripcion || !ap.fecha_creacion) return;
+
+        const card = document.createElement('div');
+        card.className = 'card-anteproyecto';
+        card.innerHTML = `
+          <div>
+            <h5><strong>${ap.titulo}</strong></h5>
+            <p>${ap.descripcion}</p>
+            <small>Fecha de creación: ${new Date(ap.fecha_creacion).toLocaleDateString()}</small><br>
+            <small>Convocatoria ID: ${ap.convocatoria_id || 'No asignada'}</small>
+          </div>`;
+
+        if (String(ap.estado) === '1') {
+          abiertos.appendChild(card);
+        } else {
+          cerrados.appendChild(card);
+        }
+
+        todos.appendChild(card.cloneNode(true));
+      });
+    } catch (error) {
+      console.error('Error al cargar anteproyectos:', error);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', cargarAnteproyectos);
+</script>
 </body>
 </html>
