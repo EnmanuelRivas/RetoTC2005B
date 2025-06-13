@@ -1,4 +1,4 @@
-const port = 1241;
+const port = 5000;
 const indexURL = '/';
 const apiURL = '/api';
 const contextURL = '/awaq';
@@ -9,3 +9,4 @@ module.exports = {
   apiURL,
   contextURL
 };
+  

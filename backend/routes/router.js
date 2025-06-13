@@ -42,6 +42,7 @@ router.get(`${constants.contextURL}/juego`, templates.juegoPage);
 /* Rutas para administradores */
 router.get(`${constants.contextURL}/dashboard`, requireAdminForPage, templates.dashboardPage);
 router.get(`${constants.contextURL}/gestion_usuario`, requireAdminForPage, templates.gestionUsuarioPage);
+router.get(`${constants.contextURL}/gestionUsuario`, requireAdminForPage, templates.gestionUsuarioPage);
 router.get(`${constants.contextURL}/gestion_ap`, requireAdminForPage, templates.gestionAPPage);
 router.get(`${constants.contextURL}/gestion_soporte`, requireAdminForPage, templates.gestionSoportePage);
 router.get(`${constants.contextURL}/metricas`, requireAdminForPage, templates.metricasPage);
