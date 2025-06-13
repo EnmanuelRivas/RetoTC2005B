@@ -335,13 +335,25 @@
       width: 0;
       padding: 0;
       overflow: hidden;
-    }
-    #toggleSidebar {
+    }    #toggleSidebar {
       border: none;
       background: none;
       outline: none;
       box-shadow: none;
       margin-right: 15px;
+    }
+    .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      color: #ff6b6b !important;
+    }
+    .logout-button:hover {
+      background-color: #333;
     }
   </style>
 </head>
@@ -352,10 +364,9 @@
         <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
       </button>
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
-    </div>    
-    <div class="user-info">
+    </div>      <div class="user-info">
       <span id="user-display">Usuario <i class="bi bi-person-fill"></i></span>
-      <div class="logout-button">
+      <div class="logout-button text-danger" style="cursor: pointer;">
         <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
       </div>
     </div>
