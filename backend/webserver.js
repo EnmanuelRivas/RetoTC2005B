@@ -107,14 +107,15 @@ function createServer() {
  * Inicializa el proyecto web y levanta el servidor.
  */
 function initWebProject() {
-    const server = createServer();
-
-    // Solo escuchar en puerto si no estamos en Vercel/producción
-    if (!process.env.VERCEL && process.env.NODE_ENV !== 'production') {
-        server.listen(port, () => {
-            console.log(`🚀 Server running at http://localhost:${port}${indexURL}`);
-            console.log(`📡 API available at http://localhost:${port}${apiURL}`);
-            console.log(`🌐 Context available at http://localhost:${port}${contextURL}`);
+    const server = createServer();    // Configurar puerto para diferentes plataformas
+    const finalPort = process.env.PORT || port;
+    
+    // En Render siempre necesitamos escuchar en un puerto
+    if (process.env.RENDER || process.env.NODE_ENV === 'production' || !process.env.VERCEL) {
+        server.listen(finalPort, '0.0.0.0', () => {
+            console.log(`🚀 Server running on port ${finalPort}`);
+            console.log(`📡 API available at ${apiURL}`);
+            console.log(`🌐 Context available at ${contextURL}`);
         });
     }
     

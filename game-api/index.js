@@ -319,10 +319,10 @@ app.get('/leaderboard/top', (req, res) => {
   });
 });
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 AWAQ Game API corriendo en http://localhost:${PORT}`);
-  console.log(`🩺 Health check: http://localhost:${PORT}/api/health`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 AWAQ Game API corriendo en puerto ${PORT}`);
+  console.log(`🩺 Health check: /api/health`);
   console.log('📡 Endpoints disponibles:');
   console.log('   GET  /api/health');
   console.log('   GET  /api/preguntas');

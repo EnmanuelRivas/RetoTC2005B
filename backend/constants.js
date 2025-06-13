@@ -1,5 +1,7 @@
+require('dotenv').config();
+
 // Constantes globales para el servidor
-const port = 5000;
+const port = process.env.PORT || 5000;
 const indexURL = '/';
 const apiURL = '/api';
 const contextURL = '/awaq';
