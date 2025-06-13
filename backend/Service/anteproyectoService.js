@@ -1,8 +1,12 @@
 const { pool } = require("../Data/MySQLMngr.js");
 
+/**
+ * Obtiene todos los anteproyectos ordenados por fecha de creación descendente.
+ * @returns {Promise<Array>} Lista de anteproyectos
+ */
 async function getAnteproyectos() {
   const sql = `SELECT * FROM anteproyecto ORDER BY fecha_creacion DESC`;
-
+  // Ejecuta la consulta para obtener todos los anteproyectos
   return new Promise((resolve, reject) => {
     pool.query(sql, (err, results) => {
       if (err) return reject(err);
@@ -11,6 +15,18 @@ async function getAnteproyectos() {
   });
 }
 
+
+/**
+ * Inserta un nuevo anteproyecto en la base de datos.
+ * Primero verifica que el usuario exista.
+ * @param {Object} data - Datos del anteproyecto a insertar
+ * @param {number} data.usuario_id - ID del usuario creador
+ * @param {string} data.titulo - Título del anteproyecto
+ * @param {string} data.descripcion - Descripción del anteproyecto
+ * @param {string} data.estado - Estado del anteproyecto
+ * @param {number} data.convocatoria_id - ID de la convocatoria relacionada (NO se usa en la query actual)
+ * @returns {Promise<number>} ID generado del nuevo anteproyecto
+ */
 async function postAnteproyecto(data) {
   const {
     usuario_id,
@@ -48,6 +64,7 @@ async function postAnteproyecto(data) {
   });
 }
 
+// Exportamos las funciones para que puedan usarse
 module.exports = {
   getAnteproyectos,
   postAnteproyecto

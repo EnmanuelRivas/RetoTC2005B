@@ -66,4 +66,5 @@ async function comparePassword(plainPassword, hashedPassword) {
     }
 }
 
+// Exportar todas las funciones para su uso
 module.exports = {encryptPassword, isValidUser, comparePassword}

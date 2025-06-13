@@ -158,6 +158,7 @@ function getProfileImageUrl(imagePath, req) {
   return `${baseUrl}${imagePath}`;
 }
 
+// Exportar funciones del módulo
 module.exports = {
   saveProfileImage,
   updateProfileImage,

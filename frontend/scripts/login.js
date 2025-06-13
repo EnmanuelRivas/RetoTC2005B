@@ -1,4 +1,13 @@
+/**
+ * Script para manejar la lógica de inicio de sesión y redirección.
+ * 
+ * Este script se ejecuta cuando el DOM ha sido completamente cargado.
+ * Verifica elementos del DOM, previene accesos si ya hay token y
+ * envía los datos al servidor para validar al usuario.
+ */
+
 document.addEventListener("DOMContentLoaded", () => {
+    // Botón para redirigir a home si ya está registrado
     const registerButton = document.getElementById("register-button");
 
     if (registerButton) {
@@ -17,11 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
+    // Si ya existe un token en localStorage, redirige a la página principal
     if (localStorage.getItem("authToken")) {
         window.location.href = "/awaq/home";
         return;
     }
 
+    // Manejador de evento al hacer clic en el botón de login
     loginButton.addEventListener("click", async (event) => {
         event.preventDefault();
 
@@ -51,10 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 const payload = JSON.parse(atob(data.token.split('.')[1]));
                 if (payload.role_id === 3) {
                     alert("Tu cuenta aún está pendiente de aprobación.");
-                    return; // ❌ No redirige ni guarda el token
+                    return; // No redirige ni guarda el token
                 }
 
-                // ✅ Usuario válido
+                // Usuario válido
                 localStorage.setItem("authToken", data.token);
                 window.location.href = "/awaq/home";
             } else {

@@ -26,6 +26,8 @@ async function subirImagen(req, res) {
   }
 }
 
+
+// Exporta los métodos para su uso en las rutas
 module.exports = {
   subirImagen
 };
