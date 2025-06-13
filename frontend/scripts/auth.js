@@ -267,15 +267,13 @@ function displayUserInfo(elementId) {
     }
 }
 
-// Exporta para su uso
-export { 
-    AuthService, 
-    checkAuth,
-    getIsAdminFromToken, 
-    getUserInfoFromToken,
-    toggleAdminElement,
-    hideForNonAdmins,
-    checkAdminAccess,
-    addAdminButtons,
-    displayUserInfo
-};
+// Hace las funciones globalmente disponibles
+window.AuthService = AuthService;
+window.checkAuth = checkAuth;
+window.getIsAdminFromToken = getIsAdminFromToken;
+window.getUserInfoFromToken = getUserInfoFromToken;
+window.toggleAdminElement = toggleAdminElement;
+window.hideForNonAdmins = hideForNonAdmins;
+window.checkAdminAccess = checkAdminAccess;
+window.addAdminButtons = addAdminButtons;
+window.displayUserInfo = displayUserInfo;

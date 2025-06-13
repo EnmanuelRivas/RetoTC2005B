@@ -8,7 +8,7 @@ import { getIsAdminFromToken, getUserInfoFromToken } from './auth.js';
 /**
  * Inicializa la interfaz de administrador en la página actual
  */
-export function initAdminInterface() {
+function initAdminInterface() {
     const isAdmin = getIsAdminFromToken();
     
     if (isAdmin) {
@@ -81,7 +81,7 @@ function hideAdminElements() {
 /**
  * Verifica permisos antes de realizar acciones administrativas
  */
-export function requireAdminAction(callback) {
+function requireAdminAction(callback) {
     const isAdmin = getIsAdminFromToken();
     
     if (isAdmin) {
@@ -95,7 +95,7 @@ export function requireAdminAction(callback) {
 /**
  * Crea menú contextual para administradores
  */
-export function createAdminContextMenu(targetElement) {
+function createAdminContextMenu(targetElement) {
     const isAdmin = getIsAdminFromToken();
     
     if (!isAdmin) return;
@@ -149,7 +149,7 @@ export function createAdminContextMenu(targetElement) {
 /**
  * Agrega loggers para acciones administrativas
  */
-export function logAdminAction(action, details = '') {
+function logAdminAction(action, details = '') {
     const user = getUserInfoFromToken();
     const isAdmin = getIsAdminFromToken();
     
@@ -168,6 +168,12 @@ export function logAdminAction(action, details = '') {
         // fetch('/awaq/api/admin-logs', { method: 'POST', body: JSON.stringify(logData) });
     }
 }
+
+// Hacer funciones globalmente disponibles
+window.initAdminInterface = initAdminInterface;
+window.requireAdminAction = requireAdminAction;
+window.createAdminContextMenu = createAdminContextMenu;
+window.logAdminAction = logAdminAction;
 
 // Exportar función para inicializar automáticamente
 document.addEventListener('DOMContentLoaded', function() {
