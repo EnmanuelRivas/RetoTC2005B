@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = process.env.SECRET || 'asecretpassword'; // asegurar que haga match con el que esta en .env
+const SECRET_KEY = process.env.JWT_SECRET || 'asecretpassword'; // asegurar que haga match con el que esta en .env
 
 /**
  * Middleware que verifica token y autentica al usuario

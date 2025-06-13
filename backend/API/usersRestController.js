@@ -13,7 +13,13 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 require('dotenv').config()
 
-const SECRET = process.env.SECRET;
+const SECRET = process.env.JWT_SECRET;
+
+// Debug: verificar que JWT_SECRET esté configurado
+console.log('🔑 JWT_SECRET configurado:', !!SECRET);
+if (!SECRET) {
+    console.error('❌ CRÍTICO: JWT_SECRET no está configurado en las variables de entorno');
+}
 
 
 /**
