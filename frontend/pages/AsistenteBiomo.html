@@ -7,6 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="../styles/admin.css" rel="stylesheet"> 
+  <script src="../scripts/auth.js"></script>
   <style>
     body {
       background-color: #2a2a2a;
@@ -123,24 +124,7 @@
       color: #00b300;
       margin-right: 8px;
     }
-    .sidebar-logout {
-      background-color: #444;
-      padding: 12px;
-      text-align: center;
-      border-radius: 10px;
-      font-weight: bold;
-      color: #ff6b6b;
-      font-size: 14px;
-      margin-top: 10px;
-      transition: background-color 0.2s, color 0.2s;
-      cursor: pointer;
-    }
-    .sidebar-logout:hover {
-      background-color: #333;
-    }
-    .sidebar-logout i {
-      margin-right: 8px;
-    }
+
     .main-content {
       flex-grow: 1;
       padding: 30px;
@@ -371,24 +355,7 @@
       color: #00b300;
       margin-right: 8px;
     }
-    .sidebar-logout {
-      background-color: #444;
-      padding: 12px;
-      text-align: center;
-      border-radius: 10px;
-      font-weight: bold;
-      color: #ff6b6b;
-      font-size: 14px;
-      margin-top: 10px;
-      transition: background-color 0.2s, color 0.2s;
-      cursor: pointer;
-    }
-    .sidebar-logout:hover {
-      background-color: #333;
-    }
-    .sidebar-logout i {
-      margin-right: 8px;
-    }
+
     .main-content {
       flex: 1;
       padding: 30px;
@@ -431,7 +398,8 @@
         <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
       </button>
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
-    </div>    <div class="user-info">
+    </div>    
+    <div class="user-info">
       <span id="user-display" style="color: white;">
         Usuario <i class="bi bi-person-fill ms-2"></i>
       </span>
@@ -476,19 +444,40 @@
     });
   </script>
   <script src="../scripts/chatbot.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Importar y usar AuthService para mostrar rol
-      import('../scripts/auth.js').then(module => {
-        module.AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
-        
-        const logoutButton = document.querySelector('.logout-button');
+
+<script type="module">
+  document.addEventListener('DOMContentLoaded', function () {
+    import('../scripts/auth.js').then(module => {
+      const AuthService = module.AuthService;
+      const getIsAdminFromToken = module.getIsAdminFromToken;
+
+      // Mostrar nombre de rol en barra superior
+      AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
+
+      // Botón de logout
+      const logoutButton = document.querySelector('.logout-button');
+      if (logoutButton) {
         logoutButton.addEventListener('click', function () {
-          module.AuthService.logout();
+          AuthService.logout();
         });
-      });
-     });
-  </script>
+      }
+
+      // Ocultar enlaces restringidos si no es admin
+      if (!getIsAdminFromToken()) {
+        const restrictedLinks = [
+          "a[href='/awaq/gestionUsuario']",
+          "a[href='/awaq/viewEcoRanger']",
+          "a[href='/awaq/metricas']"
+        ];
+        restrictedLinks.forEach(selector => {
+          const link = document.querySelector(selector);
+          if (link) link.style.display = 'none';
+        });
+      }
+    });
+  });
+</script>
+
 
   <!-- Script del sistema de soporte -->
   <script src="../scripts/support.js"></script>

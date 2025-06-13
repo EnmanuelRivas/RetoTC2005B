@@ -364,11 +364,28 @@ async function recuperarPassword(req, res) {
     try {
         const { correo } = req.body;
         
+        // Validar formato de correo
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(correo)) {
+            return res.status(400).json({
+                status: "error",
+                message: "Por favor ingresa un correo electrónico válido."
+            });
+        }
+        
         // Verificar si el correo existe en la base de datos
         const userResult = await userService.findUserByEmail(correo);
         
         if (!userResult.rows || userResult.rows.length === 0) {
-            // Por seguridad, no revelamos si el correo existe o no
+            // Enviar correo informativo aunque el usuario no exista
+            try {
+                const info = await emailService.enviarEmailNoRegistrado(correo);
+                console.log(`Correo informativo enviado a ${correo}: ${info.messageId}`);
+            } catch (emailError) {
+                console.error('Error al enviar correo informativo:', emailError);
+            }
+            
+            // Por seguridad, siempre devolvemos el mismo mensaje
             return res.status(200).json({
                 status: "success",
                 message: "Si el correo existe en nuestra base de datos, recibirás un enlace para restablecer tu contraseña."
@@ -715,27 +732,49 @@ async function actualizarRol(req, res) {
   const userId = req.params.id;
   const { role_id } = req.body;
 
+  console.log(`actualizarRol: Intentando actualizar usuario ID ${userId} al rol ${role_id}`);
+
   if (!role_id || isNaN(role_id)) {
+    console.log('actualizarRol: Rol inválido');
     return res.status(400).json({ status: "error", message: "Rol inválido." });
   }
 
+  if (!userId || isNaN(userId)) {
+    console.log('actualizarRol: ID de usuario inválido');
+    return res.status(400).json({ status: "error", message: "ID de usuario inválido." });
+  }
+
   try {
+    // Primero verificar si el usuario existe
+    const userExists = await userService.findUserById(userId);
+    console.log('actualizarRol: Usuario encontrado:', userExists.rows ? userExists.rows.length : 0);
+    
+    if (!userExists.rows || userExists.rows.length === 0) {
+      console.log(`actualizarRol: Usuario con ID ${userId} no encontrado`);
+      return res.status(404).json({ status: "error", message: 'Usuario no encontrado.' });
+    }
+
     const result = await userService.actualizarRol(userId, role_id);
+    console.log('actualizarRol: Resultado de la actualización:', result);
 
     if (result.error) {
+      console.log('actualizarRol: Error en el servicio:', result.error);
       return res.status(500).json({ status: "error", message: result.error });
     }
 
     if (result.changes === 0) {
-      return res.status(404).json({ status: "error", message: 'Usuario no encontrado.' });
+      console.log('actualizarRol: No se realizaron cambios');
+      return res.status(404).json({ status: "error", message: 'No se pudo actualizar el usuario.' });
     }
 
+    console.log(`actualizarRol: Rol actualizado exitosamente para usuario ${userId}`);
     return res.status(200).json({ status: "success", message: "Rol actualizado correctamente." });
   } catch (error) {
     console.error('Error al actualizar rol:', error);
     return res.status(500).json({ status: "error", message: "Error interno al actualizar el rol." });
   }
 }
+
 module.exports = {
     execLogin,
     authenticateToken,

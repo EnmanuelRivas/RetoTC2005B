@@ -23,12 +23,266 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      height: 60px;
+    }
+    .top-bar h1 {
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      color: white;
+      margin: 0;
+    }
+    .top-bar h1::before {
+      margin-right: 10px;
+    }
+    .top-bar .user-info {
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
     .main-body {
       display: flex;
       flex: 1;
       overflow: hidden;
+    }    .main-content {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }
+    
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #00b300;
+      margin-bottom: 30px;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0,179,0,0.3);
+      border-bottom: 2px solid #198754;
+      padding-bottom: 10px;
+    }.dashboard-box {
+      background: linear-gradient(145deg, #3d3d3d, #2a2a2a);
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      border: 1px solid #4a4a4a;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .dashboard-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+    }
+    .dashboard-box h5 {
+      margin-bottom: 15px;
+      font-size: 16px;
+      color: #00b300;
+      font-weight: 600;
+    }
+    .dashboard-box h5 i {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+    .chart-container {
+      position: relative;
+      height: 120px;
+      margin: 15px 0;
+    }
+    .dashboard-box canvas {
+      max-width: 120px;
+      max-height: 120px;
+      margin: 0 auto;
+    }
+    .metric-summary {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .metric-number {
+      font-size: 24px;
+      font-weight: bold;
+      color: #00ff00;
+      text-shadow: 0 2px 4px rgba(0,255,0,0.3);
+    }
+    .metric-label {
+      font-size: 12px;
+      color: #cccccc;
+      margin-top: 2px;
+    }
+    
+    /* Estilos para la tabla mejorada */
+    .table-section {
+      margin-top: 30px;
+      background: linear-gradient(145deg, #3d3d3d, #2a2a2a);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      border: 1px solid #4a4a4a;
+    }
+    
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #198754;
+    }
+    
+    .table-header h4 {
+      color: #00b300;
+      margin: 0;
+      font-weight: 600;
+    }
+    
+    .table-header h4 i {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    
+    .table-controls {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn-filter, .btn-export {
+      background: linear-gradient(145deg, #198754, #157347);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    .btn-filter:hover, .btn-export:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+      background: linear-gradient(145deg, #157347, #198754);
+    }
+    
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 10px;
+    }
+    
+    .table-dark-custom {
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      width: 100%;
+      margin: 0;
+    }
+    
+    .table-dark-custom th {
+      background: linear-gradient(145deg, #198754, #157347);
+      color: white;
+      border: none;
+      padding: 15px 12px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .table-dark-custom th i {
+      margin-right: 5px;
+    }
+    
+    .table-dark-custom td {
+      background-color: #3d3d3d;
+      border: 1px solid #4a4a4a;
+      color: white;
+      text-align: center;
+      padding: 12px 10px;
+      font-size: 13px;
+      transition: background-color 0.3s ease;
+    }
+      .table-dark-custom tbody tr:hover td {
+      background-color: #4a4a4a;
+    }
+    
+    /* Estilo especial para la columna ID */
+    .table-dark-custom td:first-child strong {
+      color: #00ff00;
+      text-shadow: 0 1px 2px rgba(0,255,0,0.3);
+      font-size: 14px;
+    }
+    
+    .progress-bar {
+      background: linear-gradient(90deg, #198754, #00ff00);
+      height: 6px;
+      border-radius: 3px;
+      margin: 3px auto;
+      display: inline-block;
+      min-width: 40px;
+    }
+    
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    
+    .status-active {
+      background-color: #198754;
+      color: white;
+    }
+    
+    .status-pending {
+      background-color: #ffc107;
+      color: #000;
+    }
+      .status-inactive {
+      background-color: #dc3545;
+      color: white;
+    }
+    
+    /* Estilos para badges de datos de la tabla */
+    .user-badge {
+      background: linear-gradient(145deg, #6c757d, #495057);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .time-badge {
+      background: linear-gradient(145deg, #0d6efd, #0b5ed7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .station-badge {
+      background: linear-gradient(145deg, #6f42c1, #5a2d91);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .type-badge {
+      background: linear-gradient(145deg, #fd7e14, #e8590c);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
     }
     .sidebar {
       width: 270px;
@@ -37,7 +291,12 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 2px 0 6px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+    .sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
     }
     .sidebar nav a {
       padding: 12px 18px;
@@ -45,9 +304,9 @@
       color: white;
       text-decoration: none;
       font-weight: 500;
-      margin-bottom: 8px;
-      display: block;
-      transition: background-color 0.3s;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      transition: background-color 0.2s, color 0.2s;
     }
     .sidebar nav a.active,
     .sidebar nav a:hover {
@@ -63,239 +322,282 @@
       font-size: 14px;
       font-weight: 500;
     }
-    .main-content {
-      flex: 1;
-      padding: 30px;
-      overflow-y: auto;
-    }
-    .dashboard-box {
-      background-color: #3d3d3d;
-      border-radius: 12px;
-      padding: 15px;
-      text-align: center;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
-    .dashboard-box h5 {
-      margin-bottom: 10px;
-      font-size: 16px;
-    }
-    .dashboard-box canvas {
-      max-width: 120px;
-      margin: 0 auto;
-    }
-    .btn-report {
+    .sidebar .support-button:hover {
       background-color: #198754;
-      color: white;
-      border: none;
-      padding: 4px 12px;
-      font-size: 14px;
-      border-radius: 6px;
-      margin-top: 10px;
-      transition: background-color 0.3s;
+      color: #fff;
+      cursor: pointer;
     }
-    .btn-report:hover {
-      background-color: #157347;
+    .sidebar .support-button i {
+      color: #00b300;
+      margin-right: 8px;
     }
-    .table-dark-custom {
-      border-collapse: separate;
-      border-spacing: 0;
-      border-radius: 12px;
+    .sidebar.collapsed {
+      width: 0;
+      padding: 0;
       overflow: hidden;
+    }    #toggleSidebar {
+      border: none;
+      background: none;
+      outline: none;
+      box-shadow: none;
+      margin-right: 15px;
     }
-    .table-dark-custom th, .table-dark-custom td {
-      background-color: #3d3d3d;
-      border: 2px solid #198754;
-      color: white;
-      text-align: center;
+    .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      color: #ff6b6b !important;
     }
-    .section-title {
-      background-color: #444;
-      display: inline-block;
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-weight: bold;
-      margin-bottom: 30px;
-      font-size: 20px;
+    .logout-button:hover {
+      background-color: #333;
     }
   </style>
 </head>
 <body>
   <div class="top-bar">
-    <h1><i class="bi bi-eye me-2"></i>Mawi</h1>    <div class="user-info">
-      <span id="user-display" style="color: white;">
-        Usuario <i class="bi bi-person-fill ms-2"></i>
-      </span>
+     <div style="display: flex; align-items: center;">
+      <button id="toggleSidebar" class="me-3">
+        <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
+      </button>
+      <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
+    </div>      <div class="user-info">
+      <span id="user-display">Usuario <i class="bi bi-person-fill"></i></span>
+      <div class="logout-button text-danger" style="cursor: pointer;">
+        <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
+      </div>
     </div>
   </div>
   <div class="main-body">
     <div class="sidebar">
-      <div>        <nav>
+      <div>        
+        <nav>
           <a href="home.html">Inicio</a>
           <a class="active" href="#">Informes, Métricas y Análisis</a>
           <a href="/awaq/crearEcoRanger">Crear EcoRanger</a>
           <a href="/awaq/viewEcoRanger">View de Ecoranger</a>
           <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>
-          <a href="/awaq/gestion_soporte">Gestión de Soporte</a>
         </nav>
-      </div>      <div class="support-button" data-support="true">
+      </div>      
+      <div class="support-button" data-support="true">
         <i class="bi bi-telephone"></i> Contacta con el soporte
       </div>
     </div>
     <div class="main-content">
-      <div class="section-title">Informes, Métricas y Análisis</div>
-      <div class="row mb-4">
+      <div class="section-title">Informes, Métricas y Análisis</div>      <div class="row mb-4">
         <div class="col-md-4">
           <div class="dashboard-box">
-            <h5>Número de Biomos</h5>
-            <canvas id="chartBiomos"></canvas>
-            <button class="btn btn-report" onclick="location.href='numBiomos'">View Report</button>
+            <h5><i class="bi bi-clipboard-data"></i>Número de Biomos</h5>
+            <div class="chart-container">
+              <canvas id="chartBiomos"></canvas>
+            </div>
+            <div class="metric-summary">
+              <div class="metric-number" id="totalBiomos">0</div>
+              <div class="metric-label">Total registros</div>
+            </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="dashboard-box">
-            <h5>Número de EcoRanger</h5>
-            <canvas id="chartEco1"></canvas>
-            <button class="btn btn-report" onclick="location.href='viewEcoRanger'">View Report</button>
+            <h5><i class="bi bi-people"></i>Número de EcoRanger</h5>
+            <div class="chart-container">
+              <canvas id="chartEco1"></canvas>
+            </div>
+            <div class="metric-summary">
+              <div class="metric-number" id="totalEcoRangers">0</div>
+              <div class="metric-label">Usuarios activos</div>
+            </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="dashboard-box">
-            <h5>Número de Anteproyectos</h5>
-            <canvas id="chartEco2"></canvas>
-            <button class="btn btn-report" onclick="location.href='numAP'">View Report</button>
+            <h5><i class="bi bi-folder"></i>Número de Anteproyectos</h5>
+            <div class="chart-container">
+              <canvas id="chartEco2"></canvas>
+            </div>
+            <div class="metric-summary">
+              <div class="metric-number" id="totalAnteproyectos">0</div>
+              <div class="metric-label">Proyectos disponibles</div>
+            </div>
           </div>
+        </div>
+      </div>      
+      <!-- Sección de tabla mejorada -->
+      <div class="table-section">
+        <div class="table-header">
+          <h4><i class="bi bi-table"></i>Registros de Biomonitoreo</h4>
+        </div>
+          <div class="table-wrapper">
+          <table class="table table-dark-custom">
+            <thead>
+              <tr>
+                <th><i class="bi bi-hash"></i>ID Biomo</th>
+                <th><i class="bi bi-person"></i>Usuario ID</th>
+                <th><i class="bi bi-calendar"></i>Estado Tiempo</th>
+                <th><i class="bi bi-geo-alt"></i>Estación</th>
+                <th><i class="bi bi-clipboard"></i>Tipo de Registro</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Los datos se cargan dinámicamente desde la base de datos -->
+            </tbody>
+          </table>
         </div>
       </div>
-      <table class="table table-dark-custom">
-        <thead>
-          <tr>
-            <th>Biomo</th>
-            <th>Región</th>
-            <th>Fecha inicio</th>
-            <th>Fase actual</th>
-            <th>Comunidad Vinculada</th>
-            <th>Indicador de Avance</th>
-            <th>Última Actividad</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Biomo-001</td>
-            <td>Caldas/Riosucio</td>
-            <td>01/02/2024</td>
-            <td>Validación</td>
-            <td>Resguardo Cañamomo</td>
-            <td>75%</td>
-            <td>12/05/2025</td>
-          </tr>
-          <tr>
-            <td>Biomo-002</td>
-            <td>Cauca/Silvia</td>
-            <td>15/03/2024</td>
-            <td>Desarrollo</td>
-            <td>Comunidad Misak</td>
-            <td>80%</td>
-            <td>10/05/2025</td>
-          </tr>
-          <tr>
-            <td>Biomo-003</td>
-            <td>Putumayo/Mocoa</td>
-            <td>10/01/2024</td>
-            <td>Implementación</td>
-            <td>Cabildo Inga</td>
-            <td>20%</td>
-            <td>16/05/2025</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
-  </div>  <script type="module">
-    // Importar y mostrar rol del usuario
-    import { AuthService } from '../scripts/auth.js';
-    AuthService.displayUserRoleInElement('user-display', 'bi-person-fill ms-2');
-    
-    // Verificación de autenticación y permisos de administrador
-    function checkAdminAccess() {
-      const token = localStorage.getItem('authToken');
-      
-      if (!token) {
-        alert('Debes iniciar sesión para acceder a esta página.');
-        window.location.href = '/awaq/login';
+  </div>
+<script type="module">
+  import { AuthService } from '../scripts/auth.js';
+  AuthService.displayUserRole('user-display');
+
+  document.getElementById('toggleSidebar').addEventListener('click', () => {
+    document.querySelector('.sidebar').classList.toggle('collapsed');
+  });
+
+  function checkAdminAccess() {
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      alert('Debes iniciar sesión para acceder a esta página.');
+      window.location.href = '/awaq/login';
+      return;
+    }
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const isAdmin = payload.role_id === 1;
+
+      if (!isAdmin) {
+        alert('Acceso denegado. Se requieren permisos de administrador.');
+        window.location.href = '/awaq/home';
         return;
       }
-      
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const isAdmin = payload.role_id === 1;
-        
-        if (!isAdmin) {
-          alert('Acceso denegado. Se requieren permisos de administrador.');
-          window.location.href = '/awaq/home';
-          return;
-        }
-        
-        console.log('Acceso de administrador verificado');
-      } catch (error) {
-        console.error('Error al verificar el token:', error);
-        alert('Token inválido. Por favor, inicia sesión nuevamente.');
-        localStorage.removeItem('authToken');
-        window.location.href = '/awaq/login';
+
+      console.log('Acceso de administrador verificado');
+    } catch (error) {
+      console.error('Error al verificar el token:', error);
+      alert('Token inválido. Por favor, inicia sesión nuevamente.');
+      localStorage.removeItem('authToken');
+      window.location.href = '/awaq/login';
+    }
+  }
+
+  checkAdminAccess();
+
+  const chartConfig = (ctx, label, data) => new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Completado', 'Faltante'],
+      datasets: [{
+        label: label,
+        data: data,
+        backgroundColor: ['#198754', '#444'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      cutout: '70%',
+      plugins: {
+        legend: { display: false },
       }
     }
-    
-    // Ejecutar verificación al cargar la página
-    checkAdminAccess();
-    
-    const chartConfig = (ctx, label, data) => new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Completado', 'Faltante'],
-        datasets: [{
-          label: label,
-          data: data,
-          backgroundColor: ['#198754', '#444'],
-          borderWidth: 0
-        }]
-      },
-      options: {
-        cutout: '70%',
-        plugins: {
-          legend: { display: false },
-        }
-      }
-    });    window.onload = () => {
-      // Verificar autenticación y permisos de administrador
-      const token = localStorage.getItem('authToken');
-      
-      if (!token) {
-        alert('Debes iniciar sesión para acceder a esta página.');
-        window.location.href = '/awaq/login';
+  });
+
+  window.onload = () => {
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      alert('Debes iniciar sesión para acceder a esta página.');
+      window.location.href = '/awaq/login';
+      return;
+    }
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const isAdmin = payload.role_id === 1;
+
+      if (!isAdmin) {
+        alert('Acceso denegado. Se requieren permisos de administrador.');
+        window.location.href = '/awaq/home';
         return;
       }
-      
-      try {
-        // Decodificar el token para verificar el rol
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const isAdmin = payload.role_id === 1;
-        
-        if (!isAdmin) {
-          alert('Acceso denegado. Se requieren permisos de administrador.');
-          window.location.href = '/awaq/home';
-          return;
+
+      // Cargar métricas
+      fetch('/awaq/api/getMetricas', {
+        headers: {
+          'Authorization': `Bearer ${token}`
         }
-        
-        // Si es admin, inicializar los gráficos
-        chartConfig(document.getElementById('chartBiomos'), 'Biomos', [75, 25]);
-        chartConfig(document.getElementById('chartEco1'), 'EcoRanger', [80, 20]);
-        chartConfig(document.getElementById('chartEco2'), 'Anteproyectos', [60, 40]);
-      } catch (error) {
-        console.error('Error al verificar token:', error);        alert('Token inválido. Por favor, inicia sesión nuevamente.');
-        localStorage.removeItem('authToken');
-        window.location.href = '/awaq/login';
-      }
+      })
+        .then(response => {
+          if (!response.ok) throw new Error('Error al obtener los datos');
+          return response.json();
+        })        .then(data => {
+          const totalBiomos = data.registros || 0;
+          const totalEcoranger = data.usuarios || 0;
+          const totalAnteproyectos = data.anteproyectos || 0;
+
+          chartConfig(document.getElementById('chartBiomos'), 'Biomos', [totalBiomos, 100 - totalBiomos]);
+          chartConfig(document.getElementById('chartEco1'), 'EcoRanger', [totalEcoranger, 100 - totalEcoranger]);
+          chartConfig(document.getElementById('chartEco2'), 'Anteproyectos', [totalAnteproyectos, 100 - totalAnteproyectos]);
+          
+          // Actualizar números en las métricas - verificar que los elementos existan
+          const biomasElement = document.getElementById('totalBiomos');
+          const ecoRangersElement = document.getElementById('totalEcoRangers');
+          const anteproyectosElement = document.getElementById('totalAnteproyectos');
+          
+          if (biomasElement) biomasElement.textContent = totalBiomos;
+          if (ecoRangersElement) ecoRangersElement.textContent = totalEcoranger;
+          if (anteproyectosElement) anteproyectosElement.textContent = totalAnteproyectos;
+          
+          console.log('Métricas cargadas correctamente:', { totalBiomos, totalEcoranger, totalAnteproyectos });
+        })
+        .catch(error => {
+          console.error('Error cargando métricas:', error);
+          alert('No se pudieron cargar los datos');
+        });
+
+      // Cargar tabla de biomos
+      fetch('/awaq/api/getTablaBiomos', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(response => {
+          if (!response.ok) throw new Error('Error al obtener la tabla de biomos');
+          return response.json();
+        })        .then(data => {
+          const tbody = document.querySelector('table tbody');
+          tbody.innerHTML = ''; // Limpia los datos actuales
+
+          data.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td><strong>${item.id}</strong></td>
+              <td><span class="user-badge">${item.usuario_id}</span></td>
+              <td><span class="time-badge">${item.estadoTiempo}</span></td>
+              <td><span class="station-badge">${item.estacion}</span></td>
+              <td><span class="type-badge">${item.tipoRegistro}</span></td>
+            `;
+            tbody.appendChild(row);
+          });
+        })
+        .catch(error => {
+          console.error('Error al cargar la tabla de biomos:', error);
+          alert('No se pudieron cargar los registros de biomos');
+        });
+
+    } catch (error) {
+      console.error('Error al verificar token:', error);
+      alert('Token inválido. Por favor, inicia sesión nuevamente.');
+      localStorage.removeItem('authToken');
+      window.location.href = '/awaq/login';
     }
-  </script>
+  }
+</script>
+
 
   <!-- Script del sistema de soporte -->
   <script src="../scripts/support.js"></script>

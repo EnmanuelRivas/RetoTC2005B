@@ -11,6 +11,7 @@ const upload = require("../middleware/upload.middleware");
 const anteproyectosRest = require("../API/anteproyectosRestController");
 const convocatoriasRest = require('../API/convocatoriasRestController');
 const supportRest = require('../API/supportRestController');
+const metricasRest = require('../API/metricasRestController');
 
 const { requireAdmin, requireUser, requireAdminForPage, authenticateToken } = require("../middleware/auth.middleware");
 
@@ -26,6 +27,11 @@ router.get(`${constants.contextURL}/recuperar`, templates.recuperarPage);
 router.get(`${constants.contextURL}/changepwd`, templates.cambiarPasswordPage);
 router.get(`${constants.contextURL}/confirmacion`, templates.confirmacionPage);
 router.get(`${constants.contextURL}/preReg`, templates.preRegPage);
+// Ruta pública para explorador de anteproyectos (sin token)
+router.get(
+  `${constants.contextURL}/api/anteproyectos`,
+  anteproyectosRest.getAnteproyectos
+);
 
 /* Rutas para usuarios autenticados */
 router.get(`${constants.contextURL}/home`, templates.homePage);
@@ -41,6 +47,7 @@ router.get(`${constants.contextURL}/juego`, templates.juegoPage);
 /* Rutas para administradores */
 router.get(`${constants.contextURL}/dashboard`, requireAdminForPage, templates.dashboardPage);
 router.get(`${constants.contextURL}/gestion_usuario`, requireAdminForPage, templates.gestionUsuarioPage);
+router.get(`${constants.contextURL}/gestionUsuario`, requireAdminForPage, templates.gestionUsuarioPage);
 router.get(`${constants.contextURL}/gestion_ap`, requireAdminForPage, templates.gestionAPPage);
 router.get(`${constants.contextURL}/gestion_soporte`, requireAdminForPage, templates.gestionSoportePage);
 router.get(`${constants.contextURL}/metricas`, requireAdminForPage, templates.metricasPage);
@@ -70,7 +77,7 @@ router.post(
 router.post(`${constants.contextURL}${constants.apiURL}/recuperar`, usersRest.recuperarPassword);
 router.post(`${constants.contextURL}${constants.apiURL}/verificar-token`, usersRest.verificarTokenRecuperacion);
 router.post(`${constants.contextURL}${constants.apiURL}/restablecer-password`, usersRest.restablecerPassword);
-
+  
 router.get(
   `${constants.contextURL}${constants.apiURL}/getUsers`,
   authenticateToken,
@@ -258,6 +265,20 @@ router.put(
   supportRest.respondToTicket
 );
 
+/* ------------------------ Metricas API ------------------------ */
+router.get(
+  `${constants.contextURL}${constants.apiURL}/getMetricas`,
+  authenticateToken,
+  requireUser,
+  metricasRest.obtenerMetricas
+);
+
+router.get(
+  `${constants.contextURL}${constants.apiURL}/getTablaBiomos`,
+  authenticateToken,
+  requireUser,
+  metricasRest.obtenerTablaBiomos
+);
 
 // Exporta el router para usarlo en el servidor principal
 module.exports = router;

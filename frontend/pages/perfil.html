@@ -107,24 +107,6 @@
       color: #00b300;
       margin-right: 8px;
     }
-    .sidebar-logout {
-      background-color: #444;
-      padding: 12px;
-      text-align: center;
-      border-radius: 10px;
-      font-weight: bold;
-      color: #ff6b6b;
-      font-size: 14px;
-      margin-top: 10px;
-      transition: background-color 0.2s, color 0.2s;
-      cursor: pointer;
-    }
-    .sidebar-logout:hover {
-      background-color: #333;
-    }
-    .sidebar-logout i {
-      margin-right: 8px;
-    }
     .main-content {
       flex-grow: 1;
       padding: 30px 40px 90px 40px;
@@ -360,70 +342,23 @@
       padding: 0;
       overflow: hidden;
     }
-    .sidebar nav {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
-    .sidebar nav a {
-      padding: 12px 18px;
-      border-radius: 8px;
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 16px;
-      letter-spacing: 0.5px;
-      transition: background-color 0.2s, color 0.2s;
-    }
-    .sidebar nav a.active,
-    .sidebar nav a:hover {
-      background-color: #198754;
-      color: #fff;
-      text-decoration: none;
-    }
-    .sidebar .support-button {
-      background-color: #444;
-      padding: 12px;
-      text-align: center;
-      border-radius: 10px;
-      font-weight: bold;
-      color: white;
-      font-size: 14px;
-      transition: background-color 0.2s, color 0.2s;
-    }
-    .sidebar .support-button:hover {
-      background-color: #198754;
-      color: #fff;
-      cursor: pointer;
-    }
-    .sidebar .support-button i {
-      color: #00b300;
-      margin-right: 8px;
-    }
-    .sidebar-logout {
-      background-color: #444;
-      padding: 12px;
-      text-align: center;
-      border-radius: 10px;
-      font-weight: bold;
-      color: #ff6b6b;
-      font-size: 14px;
-      margin-top: 10px;
-      transition: background-color 0.2s, color 0.2s;
-      cursor: pointer;
-    }
-    .sidebar-logout:hover {
-      background-color: #333;
-    }
-    .sidebar-logout i {
-      margin-right: 8px;
-    }
     #toggleSidebar {
       border: none;
       background: none;
       outline: none;
       box-shadow: none;
       margin-right: 15px;
+    }
+    
+    /* Estilo para el rol de administrador */
+    .admin-role {
+      color: #00ff00 !important;
+      font-weight: bold !important;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+    }
+      .user-role {
+      color: #ffffff;
+      font-weight: normal;
     }
   </style>
 </head>
@@ -434,7 +369,8 @@
         <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
       </button>
       <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
-    </div>    <div class="user-info">
+    </div>    
+    <div class="user-info">
       <span id="user-display">Usuario <i class="bi bi-person-fill"></i></span>
       <div class="logout-button">
         <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
@@ -450,18 +386,19 @@
           <a href="/awaq/AsistenteExplorador">Explorador de Anteproyectos</a>
           <a href="/awaq/convocatorias">Convocatorias</a>
           <a href="/awaq/metricas">Métricas</a>
-          <a href="/awaq/viewEcoRanger">View de EcoRanger</a>
-          <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>      
+          <a href="./viewEcoRanger.html">View de EcoRanger</a>
+          <a href="./gestionUsuario.html">Gestión de Usuarios</a>      
           <a href="/awaq/perfil" class="active">Mi Perfil</a>
         </nav>
-      </div>      <div>
+      </div>      
+      <div>
         <div class="support-button" data-support="true">
           <i class="bi bi-telephone"></i>Contacta con el soporte
         </div>
       </div>
-    </div>    <div class="main-content">
+    </div>    
+    <div class="main-content">
       <h2>Mi Perfil</h2>
-      
       <!-- Sección de información del usuario (solo lectura) -->
       <div class="profile-section">
         <h3>Información de la cuenta</h3>
@@ -574,26 +511,54 @@
       <div class="alert alert-danger" id="error-alert" style="display: none;">
         Error al guardar los cambios
       </div>
-    </div>
-  </div>
+    </div></div>
 
   <!-- Scripts externos -->
-  <script src="../scripts/perfil.js"></script>
-  <script>
-    // Script para toggle del sidebar    document.addEventListener('DOMContentLoaded', function() {
+  <script src="../scripts/perfil.js"></script>  <script>
+    // Script para toggle del sidebar
+    document.addEventListener('DOMContentLoaded', function() {
       // Importar y usar AuthService para mostrar rol
       import('../scripts/auth.js').then(module => {
-        module.AuthService.displayUserRoleInElement('user-display', 'bi-person-fill');
+        // Usar displayUserRole directamente en lugar de displayUserRoleInElement
+        module.AuthService.displayUserRole('user-display', false);
       });
       
       document.getElementById("toggleSidebar").addEventListener("click", function () {
         document.querySelector(".sidebar").classList.toggle("collapsed");
       });
-        // Inicializar la página de perfil
+      
+      // Inicializar la página de perfil
       initPerfil();
     });
   </script>
+<script type="module">
+  import { getIsAdminFromToken, AuthService } from '../scripts/auth.js';
 
+  document.addEventListener('DOMContentLoaded', async function () {
+    const isAdmin = await getIsAdminFromToken();
+
+    // Configurar botón de logout
+    const logoutButton = document.querySelector('.logout-button');
+    if (logoutButton) {
+      logoutButton.addEventListener('click', function () {
+        AuthService.logout();
+      });
+    }
+
+    // Ocultar enlaces restringidos si no es admin
+    if (!isAdmin) {
+      const restrictedLinks = [
+        "a[href='./gestionUsuario.html']",
+        "a[href='./viewEcoRanger.html']",
+        "a[href='/awaq/metricas']"
+      ];
+      restrictedLinks.forEach(selector => {
+        const link = document.querySelector(selector);
+        if (link) link.style.display = 'none';
+      });
+    }
+  });
+</script>
   <!-- Script del sistema de soporte -->
   <script src="../scripts/support.js"></script>
 

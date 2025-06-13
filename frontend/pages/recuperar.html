@@ -1,130 +1,235 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Recuperar contraseña</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Bootstrap CSS -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mawi | Recuperar contraseña</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/login.css" />
+</head>
+<body class="dark-mode">
   <style>
-    body {
-      background-color: #2a2a2a;
-      height: 100vh;
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body, .login-container, .left-panel {
+      height: 100vh !important;
+      min-height: 100vh !important;
+    }
+    .login-container {
+      max-width: none !important;
+      margin: 0 !important;
+      width: 100vw !important;
       display: flex;
-      justify-content: center;
       align-items: center;
-      font-family: 'Segoe UI', sans-serif;
+      justify-content: center;
     }
-
-    .card-custom {
-      background-color: #3d3d3d;
-      color: white;
-      padding: 30px;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
+    .left-panel {
+      width: 100% !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
-    .form-control {
-      background-color: #5c5c5c;
-      color: white;
-      border: none;
+    body.dark-mode {
+      background-color: #2a2a2a;
     }
-
-    .form-control::placeholder {
+    .form-box {
+      max-width: 450px;
+    }
+    .back-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #198754;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      transition: color 0.3s ease;
+    }
+    .back-link:hover {
+      color: #20c464;
+    }
+    .info-text {
+      background-color: rgba(25, 135, 84, 0.1);
+      border: 1px solid rgba(25, 135, 84, 0.3);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
       color: #cccccc;
+      font-size: 0.9rem;
+      line-height: 1.4;
     }
-
-    .btn-green {
-      background-color: #198754;
-      border: none;
-      color: white;
-      width: 100%;
-    }
-
-    .btn-green:hover {
-      background-color: #157347;
-    }
-
-    .help-text {
-      font-size: 0.85rem;
-      color: #bbbbbb;
-      margin-top: 15px;
-    }
-
-    .alert {
-      margin-top: 15px;
-      display: none;
+    .info-text i {
+      color: #198754;
+      margin-right: 8px;
     }
   </style>
-</head>
-<body>
 
-  <div class="card-custom">
-    <h5 class="mb-4">Recuperar contraseña</h5>
-    
-    <div class="mb-3 text-start">
-      <label for="email" class="form-label">Correo electrónico</label>
-      <input type="email" class="form-control" id="email" placeholder="Escribe tu correo electrónico">
-    </div>
+  <div class="login-container w-100" style="max-width:600px; margin:auto;">
+    <!-- Panel único: Recuperar contraseña -->
+    <div class="left-panel" style="width:100%;">
+      <div class="form-box">
+        <a href="/awaq/login" class="back-link">
+          <i class="bi bi-arrow-left"></i>
+          Volver al inicio de sesión
+        </a>
+        
+        <h2>Recuperar contraseña</h2>
+        
+        <div class="info-text">
+          <i class="bi bi-info-circle"></i>
+          Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
+        </div>
+        
+        <form id="recuperarForm">
+          <div class="mb-3">
+            <label class="form-label form-label-compact">Correo electrónico</label>
+            <input type="email" class="form-control" id="email" placeholder="Escribe tu correo electrónico" required>
+            <div class="invalid-feedback"></div>
+          </div>
+          
+          <button type="submit" id="enviarBtn" class="btn btn-green w-100">
+            <i class="bi bi-envelope"></i>
+            Enviar correo de recuperación
+          </button>
+          
+          <div id="alertSuccess" class="alert alert-success mt-3" style="display: none;">
+            <i class="bi bi-check-circle"></i>
+            Se ha enviado un enlace de recuperación a tu correo electrónico.
+          </div>
 
-    <button id="enviarBtn" class="btn btn-green mt-3">Enviar correo</button>
-
-    <div id="alertSuccess" class="alert alert-success" role="alert">
-      Se ha enviado un enlace de recuperación a tu correo electrónico.
-    </div>
-
-    <div id="alertError" class="alert alert-danger" role="alert">
-      Ha ocurrido un error. Por favor, intenta nuevamente.
-    </div>
-
-    <div class="help-text">
-      <a href="/awaq" class="text-white">Volver al inicio de sesión</a><br>
-      ¿Necesitas ayuda? Contacta con nosotros
+          <div id="alertError" class="alert alert-danger mt-3" style="display: none;">
+            <i class="bi bi-exclamation-triangle"></i>
+            <span id="errorMessage">Ha ocurrido un error. Por favor, intenta nuevamente.</span>
+          </div>
+          
+          <div class="text-center mt-4">
+            <p class="text-small">
+              <a href="/awaq/registro" class="text-link">¿No tienes cuenta? Crear cuenta</a>
+            </p>
+            <p class="text-small">
+              ¿Necesitas ayuda? <a href="#" class="text-link" data-support="true">Contacta con soporte</a>
+            </p>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
   <script>
-    document.getElementById('enviarBtn').addEventListener('click', async function() {
-      const email = document.getElementById('email').value;
-      
-      if (!email) {
-        document.getElementById('alertError').textContent = 'Por favor, ingresa tu correo electrónico.';
-        document.getElementById('alertError').style.display = 'block';
-        document.getElementById('alertSuccess').style.display = 'none';
-        return;
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('recuperarForm');
+      const emailInput = document.getElementById('email');
+      const enviarBtn = document.getElementById('enviarBtn');
+      const alertSuccess = document.getElementById('alertSuccess');
+      const alertError = document.getElementById('alertError');
+      const errorMessage = document.getElementById('errorMessage');
+
+      // Función para validar email
+      function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
       }
 
-      try {
-        const response = await fetch('/awaq/api/recuperar', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ correo: email }),
-        });
-
-        const data = await response.json();
-        
-        if (response.ok) {
-          document.getElementById('alertSuccess').style.display = 'block';
-          document.getElementById('alertError').style.display = 'none';
-          document.getElementById('email').value = '';
-        } else {
-          document.getElementById('alertError').textContent = data.message || 'Ha ocurrido un error. Por favor, intenta nuevamente.';
-          document.getElementById('alertError').style.display = 'block';
-          document.getElementById('alertSuccess').style.display = 'none';
+      // Función para mostrar errores
+      function showError(element, message) {
+        clearError(element);
+        element.classList.add('is-invalid');
+        const errorDiv = element.parentNode.querySelector('.invalid-feedback');
+        if (errorDiv) {
+          errorDiv.textContent = message;
         }
-      } catch (error) {
-        document.getElementById('alertError').textContent = 'Error de conexión. Por favor, intenta nuevamente.';
-        document.getElementById('alertError').style.display = 'block';
-        document.getElementById('alertSuccess').style.display = 'none';
       }
+
+      // Función para limpiar errores
+      function clearError(element) {
+        element.classList.remove('is-invalid');
+        const errorDiv = element.parentNode.querySelector('.invalid-feedback');
+        if (errorDiv) {
+          errorDiv.textContent = '';
+        }
+      }
+
+      // Validación en tiempo real
+      emailInput.addEventListener('blur', () => {
+        if (emailInput.value.trim()) {
+          if (isValidEmail(emailInput.value.trim())) {
+            clearError(emailInput);
+            emailInput.classList.add('is-valid');
+          } else {
+            showError(emailInput, 'Por favor ingresa un correo válido');
+          }
+        }
+      });
+
+      emailInput.addEventListener('input', () => {
+        emailInput.classList.remove('is-valid', 'is-invalid');
+        clearError(emailInput);
+        alertSuccess.style.display = 'none';
+        alertError.style.display = 'none';
+      });
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const email = emailInput.value.trim();
+        
+        // Validar email
+        if (!email) {
+          showError(emailInput, 'El correo electrónico es obligatorio');
+          return;
+        }
+        
+        if (!isValidEmail(email)) {
+          showError(emailInput, 'Por favor ingresa un correo válido');
+          return;
+        }
+
+        // Deshabilitar botón durante la solicitud
+        enviarBtn.disabled = true;
+        enviarBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Enviando...';
+        
+        // Ocultar alertas previas
+        alertSuccess.style.display = 'none';
+        alertError.style.display = 'none';
+
+        try {
+          const response = await fetch('/awaq/api/recuperar', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ correo: email }),
+          });
+
+          const data = await response.json();
+          
+          if (response.ok) {
+            alertSuccess.style.display = 'block';
+            emailInput.value = '';
+            clearError(emailInput);
+            emailInput.classList.remove('is-valid');
+          } else {
+            errorMessage.textContent = data.message || 'Ha ocurrido un error. Por favor, intenta nuevamente.';
+            alertError.style.display = 'block';
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          errorMessage.textContent = 'Error de conexión. Por favor, intenta nuevamente.';
+          alertError.style.display = 'block';
+        } finally {
+          // Rehabilitar botón
+          enviarBtn.disabled = false;
+          enviarBtn.innerHTML = '<i class="bi bi-envelope"></i> Enviar correo de recuperación';
+        }
+      });
     });
   </script>
-
+  
+  <!-- Script del sistema de soporte -->
+  <script src="../scripts/support.js"></script>
 </body>
 </html>

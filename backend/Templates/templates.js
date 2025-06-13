@@ -99,7 +99,7 @@ async function asistenteExploradorPage(req, res) {
  * @param {Object} res Server response
  */
 async function gestionUsuarioPage(req, res) {
-    res.sendFile(path.join(frontendPath, "pages", "gestion_usuario.html"));
+    res.sendFile(path.join(frontendPath, "pages", "gestionUsuario.html"));
 }
 
 /**

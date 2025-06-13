@@ -8,34 +8,40 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     body {
-      margin: 0;
-      background-color: #1f1f1f;
+      background-color: #2f2f2f;
       color: white;
       font-family: 'Segoe UI', sans-serif;
-    }
-    .sidebar {
-      width: 260px;
-      background-color: #101010;
+      margin: 0;
       height: 100vh;
-      padding: 1rem;
-      position: fixed;
+      display: flex;
+      flex-direction: column;
     }
-    .sidebar h4 {
-      margin-bottom: 2rem;
+    .top-bar {
+      background-color: #1f1f1f;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
     }
-    .sidebar a {
-      display: block;
-      padding: 10px;
+    .top-bar h1 {
+      font-size: 24px;
+      display: flex;
+      align-items: center;
       color: white;
-      text-decoration: none;
-      margin-bottom: 0.5rem;
+      margin: 0;
     }
-    .sidebar a:hover {
-      background-color: #2c2c2c;
-      border-radius: 6px;
+    .top-bar h1::before {
+      margin-right: 10px;
+    }
+    .top-bar .user-info {
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
     .main-content {
-      margin-left: 260px;
+      margin-left: 0px;
       padding: 2rem;
       background-color: #2d2d2d;
       min-height: 100vh;
@@ -108,56 +114,266 @@
       margin-left: 10px;
       cursor: pointer;
     }
-      .sidebar nav a.active,
+    .main-body {
+      display: flex;
+      flex: 1;
+      
+    }
+    .main-content {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }    
+    .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      color: #ff6b6b;
+    }
+    .logout-button:hover {
+      background-color: #333;
+    }
+    .sidebar {
+      width: 270px;
+      background-color: #1f1f1f;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+    .sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .sidebar nav a {
+      padding: 12px 18px;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .sidebar nav a.active,
     .sidebar nav a:hover {
       background-color: #198754;
       color: #fff;
       text-decoration: none;
+    }    .sidebar .support-button {
+      background: linear-gradient(135deg, #198754, #20c464);
+      padding: 12px;
+      text-align: center;
       border-radius: 10px;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .sidebar .support-button:hover {
+      background: linear-gradient(135deg, #20c464, #198754);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+    }
+    .sidebar .support-button i {
+      color: #00ff00;
+      margin-right: 8px;
+    }
+    .sidebar.collapsed {
+      width: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #toggleSidebar {
+      border: none;
+      background: none;
+      outline: none;
+      box-shadow: none;
+      margin-right: 15px;
+    }
+    
+    .btn-report {
+      background-color: #198754;
+      color: white;
+      border: none;
+      padding: 4px 12px;
+      font-size: 14px;
+      border-radius: 6px;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+    .btn-report:hover {
+      background-color: #157347;
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
-    <nav>
-    <h4><i class="bi bi-eye"></i> Mawi</h4>
-    <a href="/awaq/metricas">Informes, Métricas y Análisis</a>
-    <a href="/awaq/crearEcoRanger" class="active">Crear EcoRanger</a>
-    <a href="/awaq/viewEcoRanger">View de Ecoranger</a>    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <button class="btn btn-dark w-100 mt-3" data-support="true"><i class="bi bi-telephone"></i> Contacta con el soporte</button>
-    </nav>
+  <div class="top-bar">
+    <div style="display: flex; align-items: center;">
+      <button id="toggleSidebar" class="me-3">
+        <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
+      </button>
+      <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
+    </div>
+    <div class="user-info d-flex gap-3">
+      <span id="user-display">Usuario <i class="bi bi-person-fill"></i></span>
+      <div class="logout-button" style="cursor: pointer;">Cerrar sesión <i class="bi bi-box-arrow-right"></i></div>
+    </div>
   </div>
 
-  <div class="main-content">
-    <div class="eco-card">
-      <div class="eco-info">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="Placeholder" />
-        <div class="eco-details">
-          <span><strong>Labor:</strong> <span class="btn btn-secondary btn-sm">Ecoranger</span></span>
-          <span><strong>Nombre:</strong> <input type="text" placeholder="Ingresa nombre"></span>
-          <span><strong>Apellidos:</strong> <input type="text" placeholder="Ingresa apellidos"></span>
-          <span><strong>País:</strong> <input type="text" placeholder="Ingresa país"></span>
-          <span><strong>Región:</strong> <input type="text" placeholder="Ingresa región"></span>
-          <span><strong>Ciudad:</strong> <input type="text" placeholder="Ingresa ciudad"></span>
-          <span><strong>Correo:</strong> <input type="text" placeholder="Ingresa correo"></span>
-          <span><strong>Número de contacto:</strong> <input type="text" placeholder="Ingresa número de contacto"></span>
-        </div>
-      </div>
-      <div class="eco-actions">
-        <button class="btn btn-secondary" onclick="location.href='metricas.html'">Informes, Métricas y Análisis</button>
-        <button class="btn btn-success">Finalizar</button>
+  <div class="main-body">
+    <div class="sidebar">
+      <nav>
+        <a href="home.html">Inicio</a>
+        <a href="/awaq/metricas">Informes, Métricas y Análisis</a>
+        <a class="active" href="#">Crear EcoRanger</a>
+        <a href="/awaq/viewEcoRanger">View de Ecoranger</a>
+        <a href="/awaq/gestionUsuario">Gestión de Usuarios</a>
+      </nav>
+      <div class="support-button text-center mt-4">
+        <i class="bi bi-telephone"></i> Contacta con el soporte
       </div>
     </div>
 
-    <div class="chat-box mt-4">
-      <input type="text" placeholder="Escribe..." />
-      <i class="bi bi-arrow-up-circle-fill"></i>
-      <i class="bi bi-mic-fill"></i>
+    <div class="main-content">
+      <div class="form-box" style="margin-bottom: 0; padding-bottom: 0;">
+        <h2>Registrar EcoRanger</h2>
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Apellidos</label>
+          <input type="text" class="form-control" id="apellidos" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Correo</label>
+          <input type="email" class="form-control" id="correo" required>
+        </div>
+         <div class="mb-3">
+        <label class="form-label">Organización</label>
+        <input type="text" class="form-control" id="organizacion" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">País</label>
+          <input type="text" class="form-control" id="pais" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Región / Provincia</label>
+          <input type="text" class="form-control" id="provincia" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Ciudad</label>
+          <input type="text" class="form-control" id="ciudad" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Número de contacto</label>
+          <input type="text" class="form-control" id="numeroTelefono" required>
+        </div>
+         <div class="mb-3">
+          <label class="form-label">Descripción (opcional)</label>
+          <input type="text" class="form-control" id="descripcion" placeholder="Descripción del EcoRanger">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Contraseña (opcional)</label>
+          <input type="password" class="form-control" id="contrasena" placeholder="123 por defecto si se deja vacío">
+        </div>
+        <div class="mb-3">  
+        <div class="text-end">
+          <button class="btn btn-success" id="btnFinalizar">Finalizar</button>
+        </div>
+      </div>
+    </div>
   </div>
-  </div>
+  <script type="module">
+    import { AuthService } from '../scripts/auth.js';
+    AuthService.displayUserRole('user-display', false);
 
-  <!-- Script del sistema de soporte -->
-  <script src="../scripts/support.js"></script>
+    document.getElementById('toggleSidebar').addEventListener('click', () => {
+      document.querySelector('.sidebar').classList.toggle('collapsed');
+    });
 
+    // Función para registrar usuario con el endpoint registerUser
+    window.registerUserEndpoint = async function(data) {
+      try {
+        const res = await fetch('/awaq/api/registerUser', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          alert('Usuario registrado correctamente');
+          window.location.href = '/awaq/viewEcoRanger';
+        } else {
+          alert(result.message || 'Error al registrar usuario');
+        }
+      } catch (err) {
+        alert('Error de red: ' + err.message);
+      }
+    };
+  </script>
+  <script src="../scripts/register.js"></script>
+<script src="../scripts/auth.js"></script>
 </body>
+<script>
+  document.getElementById('btnFinalizar').addEventListener('click', async () => {
+    const formData = new FormData();
+
+    formData.append('nombre', document.getElementById('nombre').value);
+    formData.append('apellidos', document.getElementById('apellidos').value);
+    formData.append('correo', document.getElementById('correo').value);
+    formData.append('organizacion', document.getElementById('organizacion').value);
+    formData.append('pais', document.getElementById('pais').value);
+    formData.append('provincia', document.getElementById('provincia').value);
+    formData.append('ciudad', document.getElementById('ciudad').value);
+    formData.append('numeroTelefono', document.getElementById('numeroTelefono').value);
+    formData.append('contrasena', document.getElementById('contrasena').value || '123');
+    formData.append('descripcion', document.getElementById('descripcion').value || '');
+    formData.append('role_id', 2);
+
+    // Opcional: si agregas soporte para imagen de perfil más adelante
+    const profileInput = document.getElementById('profileImgInput');
+    if (profileInput && profileInput.files.length > 0) {
+      formData.append('profileImg', profileInput.files[0]);
+    }
+
+    try {
+      const response = await fetch('/awaq/api/register', {
+        method: 'POST',
+        body: formData
+      });
+
+      const text = await response.text();
+      console.log('Respuesta cruda:', text);
+
+      try {
+        const result = JSON.parse(text);
+
+        if (response.ok) {
+          alert('Usuario registrado correctamente');
+          window.location.href = '/awaq/viewEcoRanger';
+        } else {
+          alert(result.message || 'Error al registrar usuario');
+        }
+      } catch (parseError) {
+        console.error('Respuesta inesperada:', text);
+        alert('Error inesperado del servidor.');
+      }
+    } catch (err) {
+      alert('Error de red: ' + err.message);
+    }
+  });
+</script>
+
 </html>
