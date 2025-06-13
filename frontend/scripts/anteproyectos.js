@@ -14,13 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    // Construye el objeto con los datos capturados del formulario
     const data = {
       titulo: document.getElementById('title-anteproyecto').value,
       descripcion: document.getElementById('description-anteproyecto').value,
       fecha_creacion: new Date().toISOString().split('T')[0], // hoy
       fecha_limite: document.getElementById('duedate-anteproyecto').value,
-      estado: 'pendiente', // valor por defecto, puedes cambiarlo
-      // datos opcionales del formulario (si decides guardar estos en DB también)
+      estado: 'pendiente',
       sitioweb: document.getElementById('website-anteproyecto').value,
       region: document.getElementById('region-anteproyecto').value,
       organizacion: document.getElementById('organization-anteproyecto').value,
@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
+      // Realiza petición POST para enviar los datos del anteproyecto
       const res = await fetch('/awaq/api/postAnteproyecto', {
         method: 'POST',
         headers: {

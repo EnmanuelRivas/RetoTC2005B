@@ -1,3 +1,6 @@
+/**
+ * Cierra el formulario emergente, limpia sus campos y oculta el contenedor JSON.
+ */
 function closeForm() {
     document.getElementById('form-overlay').classList.add('d-none');
     document.getElementById('dynamic-form').innerHTML = "";
@@ -10,6 +13,11 @@ function closeJsonPreview() {
     document.getElementById('json-preview-container').style.display = 'none';
 }
   
+/**
+ * Carga dinámicamente el formulario HTML correspondiente al tipo seleccionado.
+ * 
+ * @param {string} type - Tipo de registro a cargar (nombre del archivo HTML).
+ */
 function loadRecordTypeForm(type) {
     const container = document.getElementById('dynamic-form');
     if (!type) return container.innerHTML = "";
@@ -26,6 +34,9 @@ function loadRecordTypeForm(type) {
       });
   }
   
+/**
+ * Genera una vista previa en formato JSON del contenido del formulario.
+ */
   function generateJsonPreview() {
     const weather = document.getElementById('weather')?.value;
     const season = document.getElementById('season')?.value;
@@ -65,6 +76,9 @@ function loadRecordTypeForm(type) {
     document.getElementById('json-preview-container').style.display = 'block';
   }
 
+/**
+ * Envia el contenido del formulario como JSON al backend con POST.
+ */
   function sendForms() {
   const weather = document.getElementById('weather')?.value;
   const season = document.getElementById('season')?.value;
@@ -121,7 +135,12 @@ function loadRecordTypeForm(type) {
   });
 }
 
-
+/**
+ * Muestra una alerta en la interfaz.
+ * 
+ * @param {string} message - Mensaje a mostrar.
+ * @param {string} [type='info'] - Tipo de alerta ('success', 'danger', 'warning', etc).
+ */
   function showAlert(message, type = 'info') {
     const container = document.getElementById('alert-container');
     const alert = document.createElement('div');

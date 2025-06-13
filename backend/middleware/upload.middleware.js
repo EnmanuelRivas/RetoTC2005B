@@ -1,4 +1,7 @@
-// middlewares/upload.middleware.js
+/**
+ * Middleware para gestión de subida de archivos usando multer.
+ * Configura almacenamiento, filtro y límites para aceptar solo imágenes.
+ */
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
@@ -10,6 +13,10 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
+/**
+ * Configura el almacenamiento y guarda archivos en el directorio uploadDir.
+ * Los archivos se renombran con un timestamp para evitar colisiones.
+ */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // Asegurarse de que el directorio exista al momento de guardar el archivo
@@ -20,13 +27,19 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
+    // Genera un nombre único basado en el timestamp y el nombre original
     const uniqueName = `${Date.now()}-${file.originalname}`;
     console.log("Nombre de archivo generado:", uniqueName);
     cb(null, uniqueName);
   }
 });
 
-// Agregar filtro para aceptar solo imágenes
+/**
+ * Filtro para aceptar solo imágenes.
+ * @param {Object} req - Objeto de petición HTTP
+ * @param {Object} file - Objeto del archivo subido
+ * @param {function} cb - Callback para continuar o rechazar archivo
+ */
 const fileFilter = (req, file, cb) => {
   const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
   
@@ -39,6 +52,9 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+/**
+ * Configuración final del middleware multer.
+ */
 const upload = multer({ 
   storage,
   fileFilter,
@@ -47,4 +63,5 @@ const upload = multer({
   }
 });
 
+// Exporta la configuración para usarla como middleware en rutas
 module.exports = upload;

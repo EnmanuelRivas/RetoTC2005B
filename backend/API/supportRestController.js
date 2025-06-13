@@ -244,6 +244,7 @@ class SupportRestController {
         }
     }
 
+    // Para mandar confirmación del correo.
     async sendConfirmationEmail(ticket) {
         const mailOptions = {
             from: process.env.EMAIL_USER || 'awaq.soporte@gmail.com',

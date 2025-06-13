@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 
+// Configuración del transporte de correo usando Ethereal (para pruebas)
 const transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
@@ -61,7 +62,7 @@ async function enviarEmailBienvenida(email, nombre, loginUrl) {
  * @returns {Promise} - Resultado del envío
  */
 async function enviarEmailRecuperacion(email, nombre, token) {
-    const resetUrl = `http://localhost:4000/awaq/changepwd?token=${token}`;
+    const resetUrl = `http://localhost:5000/awaq/changepwd?token=${token}`;
     console.log(resetUrl);
     try {
         const info = await transporter.sendMail({
@@ -143,6 +144,7 @@ async function enviarEmailNoRegistrado(email) {
     }
 }
 
+// Exportar funciones para usarlas
 module.exports = {
     enviarEmailBienvenida,
     enviarEmailRecuperacion,
