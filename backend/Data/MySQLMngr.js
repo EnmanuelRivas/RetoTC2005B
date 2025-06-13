@@ -1,16 +1,34 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
+// Debug: mostrar configuración de conexión (sin password)
+console.log('🔗 Configuración de base de datos:');
+console.log(`   Host: ${process.env.DB_HOST}`);
+console.log(`   User: ${process.env.DB_USER}`);
+console.log(`   Database: ${process.env.DB_NAME}`);
+console.log(`   Port: ${process.env.DB_PORT}`);
+
 // Crea un pool de conexiones a la base de datos utilizando las variables de entorno
 const pool = mysql.createPool({
-  host: process.env.HOST,
+  host: process.env.DB_HOST,
   user: process.env.DB_USER,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
   decimalNumbers: true,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
+});
+
+// Test de conexión
+pool.getConnection((err, connection) => {
+  if (err) {
+    console.error('❌ Error conectando a la base de datos:', err.message);
+  } else {
+    console.log('✅ Conexión exitosa a la base de datos MySQL');
+    connection.release();
+  }
 });
 
 /**

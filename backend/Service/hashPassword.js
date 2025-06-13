@@ -34,21 +34,41 @@ async function encryptPassword(pass){
  * @returns the user.
  */
 async function isValidUser(correo, contraseña) {
+    console.log('🔐 isValidUser - Iniciando validación');
+    console.log('📧 Email recibido:', correo);
+    console.log('🔑 Contraseña recibida:', contraseña ? '***' : 'NO RECIBIDA');
+
     let query = 'SELECT * FROM usuarios WHERE correo = ?';
     let params = [correo];
-    let qResult = await dataSource.getDataWithParams(query, params);
-    let user = qResult.rows[0];
-    if (user) {
-        // Usa el nombre real de la columna:
+    
+    try {
+        let qResult = await dataSource.getDataWithParams(query, params);
+        console.log('📊 Resultado de query:', qResult.rows.length, 'usuarios encontrados');
         
-        if (!user.contraseñaHash) {
-            console.error("El campo de contraseña hasheada no existe en el usuario:", user);
-            return null;
+        let user = qResult.rows[0];
+        if (user) {
+            console.log('👤 Usuario encontrado ID:', user.id);
+            console.log('📧 Email en BD:', user.correo);
+            console.log('🔑 ¿Tiene contraseñaHash?:', !!user.contraseñaHash);
+            
+            if (!user.contraseñaHash) {
+                console.error("❌ El campo de contraseña hasheada no existe en el usuario:", user);
+                return null;
+            }
+            
+            let isEqual = await bcrypt.compare(contraseña, user.contraseñaHash);
+            console.log('🔐 Comparación de contraseñas:', isEqual ? '✅ MATCH' : '❌ NO MATCH');
+            
+            if (isEqual)
+                return user;
+        } else {
+            console.log('❌ No se encontró usuario con ese email');
         }
-        let isEqual = await bcrypt.compare(contraseña, user.contraseñaHash);
-        if (isEqual)
-            return user;
-    }    return null;
+    } catch (error) {
+        console.error('❌ Error en isValidUser:', error);
+    }
+    
+    return null;
 }
 
 /**
