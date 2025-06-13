@@ -61,7 +61,7 @@ async function enviarEmailBienvenida(email, nombre, loginUrl) {
  * @returns {Promise} - Resultado del envío
  */
 async function enviarEmailRecuperacion(email, nombre, token) {
-    const resetUrl = `http://localhost:4000/awaq/changepwd?token=${token}`;
+    const resetUrl = `http://localhost:5000/awaq/changepwd?token=${token}`;
     console.log(resetUrl);
     try {
         const info = await transporter.sendMail({
