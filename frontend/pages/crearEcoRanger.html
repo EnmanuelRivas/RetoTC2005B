@@ -293,7 +293,6 @@
       </div>
     </div>
   </div>
-
   <script type="module">
     import { AuthService } from '../scripts/auth.js';
     AuthService.displayUserRole('user-display', false);
@@ -302,6 +301,8 @@
       document.querySelector('.sidebar').classList.toggle('collapsed');
     });
 
+    // Función para registrar usuario con el endpoint registerUser
+    window.registerUserEndpoint = async function(data) {
       try {
         const res = await fetch('/awaq/api/registerUser', {
           method: 'POST',
@@ -320,7 +321,7 @@
       } catch (err) {
         alert('Error de red: ' + err.message);
       }
-    });
+    };
   </script>
   <script src="../scripts/register.js"></script>
 <script src="../scripts/auth.js"></script>
