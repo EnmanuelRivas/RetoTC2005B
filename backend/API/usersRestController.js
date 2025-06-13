@@ -735,6 +735,7 @@ async function actualizarRol(req, res) {
   if (!role_id || isNaN(role_id)) {
     return res.status(400).json({ status: "error", message: "Rol inválido." });
   }
+  
 
   try {
     const result = await userService.actualizarRol(userId, role_id);
@@ -753,6 +754,7 @@ async function actualizarRol(req, res) {
     return res.status(500).json({ status: "error", message: "Error interno al actualizar el rol." });
   }
 }
+
 module.exports = {
     execLogin,
     authenticateToken,
