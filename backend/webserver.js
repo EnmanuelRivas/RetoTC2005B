@@ -109,11 +109,33 @@ function createServer() {
 function initWebProject() {
     const server = createServer();
 
-    server.listen(port, () => {
-        console.log(`🚀 Server running at http://localhost:${port}${indexURL}`);
-        console.log(`📡 API available at http://localhost:${port}${apiURL}`);
-        console.log(`🌐 Context available at http://localhost:${port}${contextURL}`);
-    });
+    // Solo escuchar en puerto si no estamos en Vercel/producción
+    if (!process.env.VERCEL && process.env.NODE_ENV !== 'production') {
+        server.listen(port, () => {
+            console.log(`🚀 Server running at http://localhost:${port}${indexURL}`);
+            console.log(`📡 API available at http://localhost:${port}${apiURL}`);
+            console.log(`🌐 Context available at http://localhost:${port}${contextURL}`);
+        });
+    }
+    
+    return server;
+}
+
+/**
+ * Crea solo la app de Express (para Vercel)
+ */
+function createExpressApp() {
+    const app = express();
+    configureServer(app);
+    configStaticFilesAndViews(app);
+    configureSecurity(app);
+    
+    return app;
 }
 
 module.exports = initWebProject;
+
+// Exportar también la app para Vercel
+if (process.env.VERCEL) {
+    module.exports = createExpressApp();
+}

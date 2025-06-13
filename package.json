@@ -1,5 +1,28 @@
 {
+  "name": "awaq-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node backend/main.js",
+    "dev": "cd backend && npm run dev",
+    "build": "echo 'No build step needed'",
+    "vercel-build": "echo 'No build step needed'"
+  },
   "dependencies": {
-    "multer": "^1.4.5-lts.2"
+    "axios": "^1.9.0",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.2",
+    "mysql2": "^3.14.1",
+    "nodemailer": "^7.0.3",
+    "sharp": "^0.33.2"
+  },
+  "engines": {
+    "node": ">=16.x"
   }
 }
