@@ -71,7 +71,7 @@ router.post(
 router.post(`${constants.contextURL}${constants.apiURL}/recuperar`, usersRest.recuperarPassword);
 router.post(`${constants.contextURL}${constants.apiURL}/verificar-token`, usersRest.verificarTokenRecuperacion);
 router.post(`${constants.contextURL}${constants.apiURL}/restablecer-password`, usersRest.restablecerPassword);
-
+  
 router.get(
   `${constants.contextURL}${constants.apiURL}/getUsers`,
   authenticateToken,
