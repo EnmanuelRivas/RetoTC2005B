@@ -24,12 +24,28 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!correoUsuario || !contraseñaUsuario || !loginButton) {
         console.warn("⛔ Elementos del formulario de login no encontrados");
         return;
-    }
-
-    // Si ya existe un token en localStorage, redirige a la página principal
-    if (localStorage.getItem("authToken")) {
-        window.location.href = "/awaq/home";
-        return;
+    }    // Verificar si ya existe un token válido en localStorage
+    const existingToken = localStorage.getItem("authToken");
+    if (existingToken) {
+        try {
+            // Verificar si el token es válido y no ha expirado
+            const payload = JSON.parse(atob(existingToken.split('.')[1]));
+            const currentTime = Math.floor(Date.now() / 1000);
+            
+            if (payload.exp && payload.exp > currentTime) {
+                // Token válido, redirigir a home
+                window.location.href = "/awaq/home";
+                return;
+            } else {
+                // Token expirado, limpiar storage
+                localStorage.removeItem("authToken");
+                localStorage.removeItem("userData");
+            }
+        } catch (error) {
+            // Token inválido, limpiar storage
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("userData");
+        }
     }
 
     // Manejador de evento al hacer clic en el botón de login

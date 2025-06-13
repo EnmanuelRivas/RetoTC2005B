@@ -12,14 +12,49 @@ const AuthService = {
 
     removeToken() {
         localStorage.removeItem("authToken");
+    },    isAuthenticated() {
+        const token = this.getToken();
+        if (!token) return false;
+        
+        try {
+            // Verificar si el token está expirado
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const currentTime = Math.floor(Date.now() / 1000);
+            
+            if (payload.exp && payload.exp < currentTime) {
+                // Token expirado, limpiar storage
+                this.removeToken();
+                return false;
+            }
+            
+            return true;
+        } catch (error) {
+            // Token inválido, limpiar storage
+            this.removeToken();
+            return false;
+        }
+    },clearSession() {
+        // Limpiar todos los datos relacionados con la sesión
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userData");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userInfo");
+        // Limpiar cualquier cache del navegador relacionado
+        if ('caches' in window) {
+            caches.keys().then(names => {
+                names.forEach(name => {
+                    if (name.includes('awaq')) {
+                        caches.delete(name);
+                    }
+                });
+            });
+        }
     },
 
-    isAuthenticated() {
-        return !!this.getToken();
-    },    logout() {
-        this.removeToken();
-        // Redirigir al login
-        window.location.href = "/awaq/login.html";
+    logout() {
+        this.clearSession();
+        // Redirigir al login (ruta correcta según backend)
+        window.location.href = "/awaq";
     },
 
     getAuthHeaders() {
@@ -39,10 +74,9 @@ const AuthService = {
         const response = await fetch(url, {
             ...options,
             headers
-        });
-
-        if (response.status === 401 || response.status === 403) {
-            // Token expirado o inválido: cerrar sesión
+        });        if (response.status === 401 || response.status === 403) {
+            // Token expirado o inválido: cerrar sesión automáticamente
+            console.warn("Token expirado o inválido, cerrando sesión...");
             this.logout();
             return null;
         }
@@ -118,16 +152,21 @@ const AuthService = {
  */
 function checkAuth() {
     if (!AuthService.isAuthenticated()) {
-        window.location.href = "/awaq/login.html";
+        // Redirigir a la ruta correcta del login
+        window.location.href = "/awaq";
         return false;
     }
     return true;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Debug del token en desarrollo
+    debugTokenStatus();
+    
     const publicPages = [
-        "/awaq", "/awaq/", "/awaq/login.html", "/awaq/registro.html",
-        "/awaq/recuperar.html", "/awaq/changepwd.html", "/awaq/confirmacion.html"
+        "/awaq", "/awaq/", "/awaq/registro", "/awaq/registro.html",
+        "/awaq/recuperar", "/awaq/recuperar.html", "/awaq/changepwd", "/awaq/changepwd.html",
+        "/awaq/confirmacion", "/awaq/confirmacion.html", "/awaq/preReg", "/awaq/preReg.html"
     ];
 
     const currentPath = window.location.pathname;
@@ -264,6 +303,30 @@ function displayUserInfo(elementId) {
         const roleIcon = user.isAdmin ? 'bi-shield-check' : 'bi-person-fill';
         
         element.innerHTML = `<span style="color: ${roleColor}; font-weight: ${user.isAdmin ? 'bold' : 'normal'};">${roleText}</span> <i class="bi ${roleIcon}" style="color: ${roleColor};"></i>`;
+    }
+}
+
+// Función de debug para verificar el estado del token (solo para desarrollo)
+function debugTokenStatus() {
+    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+        const token = localStorage.getItem("authToken");
+        if (token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const currentTime = Math.floor(Date.now() / 1000);
+                console.log("🔍 Token Debug Info:");
+                console.log("  Token exists:", !!token);
+                console.log("  Expires at:", new Date(payload.exp * 1000));
+                console.log("  Current time:", new Date());
+                console.log("  Is expired:", payload.exp < currentTime);
+                console.log("  User ID:", payload.id);
+                console.log("  Role:", payload.role_id);
+            } catch (e) {
+                console.log("🔍 Token Debug: Invalid token format");
+            }
+        } else {
+            console.log("🔍 Token Debug: No token found");
+        }
     }
 }
 
