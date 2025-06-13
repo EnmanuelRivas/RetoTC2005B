@@ -4,6 +4,9 @@ const SECRET_KEY = process.env.SECRET || 'asecretpassword'; // asegurar que haga
 /**
  * Middleware que verifica token y autentica al usuario
  * Compatible con headers Authorization y cookies
+  * @param {Request} req - Objeto de solicitud HTTP
+ * @param {Response} res - Objeto de respuesta HTTP
+ * @param {Function} next - Función para continuar con el siguiente middleware
  */
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'] || req.cookies?.token;
@@ -81,6 +84,7 @@ function requireAdminForPage(req, res, next) {
     next();
 }
 
+// Exporta los middlewares para uso en rutas protegidas
 module.exports = {
     authenticateToken,
     requireUser,

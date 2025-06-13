@@ -1,12 +1,9 @@
 /**
  * Users Rest Api File
  * 
- * Defines the rest api for the users table.
- * It is a good practice to separate the api from the templates.
- * This way, the api can be used by other applications or services.
- * 
- * In the same way, is a good practice to separate the db tables on specific files.
- * On this way, tables can be managed independently and the code is more readable.
+ * Define la API REST para la tabla de usuarios.
+ * Se recomienda separar la lógica de API de las plantillas HTML.
+ * Esto permite que la API sea reutilizable por otras aplicaciones o servicios.
  */
 const userService = require('../Service/usersService');
 const hashService = require('../Service/hashPassword');
@@ -18,17 +15,20 @@ require('dotenv').config()
 
 const SECRET = process.env.SECRET;
 
+
 /**
- * HTTP Method that handles authentication
+ * Método HTTP que maneja el login de usuario.
+ * Valida correo y contraseña, y si son correctos, retorna un token JWT.
  */
 async function execLogin(req, res) {
     const { correo, contraseña } = req.body;
     const user = await hashService.isValidUser(correo,contraseña)
-  
+    
+    // Verifica si las credenciales son válidas
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-    //CREATES the token
+    // Crea el token JWT
   const token = jwt.sign(
   { id: user.id, username: user.correo, role_id: user.role_id },
   SECRET,
@@ -36,29 +36,30 @@ async function execLogin(req, res) {
 );
 
 
-    res.json({ token }); // client stores this token
+    // Devuelve el token al cliente
+    res.json({ token });
 }
 
 /**
- * Middleware that will execute before each protected URL
- * @param {*} req the original request
- * @param {*} res the users response
- * @param {*} next the method that will be executed next to this
- * @returns in case of unauthorized access
+ * Middleware que se ejecuta antes de cada ruta protegida.
+ * Verifica la validez del token JWT.
  */
 async function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']; // Bearer <token>
     const token = authHeader && authHeader.split(' ')[1];
   
-    if (!token) return res.sendStatus(401); // Unauthorized
+    if (!token) return res.sendStatus(401); // No autorizado
   
     jwt.verify(token, SECRET, (err, user) => {
-      if (err) return res.sendStatus(403); // Forbidden
+      if (err) return res.sendStatus(403); // Token inválido o expirado
       req.user = user;
       next();
     });
 }
 
+/**
+ * Registra un nuevo usuario al recibir datos del formulario y guardar opcionalmente una imagen de perfil.
+ */
 async function publicRegisterUser(req, res) {
   try {
     console.log("Iniciando registro de usuario");
@@ -174,12 +175,6 @@ async function publicRegisterUser(req, res) {
 }
 
 /**
- * Método para registrar un usuario a través de JSON
- * @param {Object} req - Solicitud HTTP con datos JSON
- * @param {Object} res - Respuesta HTTP
- */
-
-/**
  * Method that returns the list of users
  * 
  * @param {Object} req the request object
@@ -207,10 +202,7 @@ async function getUsers(req,res){
 
 
 /**
- * Method that returns a specific user based on its id.
- * 
- * @param {Object} req the request object
- * @param {Object} res the response object
+ * Método que devuelve un usuario específico basado en su id.
  */
 async function findUser(req,res){
     try{       
@@ -248,10 +240,7 @@ async function findUser(req,res){
 
 
 /**
- * Method that inserts a user.
- * 
- * @param {Object} req the request object
- * @param {Object} res the response object
+ * Método que inserta un usuario.
  */
 async function insertUser(req,res){
     try{       
@@ -276,10 +265,7 @@ async function insertUser(req,res){
 
 
 /**
- * Method that updates a user.
- * 
- * @param {Object} req the request object
- * @param {Object} res the response object
+ * Método que modifica un usuario.
  */
 async function updateUser(req,res){
     try{       
@@ -330,10 +316,7 @@ async function updateUser(req,res){
 }
 
 /**
- * Method that deletes a user.
- * 
- * @param {Object} req the request object
- * @param {Object} res the response object
+ * Método que elimina un usuario.
  */
 async function deleteUser(req,res){
     try{       
@@ -429,8 +412,6 @@ async function recuperarPassword(req, res) {
 
 /**
  * Método para verificar un token de recuperación de contraseña
- * @param {Object} req - Solicitud HTTP
- * @param {Object} res - Respuesta HTTP
  */
 async function verificarTokenRecuperacion(req, res) {
     try {
@@ -467,9 +448,7 @@ async function verificarTokenRecuperacion(req, res) {
 }
 
 /**
- * Método para restablecer la contraseña con un token válido
- * @param {Object} req - Solicitud HTTP
- * @param {Object} res - Respuesta HTTP
+ * Método para restablecer la contraseña con un token válido.
  */
 async function restablecerPassword(req, res) {
     try {
@@ -562,10 +541,7 @@ async function getAdminStats(req, res) {
 }
 
 /**
- * Method that gets the profile of the authenticated user
- * 
- * @param {Object} req the request object
- * @param {Object} res the response object
+ * Método que consigue el perfil del usuario autenticado. 
  */
 async function getProfile(req, res) {
     try {
@@ -599,10 +575,7 @@ async function getProfile(req, res) {
 }
 
 /**
- * Method that updates the profile of the authenticated user
- * 
- * @param {Object} req the request object
- * @param {Object} res the response object
+ * Método que modifica el perfil del usuario autenticado.
  */
 async function updateProfile(req, res) {
     try {
@@ -654,10 +627,7 @@ async function updateProfile(req, res) {
 }
 
 /**
- * Method that updates the password of the authenticated user
- * 
- * @param {Object} req the request object
- * @param {Object} res the response object
+ * Método que modifica la contraseña del usuario autenticado.
  */
 async function updatePassword(req, res) {
     try {
@@ -728,6 +698,9 @@ async function updatePassword(req, res) {
     }
 }
 
+/**
+ * Método que modifica y actualiza el rol del usuario autenticado.
+ */
 async function actualizarRol(req, res) {
   const userId = req.params.id;
   const { role_id } = req.body;
@@ -775,6 +748,7 @@ async function actualizarRol(req, res) {
   }
 }
 
+// Exporta las funciones y objetos para su uso
 module.exports = {
     execLogin,
     authenticateToken,
