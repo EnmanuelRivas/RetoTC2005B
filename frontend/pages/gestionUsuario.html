@@ -269,73 +269,85 @@
       document.querySelector('.sidebar').classList.toggle('collapsed');
     });
   async function cargarUsuarios() {
-    const token = localStorage.getItem('authToken');
-    if (!token) return;
+  const token = localStorage.getItem('authToken');
+  if (!token) return;
 
-    try {
-      const res = await fetch('/awaq/api/getUsers', {
-        headers: { 'Authorization': `Bearer ${token}` }
+  try {
+    const res = await fetch('/awaq/api/getUsers', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    const response = await res.json();
+    const usuarios = response.records;
+
+    const tbody = document.querySelector('#tablaUsuarios tbody');
+    tbody.innerHTML = '';
+
+    usuarios.forEach(u => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${u.nombre}</td>
+        <td>${u.apellidos}</td>
+        <td>${u.correo}</td>
+        <td>
+          <select class="rol-selector">
+            <option value="2" ${u.role_id == 2 ? 'selected' : ''}>Usuario</option>
+            <option value="1" ${u.role_id == 1 ? 'selected' : ''}>Administrador</option>
+            <option value="3" ${u.role_id == 3 ? 'selected' : ''}>Pendiente</option>
+          </select>
+        </td>
+        <td>${u.numeroTelefono || '-'}</td>
+        <td>${u.pais || '-'}</td>
+        <td>${u.provincia || '-'}</td>
+        <td>${u.ciudad || '-'}</td>
+        <td>${u.organizacion || '-'}</td>
+        <td>${u.descripcion || '-'}</td>
+        <td><span class="badge ${u.estado == 1 ? 'active' : 'inactive'}">${u.estado == 1 ? 'Activo' : 'Inactivo'}</span></td>
+        <td><button class="guardar-btn">Guardar</button></td>
+      `;
+
+      tbody.appendChild(row);
+
+      // Agregar event listener al botón "Guardar"
+      const select = row.querySelector('.rol-selector');
+      const boton = row.querySelector('.guardar-btn');
+      boton.addEventListener('click', () => {
+        actualizarRol(u.id, select.value);
       });
 
-      const response = await res.json(); // 🔁 CAMBIO HECHO AQUÍ
-      const usuarios = response.records; // ✅ SE EXTRAE LA LISTA CORRECTAMENTE
+      // (Opcional) Guardar automáticamente al cambiar el rol
+      // select.addEventListener('change', () => {
+      //   actualizarRol(u.id, select.value);
+      // });
+    });
 
-      const tbody = document.querySelector('#tablaUsuarios tbody');
-      tbody.innerHTML = '';
-
-      usuarios.forEach(u => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${u.nombre}</td>
-          <td>${u.apellidos}</td>
-          <td>${u.correo}</td>
-          <td>
-            <select onchange="actualizarRol(${u.id}, this.value)">
-              <option value="2" ${u.role_id == 2 ? 'selected' : ''}>Usuario</option>
-              <option value="1" ${u.role_id == 1 ? 'selected' : ''}>Administrador</option>
-              <option value="3" ${u.role_id == 3 ? 'selected' : ''}>Pendiente</option>
-            </select>
-          </td>
-          <td>${u.numeroTelefono || '-'}</td>
-          <td>${u.pais || '-'}</td>
-          <td>${u.provincia || '-'}</td>
-          <td>${u.ciudad || '-'}</td>
-          <td>${u.organizacion || '-'}</td>
-          <td>${u.descripcion || '-'}</td>
-          <td><span class="badge ${u.estado == 1 ? 'active' : 'inactive'}">${u.estado == 1 ? 'Activo' : 'Inactivo'}</span></td>
-          <td><button onclick="actualizarRol(${u.id})">Guardar</button></td>
-        `;
-        tbody.appendChild(row);
-      });
-    } catch (err) {
-      console.error('Error al cargar usuarios:', err);
-    }  }
-
-  async function actualizarRol(id) {
-    const select = document.querySelector(`select[onchange*="${id}"]`);
-    const nuevoRol = select.value;
-
-    try {
-      const res = await fetch(`/awaq/api/usuarios/${id}/rol`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-        },
-        
-        body: JSON.stringify({ role_id: nuevoRol })
-      });
-
-      if (res.ok) {
-        alert('Rol actualizado correctamente');
-        cargarUsuarios();
-      } else {
-        alert('Error al actualizar el rol');
-      }
-    } catch (err) {
-      console.error(err);
-    }
+  } catch (err) {
+    console.error('Error al cargar usuarios:', err);
   }
+}
+
+async function actualizarRol(id, nuevoRol) {
+  try {
+    const res = await fetch(`/awaq/api/usuarios/${id}/rol`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+      },
+      body: JSON.stringify({ role_id: nuevoRol })
+    });
+
+    if (res.ok) {
+      alert('Rol actualizado correctamente');
+      cargarUsuarios();
+    } else {
+      alert('Error al actualizar el rol');
+    }
+  } catch (err) {
+    console.error('Error en actualizarRol:', err);
+  }
+}
+
 
   document.addEventListener("DOMContentLoaded", cargarUsuarios);
   // Verificación de autenticación y permisos de administrador
