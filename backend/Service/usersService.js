@@ -1,24 +1,15 @@
 /**
- * Users service.
- * Contains all the required logic to manage users on the APP.
- * 
- * It is a good practice to separate the service from the roller, in order to have a better separation of concerns
- * and a better code organization.
- * 
- * Examples of why this is a good practice:
- * 1. The service can be used by other controllers or services. (e.g. a web socket service or a cron job).
- * 2. The service can modify the datasource without the need of a controller.
- * 3. The service can be used by other services.
- * 
+ * Servicio de gestión de usuarios.
+ * Contiene la lógica relacionada con la creación, edición, eliminación,
+ * autenticación y recuperación de usuarios dentro de la aplicación. 
  */
 const dataSource = require('../Data/MySQLMngr');
 const hashService = require('./hashPassword');
 const imageUploadService = require('./imageUploadService');
 
 /**
- * Method that returns the list of users. Excludes password fields for security.
- *
- * @returns Users list in json format
+ * Obtiene todos los usuarios registrados, omitiendo contraseñas.
+ * @returns {Promise<QueryResult>} Lista de usuarios
  */
 async function getUsers(){
     let qResult;
@@ -36,11 +27,10 @@ async function getUsers(){
 
 
 /**
- * Busca un usuario por su correo.
- * @param {String} correo del usuario.
- * @returns el user object (array de rows).
+ * Busca un usuario por su ID.
+ * @param {number} id - ID del usuario
+ * @returns {Promise<QueryResult>} Usuario encontrado o error
  */
-// Busca un usuario por id
 async function findUserById(id) {
   let qResult;
   try {
@@ -54,17 +44,17 @@ async function findUserById(id) {
 }
 
 /**
- * Method that inserts a user into the database.
- * @param {*} user the json object that contains the user data.
- * @param {string} profileImagePath - Ruta a la imagen de perfil (opcional)
- * @returns query result object with the information of the query execution.
+ * Inserta un nuevo usuario en la base de datos, con opción a imagen de perfil.
+ * @param {Object} user - Datos del usuario
+ * @param {string|null} profileImagePath - Ruta a la imagen de perfil
+ * @returns {Promise<QueryResult>} Resultado de la inserción
  */
 async function insertUser(user, profileImagePath = null){
     let qResult;
     try{
         console.log("insertUser: Iniciando inserción de usuario");
         
-        // Validate required fields
+        // Valida campos requeridos
         if (!user.contraseña) {
             console.log("insertUser: Error - La contraseña es requerida");
             throw new Error('La contraseña es requerida');
@@ -121,10 +111,11 @@ async function insertUser(user, profileImagePath = null){
 
 
 /**
- * Method that updates a user into the database.
- * @param {*} user - Datos del usuario a actualizar
- * @param {string} profileImagePath - Ruta a la nueva imagen de perfil (opcional)
- * @returns {Object} Resultado de la actualización
+ * Actualiza los datos de un usuario existente.
+ * Solo se actualizan los campos proporcionados.
+ * @param {Object} user - Datos actualizados
+ * @param {string|null} profileImagePath - Ruta a nueva imagen de perfil
+ * @returns {Promise<QueryResult>} Resultado de la actualización
  */
 async function updateUser(user, profileImagePath = null){
     let qResult;
@@ -204,9 +195,9 @@ async function updateUser(user, profileImagePath = null){
 }
 
 /**
- * Method that updates a user into the database.
- * @param {*} user 
- * @returns 
+ * Elimina un usuario por ID.
+ * @param {number} user_id - ID del usuario
+ * @returns {Promise<QueryResult>} Resultado de la eliminación
  */
 async function deleteUser(user_id){
     let qResult;
@@ -222,9 +213,9 @@ async function deleteUser(user_id){
 }
 
 /**
- * Busca un usuario por su correo electrónico
- * @param {string} email - Correo electrónico del usuario
- * @returns {Promise} - Resultado de la consulta
+ * Busca un usuario por su correo electrónico.
+ * @param {string} email - Correo del usuario
+ * @returns {Promise<QueryResult>} Resultado de la consulta
  */
 async function findUserByEmail(email) {
     let qResult;
@@ -239,11 +230,12 @@ async function findUserByEmail(email) {
 }
 
 /**
- * Guarda un token de recuperación de contraseña para un usuario
- * @param {number} userId - ID del usuario
- * @param {string} token - Token de recuperación
- * @param {Date} expiry - Fecha de expiración del token
- * @returns {Promise} - Resultado de la consulta
+ * Guarda un token de recuperación de contraseña en la base de datos.
+ * Elimina tokens previos del usuario antes de insertar uno nuevo.
+ * @param {number} userId
+ * @param {string} token
+ * @param {Date} expiry
+ * @returns {Promise<QueryResult>}
  */
 async function savePasswordResetToken(userId, token, expiry) {
     let qResult;
@@ -263,9 +255,9 @@ async function savePasswordResetToken(userId, token, expiry) {
 }
 
 /**
- * Verifica si un token de recuperación es válido
+ * Verifica si un token de recuperación es válido (no expirado).
  * @param {string} token - Token a verificar
- * @returns {Promise} - Resultado de la consulta con el usuario asociado si es válido
+ * @returns {Promise<QueryResult>} Usuario asociado al token
  */
 async function verifyPasswordResetToken(token) {
     let qResult;
@@ -284,10 +276,10 @@ async function verifyPasswordResetToken(token) {
 }
 
 /**
- * Actualiza la contraseña de un usuario
+ * Actualiza la contraseña de un usuario y elimina el token de recuperación utilizado.
  * @param {number} userId - ID del usuario
- * @param {string} newPassword - Nueva contraseña (sin hash)
- * @returns {Promise} - Resultado de la consulta
+ * @param {string} newPassword - Nueva contraseña en texto plano
+ * @returns {Promise<QueryResult>}
  */
 async function updatePassword(userId, newPassword) {
     let qResult;
@@ -323,6 +315,13 @@ async function updatePassword(userId, newPassword) {
     }
     return qResult;
 }
+
+/**
+ * Actualiza el rol de un usuario.
+ * @param {number} userId - ID del usuario
+ * @param {number} role_id - Nuevo ID de rol
+ * @returns {Promise<QueryResult|{error: string}>}
+ */
 async function actualizarRol(userId, role_id) {
   try {
     const query = `UPDATE usuarios SET role_id = ? WHERE id = ?`;
@@ -335,7 +334,7 @@ async function actualizarRol(userId, role_id) {
 
 
 
-
+// Exporta todos los métodos para usarlos en otros módulos
 module.exports = {
     getUsers,
     findUserById,
