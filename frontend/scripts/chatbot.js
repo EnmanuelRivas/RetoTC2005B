@@ -2,14 +2,19 @@ const chatHistory = document.getElementById("chat-history");
 const userInput = document.getElementById("user-input");
 const sendButton = document.getElementById("send-button");
 
+// Agrega evento click al botón para enviar el mensaje
 sendButton.addEventListener("click", sendMessage);
 
+// Envía el mensaje si se presiona la tecla Enter en el campo de texto
 userInput.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
     sendMessage();
   }
 });
 
+/**
+ * Envía el mensaje escrito por el usuario, muestra el mensaje en pantalla y obtiene respuesta de la IA.
+ */
 async function sendMessage() {
   const userMessage = userInput.value;
   if (!userMessage) return;
@@ -26,6 +31,11 @@ async function sendMessage() {
   }
 }
 
+/**
+ * Muestra un mensaje en el historial de chat, con estilos según el remitente.
+ * @param {string} message - Texto del mensaje a mostrar
+ * @param {string} sender - "user" o "ai" para definir estilos
+ */
 function displayMessage(message, sender) {
   const messageDiv = document.createElement("div");
   messageDiv.classList.add(`${sender}-message`); // ``
@@ -34,9 +44,13 @@ function displayMessage(message, sender) {
   chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to bottom
 }
 
+/**
+ * Realiza la petición a la API de chat para obtener la respuesta de la IA.
+ * @param {string} message - Mensaje enviado por el usuario
+ * @returns {Promise<string>} Respuesta generada por la IA
+ */
 async function getChatCompletion(message) {
   //  *** IMPORTANT:  This is client-side JavaScript.  Do NOT put your API key directly here! ***
-  //  I'll show you how to proxy this securely in the next step.
   const API_ENDPOINT = "http://10.14.255.61/v1/chat/completions"; //  Your API endpoint
   const API_KEY = "sk-mDmOn2bG9Z3GDNW-x8wdeQ"; //  Replace with your actual API key
 
@@ -60,6 +74,6 @@ async function getChatCompletion(message) {
   }
 
   const data = await response.json();
-  //  Adjust this based on the exact structure of your API's response
+// Retorna el contenido del mensaje generado por la IA
   return data.choices[0].message.content;
 }

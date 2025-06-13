@@ -111,8 +111,6 @@ const AuthService = {
             }
         }
     },
-
-    // ...existing code...
 };
 
 /**
@@ -269,7 +267,7 @@ function displayUserInfo(elementId) {
     }
 }
 
-// Exports para módulos ES6
+// Exporta para su uso
 export { 
     AuthService, 
     checkAuth,

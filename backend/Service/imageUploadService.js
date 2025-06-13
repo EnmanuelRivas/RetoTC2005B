@@ -14,6 +14,7 @@ async function insertImages(archivos, usuario, idRegistro) {
 
   for (const archivo of archivos) {
     const nombreImagen = archivo.filename;
+    // Ejecutar inserción por cada imagen
     const [result] = await pool.promise().query(sql, [idRegistro, nombreImagen, usuario]);
     resultados.push({ id: result.insertId, nombreImagen });
   }
@@ -79,6 +80,7 @@ async function deleteProfileImage(userId) {
   }
 }
 
+// Exportar todas las funciones para su uso
 module.exports = {
   insertImages,
   insertProfileImage,

@@ -1,5 +1,19 @@
+/**
+ * Controlador REST para las métricas.
+ * 
+ * Define los endpoints relacionados con estadísticas generales y tablas analíticas.
+ * Utiliza el servicio `metricasService` para acceder a los datos.
+ */
+
 const metricasService = require('../Service/metricasService');
 
+/**
+ * Obtiene métricas generales del sistema.
+ * Llama al servicio correspondiente y responde con JSON.
+ * 
+ * @param {*} req Objeto de solicitud HTTP
+ * @param {*} res Objeto de respuesta HTTP
+ */
 async function obtenerMetricas(req, res) {
   try {
     const metricas = await metricasService.obtenerMetricas();
@@ -10,6 +24,10 @@ async function obtenerMetricas(req, res) {
   }
 }
 
+/**
+ * Obtiene los registros para la tabla de biomos.
+ * Llama al servicio y devuelve los datos en formato JSON.
+ */
 async function obtenerTablaBiomos(req, res) {
   try {
     const registros = await metricasService.obtenerTablaBiomos();
@@ -20,6 +38,8 @@ async function obtenerTablaBiomos(req, res) {
   }
 }
 
+
+// Exporta los métodos para su uso en las rutas
 module.exports = {
   obtenerMetricas,
   obtenerTablaBiomos
