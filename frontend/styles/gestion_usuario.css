@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4eedc;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .sidebar {
+    width: 240px;
+    background-color: #364c3e;
+    color: white;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-left: 30px;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    gap: 15px;
+    cursor: pointer;
+  }
+
+  .menu-item i {
+    font-size: 22px;
+  }
+
+  .main-content {
+    flex: 1;
+    padding: 40px;
+  }
+
+ 
+
+
+.user-table {
+background-color: #f4eedc;
+border-radius: 12px;
+padding: 30px;
+padding-top: 100px;
+max-width: 900px;
+margin: auto;
+font-family: 'Arial', sans-serif;
+}
+
+.user-table table {
+width: 100%;
+border-collapse: collapse;
+}
+
+.user-table th {
+text-align: left;
+font-weight: bold;
+padding: 12px;
+color: #364c3e;
+}
+
+.user-table td {
+padding: 10px 12px;
+color: #333;
+font-size: 15px;
+}
+
+.user-table tr:nth-child(even) {
+background-color: #f4eedc;
+}
+
+.badge {
+padding: 5px 12px;
+border-radius: 8px;
+font-size: 14px;
+font-weight: bold;
+color: white;
+display: inline-block;
+}
+
+.badge.active {
+background-color: #364c3e;
+}
+
+.badge.inactive {
+background-color: #a1a1a1;
+}

@@ -1,0 +1,17 @@
+{
+  "name": "awaq-backend",
+  "version": "1.0.0",
+  "description": "AWAQ Backend - Servidor web principal",  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "build": "cd backend && npm install --production",
+    "install-backend": "cd backend && npm install",
+    "postinstall": "cd backend && npm install",
+    "render-build": "cd backend && npm install --production",
+    "render-start": "cd backend && npm start"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=16.x"
+  }
+}

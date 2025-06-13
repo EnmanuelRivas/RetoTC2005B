@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: awaq-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install --production
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        value: mysql-3ad0d03e-tec-78de.b.aivencloud.com
+      - key: DB_USER
+        value: avnadmin
+      - key: DB_PASSWORD
+        sync: false  # Configure manually in Render dashboard
+      - key: DB_NAME
+        value: db_awaq
+      - key: DB_PORT
+        value: 19098
+      - key: SECRET
+        sync: false  # Configure manually in Render dashboard
+      - key: JWT_SECRET
+        sync: false  # Configure manually in Render dashboard
+      - key: EMAIL_USER
+        value: mack73@ethereal.email
+      - key: EMAIL_PASS
+        sync: false  # Configure manually in Render dashboard

@@ -1,0 +1,394 @@
+/**
+ * Estilos para el Sistema de Soporte AWAQ
+ * Diseñado para integrarse con el tema oscuro de la aplicación
+ */
+
+/* Estilo estándar para botones de soporte en todas las páginas */
+.support-button {
+    background: linear-gradient(145deg, #198754, #157347) !important;
+    color: white !important;
+    padding: 12px !important;
+    text-align: center !important;
+    border-radius: 10px !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    border: none !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+}
+
+.support-button:hover {
+    background: linear-gradient(145deg, #157347, #198754) !important;
+    color: #fff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4) !important;
+}
+
+.support-button i {
+    color: #00ff00 !important;
+    margin-right: 8px !important;
+    font-size: 16px !important;
+}
+
+.sidebar .support-button {
+    background: linear-gradient(145deg, #198754, #157347) !important;
+    color: white !important;
+    padding: 12px !important;
+    text-align: center !important;
+    border-radius: 10px !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    border: none !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+}
+
+.sidebar .support-button:hover {
+    background: linear-gradient(145deg, #157347, #198754) !important;
+    color: #fff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4) !important;
+}
+
+.sidebar .support-button i {
+    color: #00ff00 !important;
+    margin-right: 8px !important;
+    font-size: 16px !important;
+}
+
+/* Modal de soporte personalizado - Tema AWAQ */
+#supportModal .modal-content {
+    background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+    border: 2px solid #3d5a3d !important;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(61, 90, 61, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+#supportModal .modal-header {
+    background: linear-gradient(135deg, #1f2f1f 0%, #2a3d2a 100%) !important;
+    border-bottom: 2px solid #3d5a3d !important;
+    border-radius: 16px 16px 0 0 !important;
+    padding: 24px !important;
+    position: relative !important;
+}
+
+#supportModal .modal-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #28a745, #20c997, #17a2b8);
+    border-radius: 16px 16px 0 0;
+}
+
+#supportModal .modal-title {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 1.4rem !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+}
+
+#supportModal .modal-body {
+    background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+    padding: 32px !important;
+    color: #ffffff !important;
+}
+
+#supportModal .modal-footer {
+    background: linear-gradient(135deg, #2a3d2a 0%, #1f2f1f 100%) !important;
+    border-top: 2px solid #3d5a3d !important;
+    border-radius: 0 0 16px 16px !important;
+    padding: 24px !important;
+}
+
+/* Formulario de soporte mejorado */
+#supportModal .form-label {
+    color: #e8f5e8 !important;
+    font-weight: 600 !important;
+    margin-bottom: 10px !important;
+    font-size: 0.95rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+#supportModal .form-control,
+#supportModal .form-select {
+    background: linear-gradient(145deg, #3a3a3a 0%, #4a4a4a 100%) !important;
+    border: 2px solid #555 !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    font-size: 0.95rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+#supportModal .form-control:focus,
+#supportModal .form-select:focus {
+    background: linear-gradient(145deg, #4a4a4a 0%, #5a5a5a 100%) !important;
+    border-color: #28a745 !important;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    color: #ffffff !important;
+}
+
+#supportModal .form-control::placeholder {
+    color: #aaa !important;
+    opacity: 0.8 !important;
+}
+
+#supportModal .form-control[readonly] {
+    background-color: #444 !important;
+    color: #ccc !important;
+    border-color: #555 !important;
+    opacity: 0.8 !important;
+}
+
+/* Select personalizado */
+#supportModal .form-select option {
+    background-color: #555 !important;
+    color: white !important;
+}
+
+/* Checkbox personalizado */
+#supportModal .form-check-input {
+    background-color: #555 !important;
+    border-color: #666 !important;
+    border-radius: 4px !important;
+}
+
+#supportModal .form-check-input:checked {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+}
+
+#supportModal .form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25) !important;
+}
+
+#supportModal .form-check-label {
+    color: white !important;
+    margin-left: 8px !important;
+    cursor: pointer !important;
+}
+
+/* Botones del modal */
+#supportModal .btn-secondary {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+}
+
+#supportModal .btn-secondary:hover {
+    background-color: #5a6268 !important;
+    border-color: #545b62 !important;
+    transform: translateY(-1px) !important;
+}
+
+#supportModal .btn-success {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+}
+
+#supportModal .btn-success:hover {
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3) !important;
+}
+
+#supportModal .btn-success:disabled {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    opacity: 0.7 !important;
+}
+
+/* Alert de información */
+#supportModal .alert {
+    border-radius: 8px !important;
+    border: 1px solid #28a745 !important;
+    background-color: #1f4f1f !important;
+    color: #b8e6b8 !important;
+    padding: 15px !important;
+    margin-bottom: 20px !important;
+}
+
+/* Estilos adicionales para el modal mejorado */
+.gradient-text {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+}
+
+.support-info-alert {
+    background: linear-gradient(135deg, rgba(32, 201, 151, 0.1) 0%, rgba(40, 167, 69, 0.1) 100%);
+    border: 1px solid rgba(32, 201, 151, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    color: #e8f5e8;
+}
+
+.support-info-alert strong {
+    color: #20c997;
+    font-size: 1.1rem;
+}
+
+.support-info-alert p {
+    color: #b8e6b8;
+    margin-top: 4px;
+    font-size: 0.95rem;
+}
+
+#supportModal .form-text {
+    color: #aaa !important;
+    font-size: 0.85rem !important;
+    margin-top: 6px !important;
+}
+
+#supportModal .bi {
+    color: #28a745 !important;
+}
+
+/* Animaciones */
+#supportModal.fade .modal-dialog {
+    transition: transform 0.3s ease-out !important;
+    transform: translate(0, -50px) !important;
+}
+
+#supportModal.show .modal-dialog {
+    transform: none !important;
+}
+
+/* Animaciones mejoradas */
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes modalSlideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+    }
+}
+
+/* Backdrop personalizado */
+#supportModal .modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Botón de cerrar */
+#supportModal .btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%) !important;
+    opacity: 0.8 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+#supportModal .btn-close-white:hover {
+    opacity: 1 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #supportModal .modal-dialog {
+        margin: 10px !important;
+        max-width: calc(100% - 20px) !important;
+    }
+    
+    #supportModal .modal-body,
+    #supportModal .modal-header,
+    #supportModal .modal-footer {
+        padding: 15px !important;
+    }
+    
+    #supportModal .row .col-md-6 {
+        margin-bottom: 15px !important;
+    }
+}
+
+/* Mejoras en responsive design */
+@media (max-width: 768px) {
+    #supportModal .modal-dialog {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    #supportModal .modal-body {
+        padding: 20px !important;
+    }
+    
+    #supportModal .modal-header,
+    #supportModal .modal-footer {
+        padding: 16px !important;
+    }
+}
+
+/* Efectos hover para botones de soporte */
+.support-button:hover,
+button[data-support]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Toast/Alert notifications mejoradas */
+.alert.position-fixed {
+    animation: slideInRight 0.3s ease-out !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4) !important;
+    border-radius: 12px !important;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Mejoras de accesibilidad */
+#supportModal .form-control:focus,
+#supportModal .form-select:focus,
+#supportModal .btn:focus {
+    outline: 2px solid #28a745 !important;
+    outline-offset: 2px !important;
+}
+
+/* Estilo para iconos en el modal */
+#supportModal .bi {
+    font-size: 1.1rem !important;
+}
+
+#supportModal .modal-title .bi {
+    color: #28a745 !important;
+    font-size: 1.3rem !important;
+}

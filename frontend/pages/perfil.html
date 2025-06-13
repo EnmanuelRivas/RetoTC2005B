@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mawi</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="../scripts/auth.js"></script>
+  <style>
+    body {
+      background-color: #2a2a2a;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-bar {
+      background-color: #1f1f1f;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
+    }
+    .top-bar h1 {
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      color: white;
+      margin: 0;
+    }
+    .top-bar h1::before {
+      margin-right: 10px;
+    }
+    .top-bar .user-info {
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      color: #ff6b6b;
+    }
+    .logout-button:hover {
+      background-color: #333;
+    }
+    .main-body {
+      display: flex;
+      flex: 1;
+    }
+    
+    .sidebar {
+      width: 270px;
+      background-color: #1f1f1f;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .sidebar nav a {
+      padding: 12px 18px;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .sidebar nav a.active,
+    .sidebar nav a:hover {
+      background-color: #198754;
+      color: #fff;
+      text-decoration: none;
+    }
+    .sidebar .support-button {
+      background-color: #444;
+      padding: 12px;
+      text-align: center;
+      border-radius: 10px;
+      font-weight: bold;
+      color: white;
+      font-size: 14px;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .sidebar .support-button:hover {
+      background-color: #198754;
+      color: #fff;
+      cursor: pointer;
+    }
+    .sidebar .support-button i {
+      color: #00b300;
+      margin-right: 8px;
+    }
+    .main-content {
+      flex-grow: 1;
+      padding: 30px 40px 90px 40px;
+      background-color: #2a2a2a;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 600px;
+      position: relative;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      background-color: #555;
+      color: white;
+    }
+    .profile-support-button {
+      margin-top: 30px;
+      background-color: #444;
+      color: white;
+      padding: 15px;
+      border-radius: 15px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      width: fit-content;
+    }
+    .profile-support-button i {
+      margin-right: 10px;
+      color: #00b300;
+    }    .profile-img-container {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin: 0 auto;
+      background-color: #444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 30px;
+      border: 3px solid #555;
+      transition: all 0.3s ease;
+    }
+
+    .profile-img-container.editable {
+      cursor: pointer;
+      border-color: #00b300;
+    }
+
+    .profile-img-container.editable:hover {
+      border-color: #00ff00;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    }
+
+    .profile-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .profile-img-container .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+      border-radius: 50%;
+    }
+
+    .profile-img-container.editable:hover .overlay {
+      opacity: 1;
+    }
+
+    .profile-img-container .overlay span {
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    #profileImgInput {
+      display: none;
+    }
+    
+    .btn-save {
+      background-color: #198754;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    
+    .btn-save:hover {
+      background-color: #157347;
+    }
+    
+    .alert {
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      display: none;
+    }
+    
+    .alert-success {
+      background-color: #198754;
+      color: white;
+    }
+      .alert-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+    
+    .profile-section {
+      background-color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .profile-section h3 {
+      color: #198754;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+     body {
+      background-color: #2a2a2a;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-bar {
+      background-color: #1f1f1f;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
+    }
+    .top-bar h1 {
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      color: white;
+      margin: 0;
+    }
+    .top-bar h1::before {
+      margin-right: 10px;
+    }
+    .top-bar .user-info {
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logout-button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      color: #ff6b6b;
+    }
+    .logout-button:hover {
+      background-color: #333;
+    }
+    .main-body {
+      display: flex;
+      flex: 1;
+    }
+    .sidebar {
+      width: 270px;
+      background-color: #1f1f1f;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+    .sidebar.collapsed {
+      width: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #toggleSidebar {
+      border: none;
+      background: none;
+      outline: none;
+      box-shadow: none;
+      margin-right: 15px;
+    }
+    
+    /* Estilo para el rol de administrador */
+    .admin-role {
+      color: #00ff00 !important;
+      font-weight: bold !important;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+    }
+      .user-role {
+      color: #ffffff;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <div class="top-bar">
+     <div style="display: flex; align-items: center;">
+      <button id="toggleSidebar" class="me-3">
+        <i class="bi bi-list" style="font-size: 1.5rem; color: white;"></i>
+      </button>
+      <h1><i class="bi bi-eye me-2"></i>Mawi</h1>
+    </div>    
+    <div class="user-info">
+      <span id="user-display">Usuario <i class="bi bi-person-fill"></i></span>
+      <div class="logout-button">
+        <span>Cerrar sesión</span> <i class="bi bi-box-arrow-right"></i>
+      </div>
+    </div>
+  </div>
+  <div class="main-body">
+    <div class="sidebar">
+      <div>
+        <nav>
+          <a href="/awaq/home">Inicio</a>
+          <a href="/awaq/AsistenteBiomo">Asistente de Mi Biomo</a>
+          <a href="/awaq/AsistenteExplorador">Explorador de Anteproyectos</a>
+          <a href="/awaq/convocatorias">Convocatorias</a>
+          <a href="/awaq/metricas">Métricas</a>
+          <a href="./viewEcoRanger.html">View de EcoRanger</a>
+          <a href="./gestionUsuario.html">Gestión de Usuarios</a>      
+          <a href="/awaq/perfil" class="active">Mi Perfil</a>
+        </nav>
+      </div>      
+      <div>
+        <div class="support-button" data-support="true">
+          <i class="bi bi-telephone"></i>Contacta con el soporte
+        </div>
+      </div>
+    </div>    
+    <div class="main-content">
+      <h2>Mi Perfil</h2>
+      <!-- Sección de información del usuario (solo lectura) -->
+      <div class="profile-section">
+        <h3>Información de la cuenta</h3>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" id="email-display" disabled readonly />
+        </div>
+        <div class="form-group">
+          <label>Rol</label>
+          <input type="text" id="rol-display" disabled readonly />
+        </div>
+        <div class="form-group">
+          <label>Fecha de registro</label>
+          <input type="text" id="fecha-registro-display" disabled readonly />
+        </div>
+      </div>
+
+      <!-- Sección de perfil personal (editable) -->
+      <div class="profile-section">
+        <h3>Información personal</h3>
+          <form id="form-perfil">          <div class="text-center">
+            <div class="profile-img-container" id="profile-img-container">
+              <div id="profile-img-preview">
+                <i class="bi bi-person" style="font-size: 48px; color: #ccc;"></i>
+              </div>
+              <div class="overlay" id="profile-overlay" style="display: none;">
+                <span class="text-white">Cambiar foto</span>
+              </div>
+              <input type="file" id="profile-img-input" name="profileImg" accept="image/*" style="display: none;">
+            </div>
+            <div id="image-edit-hint" style="display: none; color: #00b300; font-size: 14px; margin-top: 10px;">
+              <i class="bi bi-info-circle"></i> Haz clic en tu imagen para cambiarla
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" name="nombre" id="nombre" placeholder="Escribe tu nombre" disabled />
+          </div>
+          <div class="form-group">
+            <label>Apellidos</label>
+            <input type="text" name="apellidos" id="apellidos" placeholder="Escribe tus apellidos" disabled />
+          </div>
+          <div class="form-group">
+            <label>Número telefónico</label>
+            <input type="text" name="numeroTelefono" id="numeroTelefono" placeholder="Escribe tu número telefónico" disabled />
+          </div>
+          <div class="form-group">
+            <label>País</label>
+            <input type="text" name="pais" id="pais" placeholder="Escribe tu país" disabled />
+          </div>
+          <div class="form-group">
+            <label>Provincia/Estado</label>
+            <input type="text" name="provincia" id="provincia" placeholder="Escribe tu provincia o estado" disabled />
+          </div>
+          <div class="form-group">
+            <label>Ciudad</label>
+            <input type="text" name="ciudad" id="ciudad" placeholder="Escribe tu ciudad" disabled />
+          </div>
+          <div class="form-group">
+            <label>Nombre de la organización</label>
+            <input type="text" name="organizacion" id="organizacion" placeholder="Escribe el nombre de tu organización" disabled />
+          </div>
+          <div class="form-group">
+            <label>Descripción de la organización</label>
+            <textarea name="descripcion" id="descripcion" rows="3" placeholder="Descríbeme qué hace tu organización" disabled></textarea>
+          </div>
+          
+          <!-- Botón para editar -->
+          <button type="button" id="btn-editar-perfil" class="btn-save">Editar perfil</button>
+          
+          <!-- Acciones del formulario (ocultas por defecto) -->
+          <div class="form-actions" style="display: none;">
+            <button type="submit" class="btn-save">Guardar cambios</button>
+            <button type="button" id="btn-cancelar-perfil" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Sección de cambio de contraseña -->
+      <div class="profile-section">
+        <h3>Seguridad</h3>
+        <button type="button" id="btn-cambiar-password" class="btn-save">Cambiar contraseña</button>
+        
+        <form id="form-password" style="display: none; margin-top: 20px;">
+          <div class="form-group">
+            <label>Contraseña actual</label>
+            <input type="password" id="current-password" required />
+          </div>
+          <div class="form-group">
+            <label>Nueva contraseña</label>
+            <input type="password" id="new-password" required />
+          </div>
+          <div class="form-group">
+            <label>Confirmar nueva contraseña</label>
+            <input type="password" id="confirm-password" required />
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn-save">Cambiar contraseña</button>
+            <button type="button" id="btn-cancelar-password" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Alertas -->
+      <div class="alert alert-success" id="success-alert" style="display: none;">
+        Cambios guardados correctamente
+      </div>
+      <div class="alert alert-danger" id="error-alert" style="display: none;">
+        Error al guardar los cambios
+      </div>
+    </div></div>
+
+  <!-- Scripts externos -->
+  <script src="../scripts/perfil.js"></script>  <script>
+    // Script para toggle del sidebar
+    document.addEventListener('DOMContentLoaded', function() {
+      // Importar y usar AuthService para mostrar rol
+      import('../scripts/auth.js').then(module => {
+        // Usar displayUserRole directamente en lugar de displayUserRoleInElement
+        module.AuthService.displayUserRole('user-display', false);
+      });
+      
+      document.getElementById("toggleSidebar").addEventListener("click", function () {
+        document.querySelector(".sidebar").classList.toggle("collapsed");
+      });
+      
+      // Inicializar la página de perfil
+      initPerfil();
+    });
+  </script>
+<script type="module">
+  import { getIsAdminFromToken, AuthService } from '../scripts/auth.js';
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    const isAdmin = await getIsAdminFromToken();
+
+    // Configurar botón de logout
+    const logoutButton = document.querySelector('.logout-button');
+    if (logoutButton) {
+      logoutButton.addEventListener('click', function () {
+        AuthService.logout();
+      });
+    }
+
+    // Ocultar enlaces restringidos si no es admin
+    if (!isAdmin) {
+      const restrictedLinks = [
+        "a[href='./gestionUsuario.html']",
+        "a[href='./viewEcoRanger.html']",
+        "a[href='/awaq/metricas']"
+      ];
+      restrictedLinks.forEach(selector => {
+        const link = document.querySelector(selector);
+        if (link) link.style.display = 'none';
+      });
+    }
+  });
+</script>
+  <!-- Script del sistema de soporte -->
+  <script src="../scripts/support.js"></script>
+
+</body>
+</html>

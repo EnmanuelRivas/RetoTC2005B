@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: awaq-game-api
+    env: node
+    rootDir: game-api
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
