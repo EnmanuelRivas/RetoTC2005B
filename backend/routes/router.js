@@ -27,6 +27,11 @@ router.get(`${constants.contextURL}/recuperar`, templates.recuperarPage);
 router.get(`${constants.contextURL}/changepwd`, templates.cambiarPasswordPage);
 router.get(`${constants.contextURL}/confirmacion`, templates.confirmacionPage);
 router.get(`${constants.contextURL}/preReg`, templates.preRegPage);
+// Ruta pública para explorador de anteproyectos (sin token)
+router.get(
+  `${constants.contextURL}/api/anteproyectos`,
+  anteproyectosRest.getAnteproyectos
+);
 
 /* Rutas para usuarios autenticados */
 router.get(`${constants.contextURL}/home`, templates.homePage);
